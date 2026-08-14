@@ -79,16 +79,32 @@ model Booking {
   extras     String
   totalIdr   Int
   depositIdr Int
-  method     String
-  status     String   @default("confirmed")
-  name       String
-  phone      String
-  email      String
-  city       String
-  notes      String?
-  createdAt  DateTime @default(now())
+  // Empty until the client reaches the payment step and picks transfer or QRIS.
+  method String @default("")
+  // requested -> accepted -> payment_review -> confirmed, or declined.
+  // See src/lib/booking-status.ts, which owns the transitions and the labels.
+  status String @default("requested")
+  name   String
+  phone  String
+  email  String
+  city   String
+  notes  String?
+
+  // Payment trail. proof is the Blob URL of the receipt the client uploads;
+  // reference is whatever they typed (sender name, transaction id).
+  paymentProof     String?
+  paymentReference String?
+  paymentSentAt    DateTime?
+  // Why a request was declined, or why a receipt was sent back.
+  adminNote  String?
+  acceptedAt DateTime?
+  paidAt     DateTime?
+
+  createdAt DateTime @default(now())
 
   review Review?
+
+  @@index([status])
 }
 
 model Post {

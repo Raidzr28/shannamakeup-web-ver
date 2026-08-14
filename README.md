@@ -82,14 +82,45 @@ the Prisma CLI reads `.env` and would otherwise talk to the placeholder in it.
 | Client | `aruna@studio.co` | `aruna2026` |
 | Artist | `shana@shanamakeup.id` | `shana2026` |
 
+### Studio contact and payment details
+
+Optional — each falls back to a demo value, so the app runs without them. Set them for real use:
+`SUPPORT_WHATSAPP` is what the call-centre button dials once a booking is confirmed, and the payment
+values are what clients are told to pay into.
+
+| Variable | Purpose | Falls back to |
+|---|---|---|
+| `SUPPORT_WHATSAPP` | Studio WhatsApp, digits + country code, no `+` | `6281200000000` |
+| `PAYMENT_BANK_NAME` | Bank shown on the transfer screen | `BCA` |
+| `PAYMENT_BANK_ACCOUNT` | Account number | `123 456 7890` |
+| `PAYMENT_BANK_HOLDER` | Account holder | `Shana Prameswari` |
+| `PAYMENT_QRIS_URL` | Hosted QRIS image | unset — the QRIS tab shows a "not set up" note |
+| `PAYMENT_QRIS_MERCHANT` | Merchant name under the QR | `Shana Makeup` |
+
+These are read in `src/lib/support.ts`, which is `server-only` on purpose: plain (non-`NEXT_PUBLIC`)
+env vars become `undefined` in a client bundle, so reading them in a client component would silently
+serve the demo bank details in production.
+
 ## What's real
 
 - **Auth** — email/password with bcrypt hashing, JWT session in an httpOnly cookie (`src/lib/auth.ts`).
   Guests can browse the portfolio, feed, dates and prices; liking, saving, posting, booking, chat and
   reviews redirect to sign-in with the reason shown.
-- **Booking** — a four-step wizard (date/time/venue → add-ons → your details → confirm & pay) that
-  writes a `Booking` row, computes a 30% deposit rounded to the nearest Rp 50.000, and lands on a
-  confirmation page with a status timeline.
+- **Booking** — a four-step wizard (date/time/venue → add-ons → your details → review & request) that
+  writes a `Booking` row and computes a 30% deposit rounded to the nearest Rp 50.000. Nothing is
+  charged at this point; the wizard sends a *request*.
+- **Reservations** — bookings move `requested → accepted → payment_review → confirmed`, or
+  `declined`. The artist works the queue at `/manage/bookings`: accept or decline a date, then check
+  the deposit receipt and either confirm it or send it back with a reason (which returns the booking
+  to `accepted` without losing the slot). Every transition is a `updateMany` guarded on the current
+  status, so two open tabs cannot double-apply one.
+  `src/lib/booking-status.ts` owns the states and their labels for both sides of the app.
+- **Deposit payment** — once accepted, the client pays at `/orders/[id]/pay` by bank transfer or
+  QRIS, then uploads a receipt photo (compressed in the browser, stored in Blob under `receipts/`).
+  Ownership, the status gate and the payment method are all decided server-side.
+- **Call centre** — confirming the payment reveals the studio's WhatsApp contact on the client's
+  order page, as a `wa.me` deep link prefilled with their order code. It appears in that one state
+  and no earlier.
 - **Feed** — posts, likes and saves persist per user. Composing a post uploads a real photo to Vercel
   Blob and tags a bookable package, so any viewer can book the same look from the post.
 - **Stories** — signed-in users post a photo + caption to the story rail. Each story carries an
@@ -115,9 +146,11 @@ the Prisma CLI reads `.env` and would otherwise talk to the placeholder in it.
 
 ## Payments
 
-Payment method selection is recorded and the deposit is marked received, but **no payment processor is
-integrated** — no real money moves. Wiring a gateway (Midtrans, Xendit, Stripe) is the remaining step
-before this could take live bookings.
+Deposits are **manual and human-verified**: the client transfers or scans QRIS out of band, uploads a
+receipt photo, and the artist confirms it by eye. That is a deliberate fit for how the studio already
+works, not a stub — but it means **no payment processor is integrated** and nothing reconciles
+automatically. Wiring a gateway (Midtrans, Xendit, Stripe) would replace the receipt-upload step and
+let `confirmed` be reached without the artist checking each one.
 
 ## Layout
 
@@ -127,7 +160,9 @@ prisma/seed.ts           six packages, two demo users, sample posts and a bookin
 prisma/backfill-usernames.ts  one-off: gives pre-username accounts a handle (safe to re-run)
 src/app/globals.css      colour tokens and the frosted-glass utilities
 src/app/api/upload/      Route Handler that stores a compressed photo in Blob
-src/app/manage/          artist-only package CRUD
+src/app/manage/          artist-only: package CRUD and the reservation queue
+src/lib/booking-status.ts     the reservation state machine, shared by both sides
+src/lib/support.ts       server-only studio WhatsApp and payment destinations
 src/components/shell/Viewports.tsx   the mobile/desktop breakpoint switch
 src/lib/                 auth, language, looks, feed, booking maths, image compression
 src/lib/actions/         server actions (auth, profile, booking, posts, stories, packages, review, chat)
@@ -141,8 +176,8 @@ src/app/                 routes
 |---|---|
 | `/`, `/looks`, `/l/[id]`, `/studio` | anyone |
 | `/book`, `/book/[id]` | anyone browses; sign-in required to confirm |
-| `/looks/compose`, `/looks/story`, `/account/edit`, `/orders`, `/chat` | signed in |
-| `/manage`, `/manage/new`, `/manage/[id]` | artist only |
+| `/looks/compose`, `/looks/story`, `/account/edit`, `/orders`, `/orders/[id]/pay`, `/chat` | signed in |
+| `/manage`, `/manage/new`, `/manage/[id]`, `/manage/bookings`, `/manage/bookings/[id]` | artist only |
 
 ## Deploying to Vercel
 

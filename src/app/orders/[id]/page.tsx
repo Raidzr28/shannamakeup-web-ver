@@ -8,6 +8,8 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { l, idr } from "@/lib/i18n";
 import { EXTRAS, VENUES } from "@/lib/static-data";
+import { asBookingStatus, canPay, showsSupport, statusLabel, statusTone } from "@/lib/booking-status";
+import { SUPPORT_HOURS_EN, SUPPORT_HOURS_ID, whatsappDisplay, whatsappLink } from "@/lib/support";
 
 export default async function OrderPage({
   params,
@@ -36,21 +38,37 @@ export default async function OrderPage({
     year: "numeric",
   })} · ${booking.timeLabel}`;
 
+  const status = asBookingStatus(booking.status);
+  const declined = status === "declined";
+  const reached = ["requested", "accepted", "payment_review", "confirmed"].indexOf(status);
+
   const statuses = [
     {
-      name: l(lang, "Deposit received", "Deposit diterima"),
-      note: idr(booking.depositIdr),
+      name: l(lang, "Request sent", "Permintaan terkirim"),
+      note: booking.createdAt.toLocaleDateString(lang === "id" ? "id-ID" : "en-GB", {
+        day: "numeric",
+        month: "short",
+      }),
       done: true,
     },
     {
-      name: l(lang, "Trial scheduled", "Trial dijadwalkan"),
-      note: l(lang, "Awaiting your pick of dates", "Menunggu pilihan tanggal"),
-      done: true,
+      name: l(lang, "Shana accepts the date", "Shana menerima tanggal"),
+      note: declined
+        ? (booking.adminNote ?? l(lang, "Declined", "Ditolak"))
+        : reached >= 1
+          ? l(lang, "Confirmed free", "Dipastikan kosong")
+          : l(lang, "Usually within a day", "Biasanya dalam sehari"),
+      done: reached >= 1,
     },
     {
-      name: l(lang, "Call sheet sent", "Call sheet dikirim"),
-      note: l(lang, "One week before the event", "Seminggu sebelum acara"),
-      done: false,
+      name: l(lang, "Deposit paid", "Deposit dibayar"),
+      note:
+        status === "payment_review"
+          ? l(lang, "Receipt under review", "Bukti sedang diperiksa")
+          : reached >= 3
+            ? idr(booking.depositIdr)
+            : l(lang, "Due once accepted", "Dibayar setelah diterima"),
+      done: reached >= 3,
     },
     {
       name: l(lang, "Event day", "Hari acara"),
@@ -60,26 +78,92 @@ export default async function OrderPage({
     },
   ];
 
-  const body = (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col items-center text-center pb-2">
-        <span className="w-[76px] h-[76px] rounded-[26px] glass-fill text-white flex items-center justify-center text-[32px]">
-          ✓
-        </span>
-        <h1 className="mt-5 text-[26px] font-extrabold tracking-[-0.03em]">
-          {l(lang, "You’re in the book.", "Tanggalmu terkunci.")}
-        </h1>
-        <p className="mt-2.5 text-[13.5px] leading-relaxed text-muted-2 max-w-[30ch]">
-          {l(
+  const headline = declined
+    ? {
+        icon: "✕",
+        title: l(lang, "This date did not work.", "Tanggal ini tidak bisa."),
+        blurb:
+          booking.adminNote ??
+          l(
+            lang,
+            "Shana could not take this date. Pick another and she will take a look.",
+            "Shana tidak bisa mengambil tanggal ini. Pilih tanggal lain dan dia akan cek."
+          ),
+      }
+    : status === "confirmed"
+      ? {
+          icon: "✓",
+          title: l(lang, "You’re in the book.", "Tanggalmu terkunci."),
+          blurb: l(
             lang,
             "Deposit received. Shana will send the call sheet a week before the day.",
             "Deposit diterima. Shana mengirim call sheet seminggu sebelum acara."
-          )}
+          ),
+        }
+      : status === "payment_review"
+        ? {
+            icon: "⏳",
+            title: l(lang, "Checking your receipt.", "Memeriksa buktimu."),
+            blurb: l(
+              lang,
+              "Shana is matching your transfer against the studio account. This is usually quick.",
+              "Shana sedang mencocokkan transfermu dengan rekening studio. Biasanya cepat."
+            ),
+          }
+        : status === "accepted"
+          ? {
+              icon: "◷",
+              title: l(lang, "The date is yours to lock.", "Tinggal kunci tanggalnya."),
+              blurb: l(
+                lang,
+                "Shana is free that day. Pay the deposit to hold it.",
+                "Shana kosong di hari itu. Bayar deposit untuk menguncinya."
+              ),
+            }
+          : {
+              icon: "◷",
+              title: l(lang, "Request sent.", "Permintaan terkirim."),
+              blurb: l(
+                lang,
+                "Shana is checking the date. Nothing is charged until she accepts.",
+                "Shana sedang memeriksa tanggal. Belum ada tagihan sampai dia menerima."
+              ),
+            };
+
+  const body = (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col items-center text-center pb-2">
+        <span
+          className={`w-[76px] h-[76px] rounded-[26px] flex items-center justify-center text-[32px] ${
+            declined ? "bg-[#f3e0e0] text-[#b23a3a]" : "glass-fill text-white"
+          }`}
+        >
+          {headline.icon}
+        </span>
+        <h1 className="mt-5 text-[26px] font-extrabold tracking-[-0.03em]">{headline.title}</h1>
+        <p className="mt-2.5 text-[13.5px] leading-relaxed text-muted-2 max-w-[32ch]">
+          {headline.blurb}
         </p>
-        <span className="mt-4 text-xs font-bold tracking-[0.06em] text-muted glass-card px-3.5 py-2 rounded-full">
-          ORDER {booking.code}
+        <span className="mt-4 flex items-center gap-2">
+          <span className="text-xs font-bold tracking-[0.06em] text-muted glass-card px-3.5 py-2 rounded-full">
+            ORDER {booking.code}
+          </span>
+          <span
+            className={`text-[10.5px] font-bold px-2.5 py-1.5 rounded-full ${statusTone(status)}`}
+          >
+            {statusLabel(lang, status)}
+          </span>
         </span>
       </div>
+
+      {canPay(status) && (
+        <Link
+          href={`/orders/${booking.id}/pay`}
+          className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold flex items-center justify-center glass-fill"
+        >
+          {l(lang, "Pay the deposit", "Bayar deposit")} · {idr(booking.depositIdr)}
+        </Link>
+      )}
 
       <div className="glass-card p-[18px] flex gap-3.5 items-center">
         <span className="w-16 h-16 flex-none">
@@ -123,7 +207,11 @@ export default async function OrderPage({
           <span>{idr(booking.totalIdr)}</span>
         </div>
         <div className="flex justify-between text-[13.5px] mt-2 text-muted">
-          <span>{l(lang, "Deposit paid", "Deposit dibayar")}</span>
+          <span>
+            {status === "confirmed"
+              ? l(lang, "Deposit paid", "Deposit dibayar")
+              : l(lang, "Deposit due", "Deposit")}
+          </span>
           <span className="font-semibold text-maroon">{idr(booking.depositIdr)}</span>
         </div>
         <div className="flex justify-between text-[13.5px] mt-1 text-muted">
@@ -162,6 +250,42 @@ export default async function OrderPage({
         </div>
       </div>
 
+      {showsSupport(status) && (
+        <div className="glass-card p-[18px] flex flex-col gap-3">
+          <div className="text-xs font-bold tracking-[0.04em] uppercase text-muted-3">
+            {l(lang, "Studio call centre", "Pusat bantuan studio")}
+          </div>
+          <p className="m-0 text-[13px] leading-snug text-muted">
+            {l(
+              lang,
+              "Your booking is confirmed, so you can reach the studio directly about timings, the call sheet or anything on the day.",
+              "Pesananmu terkonfirmasi, jadi kamu bisa langsung menghubungi studio soal jadwal, call sheet atau apa pun di hari-H."
+            )}
+          </p>
+          <a
+            href={whatsappLink(
+              l(
+                lang,
+                `Hi Shana, this is ${booking.name} about order ${booking.code}.`,
+                `Halo Shana, ini ${booking.name} soal pesanan ${booking.code}.`
+              )
+            )}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold flex items-center justify-center gap-2 bg-[#1f8f4e]"
+          >
+            <span aria-hidden>✆</span>
+            {l(lang, "Chat on WhatsApp", "Chat lewat WhatsApp")}
+          </a>
+          <div className="flex flex-col gap-0.5 text-center">
+            <span className="text-[13px] font-bold tracking-wide">{whatsappDisplay()}</span>
+            <span className="text-[11.5px] text-muted-3">
+              {l(lang, SUPPORT_HOURS_EN, SUPPORT_HOURS_ID)}
+            </span>
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-col gap-2.5">
         <Link
           href="/chat"
@@ -169,18 +293,19 @@ export default async function OrderPage({
         >
           {l(lang, "Message Shana", "Chat Shana")}
         </Link>
-        {booking.review ? (
-          <div className="glass-card p-4 text-center text-[13px] text-muted">
-            {l(lang, "Review sent — thank you.", "Ulasan terkirim — terima kasih.")}
-          </div>
-        ) : (
-          <Link
-            href={`/orders/${booking.id}/review`}
-            className="w-full h-[50px] rounded-2xl text-ink text-[14.5px] font-bold flex items-center justify-center glass-light"
-          >
-            {l(lang, "Leave a review", "Tulis ulasan")}
-          </Link>
-        )}
+        {status === "confirmed" &&
+          (booking.review ? (
+            <div className="glass-card p-4 text-center text-[13px] text-muted">
+              {l(lang, "Review sent — thank you.", "Ulasan terkirim — terima kasih.")}
+            </div>
+          ) : (
+            <Link
+              href={`/orders/${booking.id}/review`}
+              className="w-full h-[50px] rounded-2xl text-ink text-[14.5px] font-bold flex items-center justify-center glass-light"
+            >
+              {l(lang, "Leave a review", "Tulis ulasan")}
+            </Link>
+          ))}
         <Link
           href="/orders"
           className="w-full h-11 flex items-center justify-center text-maroon text-[13.5px] font-bold"

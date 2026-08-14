@@ -29,6 +29,15 @@ export default async function AccountPage() {
       ])
     : [0, 0];
 
+  // Badge on the artist's queue link, so a waiting request is visible without
+  // opening the page.
+  const pendingCount =
+    user?.role === "ARTIST"
+      ? await prisma.booking.count({
+          where: { status: { in: ["requested", "payment_review"] } },
+        })
+      : 0;
+
   const body = (
     <div className="flex flex-col gap-4">
       <div className="glass-card p-[18px] flex gap-3.5 items-center">
@@ -125,6 +134,11 @@ export default async function AccountPage() {
               { name: l(lang, "Edit profile", "Ubah profil"), meta: "", href: "/account/edit" },
               ...(user.role === "ARTIST"
                 ? [
+                    {
+                      name: l(lang, "Reservations", "Reservasi"),
+                      meta: pendingCount ? String(pendingCount) : "",
+                      href: "/manage/bookings",
+                    },
                     {
                       name: l(lang, "Manage packages", "Kelola paket"),
                       meta: "",

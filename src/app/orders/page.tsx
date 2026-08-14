@@ -7,6 +7,7 @@ import { getLanguage } from "@/lib/language";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { l, idr } from "@/lib/i18n";
+import { statusLabel, statusTone } from "@/lib/booking-status";
 
 export default async function OrdersPage() {
   const [lang, user] = await Promise.all([
@@ -67,13 +68,11 @@ export default async function OrdersPage() {
                 {l(lang, b.look.title, b.look.titleId)}
               </span>
               <span
-                className={`flex-none text-[10.5px] font-bold px-2.5 py-1 rounded-full ${
-                  b.status === "confirmed" ? "bg-maroon text-white" : "bg-[#efe4d5] text-muted-2"
-                }`}
+                className={`flex-none text-[10.5px] font-bold px-2.5 py-1 rounded-full ${statusTone(b.status)}`}
               >
-                {b.review
+                {b.review && b.status === "confirmed"
                   ? l(lang, "Reviewed", "Diulas")
-                  : l(lang, "Confirmed", "Terkonfirmasi")}
+                  : statusLabel(lang, b.status)}
               </span>
             </span>
             <span className="block text-[11.5px] text-muted-2 mt-1.5">

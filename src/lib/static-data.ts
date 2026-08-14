@@ -68,10 +68,25 @@ export const VENUES = [
 ] as const;
 
 export const PAY_METHODS = [
-  { id: "transfer", name: "Bank transfer · BCA", nameId: "Transfer bank · BCA" },
-  { id: "va", name: "Virtual account", nameId: "Virtual account" },
-  { id: "card", name: "Card · Visa, Mastercard", nameId: "Kartu · Visa, Mastercard" },
+  {
+    id: "transfer",
+    name: "Bank transfer",
+    nameId: "Transfer bank",
+    note: "Send to the studio account, then upload the receipt",
+    noteId: "Kirim ke rekening studio, lalu unggah bukti",
+  },
+  {
+    id: "qris",
+    name: "QRIS",
+    nameId: "QRIS",
+    note: "Scan with any Indonesian banking or e-wallet app",
+    noteId: "Pindai dengan aplikasi bank atau e-wallet apa pun",
+  },
 ] as const;
+
+export function payMethodById(id: string) {
+  return PAY_METHODS.find((m) => m.id === id);
+}
 
 export const TIME_SLOTS = ["03:00", "04:00", "05:00", "07:00", "09:00", "13:00"];
 

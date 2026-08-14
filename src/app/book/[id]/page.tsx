@@ -44,7 +44,6 @@ export default async function BookPage({
     date: one(sp.date),
     time: one(sp.time),
     venue: one(sp.venue),
-    method: one(sp.method),
     extras,
     // A carried-over query value wins, then whatever the profile has saved.
     phone: one(sp.phone) || user?.phone || "",

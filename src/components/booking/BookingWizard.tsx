@@ -9,7 +9,7 @@ import { createBookingAction } from "@/lib/actions/booking";
 import type { Lang } from "@/lib/i18n";
 import { l, idr } from "@/lib/i18n";
 import type { LookDTO } from "@/lib/looks";
-import { EXTRAS, VENUES, PAY_METHODS, TIME_SLOTS, DEPOSIT_RATE } from "@/lib/static-data";
+import { EXTRAS, VENUES, TIME_SLOTS, DEPOSIT_RATE } from "@/lib/static-data";
 import { bookingTotal, depositFor } from "@/lib/booking-calc";
 
 const STEPS = ["when", "extras", "details", "pay"] as const;
@@ -47,7 +47,6 @@ export function BookingWizard({
     date?: string;
     time?: string;
     venue?: string;
-    method?: string;
     extras?: string[];
     phone?: string;
     city?: string;
@@ -65,7 +64,6 @@ export function BookingWizard({
   const [time, setTime] = useState(defaults.time || "05:00");
   const [venue, setVenue] = useState(defaults.venue || "venue");
   const [extras, setExtras] = useState<string[]>(defaults.extras ?? ["lashes"]);
-  const [method, setMethod] = useState(defaults.method || "transfer");
   // Held in state, not in the DOM: the details panel unmounts when the wizard
   // advances to `pay`, which would otherwise drop these from the submission.
   const [details, setDetails] = useState({
@@ -112,11 +110,11 @@ export function BookingWizard({
       ),
     },
     pay: {
-      title: l(lang, "Confirm and pay", "Konfirmasi dan bayar"),
+      title: l(lang, "Review and request", "Tinjau dan minta"),
       sub: l(
         lang,
-        "The date is held the moment the deposit clears.",
-        "Tanggal terkunci begitu deposit masuk."
+        "Send the request first — Shana confirms the date before any money moves.",
+        "Kirim permintaan dulu — Shana konfirmasi tanggal sebelum ada pembayaran."
       ),
     },
   };
@@ -136,7 +134,7 @@ export function BookingWizard({
 
   const nextLabel =
     step === "pay"
-      ? `${l(lang, "Pay", "Bayar")} ${idr(deposit)}`
+      ? l(lang, "Send request", "Kirim permintaan")
       : step === "details"
         ? l(lang, "Review order", "Tinjau pesanan")
         : l(lang, "Continue", "Lanjut");
@@ -147,7 +145,6 @@ export function BookingWizard({
       <input type="hidden" name="date" value={date} />
       <input type="hidden" name="time" value={time} />
       <input type="hidden" name="venue" value={venue} />
-      <input type="hidden" name="method" value={method} />
       {extras.map((e) => (
         <input key={e} type="hidden" name="extras" value={e} />
       ))}
@@ -362,8 +359,8 @@ export function BookingWizard({
               <div className="text-[11.5px] font-semibold tracking-[0.06em] uppercase opacity-80">
                 {l(
                   lang,
-                  `Due now — ${DEPOSIT_RATE}% deposit`,
-                  `Bayar sekarang — deposit ${DEPOSIT_RATE}%`
+                  `Deposit once accepted — ${DEPOSIT_RATE}%`,
+                  `Deposit setelah diterima — ${DEPOSIT_RATE}%`
                 )}
               </div>
               <div className="font-extrabold text-[28px] mt-2 tracking-tight">{idr(deposit)}</div>
@@ -378,29 +375,39 @@ export function BookingWizard({
 
             <div className="glass-card p-[18px]">
               <div className="text-xs font-bold tracking-[0.04em] uppercase text-muted-3">
-                {l(lang, "Pay with", "Bayar dengan")}
+                {l(lang, "What happens next", "Langkah berikutnya")}
               </div>
-              <div className="flex flex-col gap-2 mt-3">
-                {PAY_METHODS.map((m) => (
-                  <button
-                    key={m.id}
-                    type="button"
-                    onClick={() => setMethod(m.id)}
-                    className={clsx(
-                      "flex gap-3 items-center w-full p-3.5 rounded-2xl cursor-pointer text-left border-[1.5px]",
-                      method === m.id ? "bg-[#f5e6dc] border-maroon" : "bg-white border-line"
-                    )}
-                  >
-                    <Radio active={method === m.id} />
-                    <span className="flex-1 font-bold text-sm">{l(lang, m.name, m.nameId)}</span>
-                  </button>
+              <ol className="mt-3 flex flex-col gap-2.5 pl-0 list-none m-0">
+                {[
+                  l(
+                    lang,
+                    "Shana reviews the date and confirms she is free.",
+                    "Shana memeriksa tanggal dan memastikan dia kosong."
+                  ),
+                  l(
+                    lang,
+                    "You pay the deposit by transfer or QRIS and upload the receipt.",
+                    "Kamu bayar deposit lewat transfer atau QRIS lalu unggah buktinya."
+                  ),
+                  l(
+                    lang,
+                    "Shana checks the receipt and the date is locked.",
+                    "Shana memeriksa bukti dan tanggalnya terkunci."
+                  ),
+                ].map((line, i) => (
+                  <li key={line} className="flex gap-3 items-start text-[13px] text-[#4a3b32]">
+                    <span className="w-[22px] h-[22px] rounded-full flex-none flex items-center justify-center text-[11px] font-extrabold bg-tint text-maroon">
+                      {i + 1}
+                    </span>
+                    <span className="leading-snug">{line}</span>
+                  </li>
                 ))}
-              </div>
-              <p className="mt-3 text-[11.5px] leading-snug text-faint">
+              </ol>
+              <p className="mt-3.5 text-[11.5px] leading-snug text-faint">
                 {l(
                   lang,
-                  "This demo records the booking and marks the deposit as received — no real payment is taken.",
-                  "Demo ini mencatat pesanan dan menandai deposit diterima — tidak ada pembayaran sungguhan."
+                  "Nothing is charged now. The date is only held once the deposit is checked.",
+                  "Belum ada tagihan sekarang. Tanggal baru dikunci setelah deposit diperiksa."
                 )}
               </p>
             </div>
@@ -427,7 +434,7 @@ export function BookingWizard({
         <div className="flex justify-between items-baseline mb-2.5">
           <span className="text-xs text-muted-2">
             {step === "pay"
-              ? l(lang, "Due now", "Bayar sekarang")
+              ? l(lang, "Deposit later", "Deposit nanti")
               : l(lang, "Running total", "Total sementara")}
           </span>
           <span className="font-extrabold text-base">

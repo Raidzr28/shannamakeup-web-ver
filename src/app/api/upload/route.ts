@@ -13,7 +13,7 @@ const EXT_BY_MIME: Record<string, string> = {
 };
 // Allowlisted rather than taken from the request, so a caller cannot steer the
 // write anywhere it likes inside the store.
-const FOLDERS = new Set(["posts", "avatars"]);
+const FOLDERS = new Set(["posts", "avatars", "receipts"]);
 
 /** Receives an already-compressed image and stores it in Blob.
  *

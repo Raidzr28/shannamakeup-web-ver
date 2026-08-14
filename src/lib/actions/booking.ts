@@ -12,7 +12,6 @@ export async function createBookingAction(formData: FormData) {
   const time = String(formData.get("time") ?? "");
   const venue = String(formData.get("venue") ?? "venue");
   const extras = formData.getAll("extras").map(String);
-  const method = String(formData.get("method") ?? "transfer");
   const name = String(formData.get("name") ?? "").trim();
   const phone = String(formData.get("phone") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
@@ -23,7 +22,6 @@ export async function createBookingAction(formData: FormData) {
     date: dateIso,
     time,
     venue,
-    method,
     name,
     phone,
     email,
@@ -65,8 +63,11 @@ export async function createBookingAction(formData: FormData) {
       extras: JSON.stringify(extras),
       totalIdr: total,
       depositIdr: deposit,
-      method,
-      status: "confirmed",
+      // Both filled in later: the client picks a payment channel only after
+      // Shana has accepted the date, so nothing is collected for a slot she
+      // may not be free for.
+      method: "",
+      status: "requested",
       name: name || user.name,
       phone,
       email: email || user.email,
