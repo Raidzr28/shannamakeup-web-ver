@@ -24,7 +24,7 @@ export default async function LookPage({
       <MobileOnly>
       <div className="min-h-full bg-[#f4f5f3] flex flex-col">
         <div className="relative h-[344px]">
-          <Media src={look.heroImage} alt={title} placeholder={title} shape="rect" className="absolute inset-0" />
+          <Media src={look.heroImage} alt={title} placeholder={title} shape="rect" className="h-full w-full" />
           <Link
             href="/"
             className="absolute top-16 left-5 w-[38px] h-[38px] rounded-[13px] flex items-center justify-center glass-light text-[15px] text-ink"

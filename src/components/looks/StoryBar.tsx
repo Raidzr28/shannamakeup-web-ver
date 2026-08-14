@@ -130,7 +130,7 @@ export function StoryBar({ lang, stories }: { lang: Lang; stories: Story[] }) {
               alt={active.name}
               shape="rect"
               placeholder={active.name}
-              className="absolute inset-0"
+              className="h-full w-full"
               sizes="100vw"
             />
             <span className="absolute left-4 right-4 bottom-4 text-white text-[13.5px] leading-relaxed px-3.5 py-3 rounded-2xl bg-[#141a16]/50 backdrop-blur-md border border-white/20">

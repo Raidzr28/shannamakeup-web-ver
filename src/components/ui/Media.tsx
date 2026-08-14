@@ -32,6 +32,11 @@ export function Media({
   const radius =
     shape === "circle" ? "rounded-full" : shape === "rect" ? "" : "rounded-2xl";
 
+  // The wrapper is the positioned ancestor that `fill` measures against, so it
+  // must keep `relative` and callers must give it a SIZE (h-full, h-[340px]),
+  // never a position. Passing `absolute inset-0` here silently collapses it:
+  // Tailwind emits `relative` after `absolute`, so `relative` wins, the wrapper
+  // measures 0 tall, and the image never renders or even lazy-loads.
   if (src) {
     return (
       <div className={clsx("relative overflow-hidden", radius, className)}>

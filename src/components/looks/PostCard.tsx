@@ -59,7 +59,7 @@ export function PostCard({
           alt={post.title}
           shape="rect"
           placeholder={post.packageName ?? post.title}
-          className="absolute inset-0"
+          className="h-full w-full"
           sizes="(max-width: 768px) 100vw, 560px"
         />
         {post.packageName && (
