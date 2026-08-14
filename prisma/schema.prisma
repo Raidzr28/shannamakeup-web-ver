@@ -4,7 +4,10 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  // Neon hands out a pooled URL for queries. DDL (`prisma db push`) needs the
+  // direct, unpooled connection or it can hang behind the pooler.
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 enum Role {

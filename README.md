@@ -87,3 +87,74 @@ src/lib/actions/         server actions (auth, booking, posts, review, chat)
 src/components/          shell/ home/ looks/ booking/ chat/ ui/
 src/app/                 routes
 ```
+
+## Deploying to Vercel
+
+The app targets **Neon Postgres** and **Vercel Blob** in production. Local SQLite and
+`public/uploads` were removed because Vercel's serverless filesystem is ephemeral and read-only —
+writes there are lost on every deploy and are not shared between instances.
+
+Note that first-party Vercel Postgres no longer exists — it was sunset in favour of Marketplace
+providers. Neon is its successor and is what the dashboard offers under *Marketplace Database
+Providers*.
+
+```bash
+vercel login
+vercel link          # run from web/, which is the git root
+```
+
+Provision both stores from the Vercel dashboard (Storage tab), attaching each to this project. They
+are created one at a time:
+
+- **Blob** (first-party) — sets `BLOB_READ_WRITE_TOKEN`
+- **Neon** (under *Marketplace Database Providers*) — sets `DATABASE_URL` (pooled) and
+  `DATABASE_URL_UNPOOLED` (direct)
+
+`schema.prisma` uses the pooled URL for queries and the unpooled one as `directUrl`, because
+`prisma db push` issues DDL that can hang behind Neon's connection pooler. If your Neon integration
+names the direct variable something else (e.g. `POSTGRES_URL_NON_POOLING`), update `directUrl` to
+match — check with `vercel env ls` after provisioning.
+
+Then add the one secret Vercel cannot generate:
+
+```bash
+vercel env add AUTH_SECRET production
+```
+
+Use a long random string (`openssl rand -base64 32`). Do not reuse the dev placeholder — it is
+committed to this README's sibling `.env` and signs every session cookie.
+
+Pull the real values down so local dev talks to the same stores:
+
+```bash
+vercel env pull .env.local
+```
+
+Deploy. `vercel-build` runs `prisma db push` first, so the schema is created on the first deploy:
+
+```bash
+vercel deploy --prod
+```
+
+Finally seed the six packages and demo accounts once, against the production database:
+
+```bash
+npm run db:seed
+```
+
+(`.env.local` supplies `DATABASE_URL`, so this runs locally but writes to Vercel Postgres.)
+
+### Notes
+
+- `vercel.json` pins `"framework": "nextjs"`. Without it, a project created with the **Other** preset
+  builds successfully but then serves `public/` as a static site — every route 404s while the build
+  log looks perfectly healthy. Pinning it in the repo keeps that out of dashboard state.
+- `prisma db push` is used rather than `migrate deploy` — fine for this project, but it applies schema
+  changes without a migration history. Switch to migrations before there is production data worth
+  keeping. The build script deliberately omits `--accept-data-loss`, so a destructive schema change
+  fails the build instead of silently dropping columns.
+- `postinstall` runs `prisma generate` so the client matches the schema on every Vercel build.
+- Prisma's CLI reads `.env`, not `.env.local`. `db:push` and `db:seed` therefore go through
+  `dotenv -e .env.local` so they hit the real Neon database rather than the placeholder.
+- `BLOB_READ_WRITE_TOKEN` is scoped to Production and Preview only, so **image uploads do not work in
+  local dev** until you add it to the Development environment as well.
