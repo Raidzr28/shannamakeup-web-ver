@@ -79,7 +79,7 @@ export function DesktopHome({
           </p>
           <div className="flex gap-3 mt-7">
             <Link
-              href="/book/akad"
+              href="/book"
               className="h-[54px] px-6 rounded-2xl text-white text-[15px] font-bold flex items-center glass-fill"
             >
               {l(lang, "Check a date", "Cek tanggal")}
@@ -195,7 +195,7 @@ export function DesktopHome({
             </div>
             <div className="flex gap-3 mt-6.5">
               <Link
-                href="/book/akad"
+                href="/book"
                 className="h-[50px] px-6 rounded-2xl text-green text-[14.5px] font-bold flex items-center glass-light"
               >
                 {l(lang, "Check a date", "Cek tanggal")}

@@ -65,7 +65,7 @@ export function MobileHome({
               )}
             </div>
             <Link
-              href="/book/akad"
+              href="/book"
               className="mt-3.5 inline-flex h-[38px] px-4 rounded-xl text-white text-[13px] font-bold items-center bg-gradient-to-br from-white/34 to-white/16 backdrop-blur-md border border-white/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]"
             >
               {l(lang, "Take this slot", "Ambil slot ini")}

@@ -10,14 +10,17 @@ export function LookCard({
   look,
   lang,
   size = "sm",
+  href,
 }: {
   look: LookDTO;
   lang: Lang;
   size?: "sm" | "lg";
+  /** Defaults to the look's detail page; the booking chooser points straight at the wizard. */
+  href?: string;
 }) {
   return (
     <Link
-      href={`/l/${look.id}`}
+      href={href ?? `/l/${look.id}`}
       className={clsx("glass-card block", size === "sm" ? "p-2.5 pb-3.5" : "p-3")}
     >
       <Media

@@ -31,7 +31,7 @@ export function MobileTabBar({ lang }: { lang: Lang }) {
     },
     {
       name: l(lang, "Book", "Pesan"),
-      href: "/book/akad",
+      href: "/book",
       Icon: BookIcon,
       match: (p: string) => p.startsWith("/book"),
     },

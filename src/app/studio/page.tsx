@@ -52,7 +52,7 @@ export default async function StudioPage() {
 
       <div className="flex gap-3 mt-7">
         <Link
-          href="/book/akad"
+          href="/book"
           className="h-[52px] px-6 rounded-2xl text-white text-[15px] font-bold flex items-center glass-fill"
         >
           {l(lang, "Check a date", "Cek tanggal")}

@@ -52,7 +52,7 @@ export function DesktopNav({
         {session ? session.name.split(" ")[0] : l(lang, "Sign in", "Masuk")}
       </Link>
       <Link
-        href="/book/akad"
+        href="/book"
         className="h-[42px] px-5 rounded-2xl text-sm font-bold cursor-pointer text-white glass-fill flex items-center"
       >
         {l(lang, "Book a date", "Pesan tanggal")}
