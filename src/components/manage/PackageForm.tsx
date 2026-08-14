@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ImagePicker } from "./ImagePicker";
 import { Input, Textarea, Label } from "@/components/ui/Field";
 import type { Lang } from "@/lib/i18n";
 import { l } from "@/lib/i18n";
@@ -135,17 +136,11 @@ export function PackageForm({
         <p className="text-xs leading-snug text-muted-3">
           {l(
             lang,
-            "Paste the URL of an image already uploaded to the Looks feed. Leave blank for a placeholder.",
-            "Tempel URL gambar yang sudah diunggah ke feed Looks. Kosongkan untuk placeholder."
+            "Drag a photo in or choose a file. Leave empty for a placeholder tile.",
+            "Taruh foto atau pilih file. Kosongkan untuk memakai placeholder."
           )}
         </p>
-        <Label label={l(lang, "Image URL", "URL gambar")}>
-          <Input
-            name="heroImage"
-            defaultValue={look?.heroImage ?? ""}
-            placeholder="https://…blob.vercel-storage.com/…"
-          />
-        </Label>
+        <ImagePicker name="heroImage" lang={lang} defaultUrl={look?.heroImage} />
       </div>
 
       <div className="flex gap-3">
