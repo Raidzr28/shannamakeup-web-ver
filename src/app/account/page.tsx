@@ -146,12 +146,12 @@ export default async function AccountPage() {
   return (
     <>
       <MobileOnly>
-      <div className="ambient-glow min-h-full flex flex-col pt-[58px]">
+      <div className="ambient-glow min-h-dvh flex flex-col pt-[58px]">
         <div className="px-5 pt-2 text-center font-bold text-[15.5px]">
           {l(lang, "Profile", "Profil")}
         </div>
         <div className="px-5 pt-5">{body}</div>
-        <div className="h-6" />
+        <div className="flex-1 min-h-6" />
         <MobileTabBar lang={lang} />
       </div>
       </MobileOnly>

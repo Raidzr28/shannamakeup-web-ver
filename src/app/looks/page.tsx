@@ -39,7 +39,7 @@ export default async function LooksPage() {
   return (
     <>
       <MobileOnly>
-      <div className="ambient-glow min-h-full flex flex-col pt-[58px] relative">
+      <div className="ambient-glow min-h-dvh flex flex-col pt-[58px] relative">
         <div className="px-5 pt-2 pb-3 flex items-center gap-3">
           <div className="flex-1">
             <div className="font-extrabold text-[22px] tracking-tight">
@@ -71,7 +71,7 @@ export default async function LooksPage() {
           ))}
         </div>
 
-        <div className="h-6" />
+        <div className="flex-1 min-h-6" />
         <MobileTabBar lang={lang} />
       </div>
       </MobileOnly>

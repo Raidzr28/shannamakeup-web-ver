@@ -194,8 +194,9 @@ export default async function OrderPage({
   return (
     <>
       <MobileOnly>
-      <div className="ambient-glow min-h-full flex flex-col pt-[58px]">
+      <div className="ambient-glow min-h-dvh flex flex-col pt-[58px]">
         <div className="px-5 pt-6 pb-10">{body}</div>
+        <div className="flex-1 min-h-6" />
         <MobileTabBar lang={lang} />
       </div>
       </MobileOnly>

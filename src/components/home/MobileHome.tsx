@@ -21,7 +21,7 @@ export function MobileHome({
   const opening = nextOpening();
 
   return (
-    <div className="ambient-glow min-h-full flex flex-col pt-[58px]">
+    <div className="ambient-glow min-h-dvh flex flex-col pt-[58px]">
       <div className="px-5 pt-2 pb-1 flex items-center gap-3">
         <div className="flex-1">
           <div className="text-[12.5px] text-muted-2">
@@ -98,7 +98,7 @@ export function MobileHome({
         ))}
       </div>
 
-      <div className="h-6" />
+      <div className="flex-1 min-h-6" />
       <MobileTabBar lang={lang} />
     </div>
   );

@@ -26,7 +26,7 @@ export default async function ComposePage() {
   return (
     <>
       <MobileOnly>
-      <div className="ambient-glow min-h-full flex flex-col pt-[58px]">
+      <div className="ambient-glow min-h-dvh flex flex-col pt-[58px]">
         <div className="px-5 pt-2 flex items-center gap-3">
           <Link
             href="/looks"

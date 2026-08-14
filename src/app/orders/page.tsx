@@ -96,12 +96,12 @@ export default async function OrdersPage() {
   return (
     <>
       <MobileOnly>
-      <div className="ambient-glow min-h-full flex flex-col pt-[58px]">
+      <div className="ambient-glow min-h-dvh flex flex-col pt-[58px]">
         <div className="px-5 pt-2 text-center font-bold text-[15.5px]">
           {l(lang, "My orders", "Pesanan saya")}
         </div>
         <div className="px-5 pt-4.5">{list}</div>
-        <div className="h-6" />
+        <div className="flex-1 min-h-6" />
         <MobileTabBar lang={lang} />
       </div>
       </MobileOnly>

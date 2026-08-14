@@ -12,7 +12,7 @@ export function AuthShell({
 }) {
   return (
     <>
-      <div className="lg:hidden ambient-glow min-h-full flex flex-col pt-[58px] w-full max-w-[560px] mx-auto">
+      <div className="lg:hidden ambient-glow min-h-dvh flex flex-col pt-[58px] w-full max-w-[560px] mx-auto">
         <div className="px-5 pt-2 flex items-center gap-3">
           <Link
             href={back}

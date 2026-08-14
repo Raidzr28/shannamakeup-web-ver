@@ -70,7 +70,7 @@ export default async function StudioPage() {
   return (
     <>
       <MobileOnly>
-      <div className="ambient-glow min-h-full flex flex-col pt-[58px]">
+      <div className="ambient-glow min-h-dvh flex flex-col pt-[58px]">
         <div className="px-5 pt-2">
           <h1 className="text-[28px] font-extrabold tracking-tight">
             {l(lang, "The studio", "Studio")}
@@ -86,6 +86,7 @@ export default async function StudioPage() {
           />
         </div>
         <div className="px-5 pt-5 pb-8">{body}</div>
+        <div className="flex-1 min-h-6" />
         <MobileTabBar lang={lang} />
       </div>
       </MobileOnly>
