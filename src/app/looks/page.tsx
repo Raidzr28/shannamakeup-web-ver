@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MobileTabBar } from "@/components/shell/MobileTabBar";
+import { TabBar } from "@/components/shell/TabBar";
 import { StoryBar } from "@/components/looks/StoryBar";
 import { PostCard } from "@/components/looks/PostCard";
 import { MobileOnly, DesktopOnly } from "@/components/shell/Viewports";
@@ -72,7 +72,7 @@ export default async function LooksPage() {
         </div>
 
         <div className="flex-1 min-h-6" />
-        <MobileTabBar lang={lang} />
+        <TabBar lang={lang} />
       </div>
       </MobileOnly>
 

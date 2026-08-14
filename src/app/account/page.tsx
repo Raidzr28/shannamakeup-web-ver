@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Media } from "@/components/ui/Media";
-import { MobileTabBar } from "@/components/shell/MobileTabBar";
+import { TabBar } from "@/components/shell/TabBar";
 import { LanguageSwitcher } from "@/components/shell/LanguageSwitcher";
 import { MobileOnly, DesktopOnly } from "@/components/shell/Viewports";
 import { getLanguage } from "@/lib/language";
@@ -99,6 +99,15 @@ export default async function AccountPage() {
         <>
           <div className="glass-card p-1.5">
             {[
+              ...(user.role === "ARTIST"
+                ? [
+                    {
+                      name: l(lang, "Manage packages", "Kelola paket"),
+                      meta: "",
+                      href: "/manage",
+                    },
+                  ]
+                : []),
               { name: l(lang, "My orders", "Pesanan saya"), meta: String(orderCount), href: "/orders" },
               { name: l(lang, "My posts", "Unggahanku"), meta: String(postCount), href: "/looks" },
               { name: l(lang, "Chat with Shana", "Chat dengan Shana"), meta: "", href: "/chat" },
@@ -152,7 +161,7 @@ export default async function AccountPage() {
         </div>
         <div className="px-5 pt-5">{body}</div>
         <div className="flex-1 min-h-6" />
-        <MobileTabBar lang={lang} />
+        <TabBar lang={lang} />
       </div>
       </MobileOnly>
 

@@ -63,6 +63,18 @@ export function OrdersIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+/** Sliders — the artist's package management tab. */
+export function ManageIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <Icon {...props}>
+      <path d="M4 7h10M18 7h2M4 12h3M11 12h9M4 17h8M16 17h4" />
+      <circle cx="16" cy="7" r="2" />
+      <circle cx="9" cy="12" r="2" />
+      <circle cx="14" cy="17" r="2" />
+    </Icon>
+  );
+}
+
 export function ProfileIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <Icon {...props}>

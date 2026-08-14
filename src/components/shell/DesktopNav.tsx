@@ -17,10 +17,17 @@ export function DesktopNav({
 }) {
   const pathname = usePathname();
 
+  const isArtist = session?.role === "ARTIST";
+
   const links = [
     { name: l(lang, "Work", "Karya"), href: "/" },
     { name: l(lang, "Looks", "Looks"), href: "/looks" },
     { name: l(lang, "Studio", "Studio"), href: "/studio" },
+    // Only the artist sees the management area, and it replaces the booking CTA
+    // below rather than sitting alongside it.
+    ...(isArtist
+      ? [{ name: l(lang, "Packages", "Paket"), href: "/manage" }]
+      : []),
   ];
 
   return (
@@ -52,10 +59,12 @@ export function DesktopNav({
         {session ? session.name.split(" ")[0] : l(lang, "Sign in", "Masuk")}
       </Link>
       <Link
-        href="/book"
+        href={isArtist ? "/manage/new" : "/book"}
         className="h-[42px] px-5 rounded-2xl text-sm font-bold cursor-pointer text-white glass-fill flex items-center"
       >
-        {l(lang, "Book a date", "Pesan tanggal")}
+        {isArtist
+          ? l(lang, "New package", "Paket baru")
+          : l(lang, "Book a date", "Pesan tanggal")}
       </Link>
     </div>
   );

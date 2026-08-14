@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Media } from "@/components/ui/Media";
-import { MobileTabBar } from "@/components/shell/MobileTabBar";
+import { TabBar } from "@/components/shell/TabBar";
 import { MobileOnly, DesktopOnly } from "@/components/shell/Viewports";
 import { getLanguage } from "@/lib/language";
 import { getCurrentUser } from "@/lib/auth";
@@ -197,7 +197,7 @@ export default async function OrderPage({
       <div className="ambient-glow min-h-dvh flex flex-col pt-[58px]">
         <div className="px-5 pt-6 pb-10">{body}</div>
         <div className="flex-1 min-h-6" />
-        <MobileTabBar lang={lang} />
+        <TabBar lang={lang} />
       </div>
       </MobileOnly>
 

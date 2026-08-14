@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Media } from "@/components/ui/Media";
-import { MobileTabBar } from "@/components/shell/MobileTabBar";
+import { TabBar } from "@/components/shell/TabBar";
 import { MobileOnly, DesktopOnly } from "@/components/shell/Viewports";
 import { getLanguage } from "@/lib/language";
 import { getLook } from "@/lib/looks";
@@ -73,7 +73,7 @@ export default async function LookPage({
             {l(lang, "Book this look", "Pesan tampilan ini")} · {idr(look.priceIdr)}
           </Link>
         </div>
-        <MobileTabBar lang={lang} />
+        <TabBar lang={lang} />
       </div>
       </MobileOnly>
 

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Media } from "@/components/ui/Media";
 import { ChipLink } from "@/components/ui/Option";
-import { MobileTabBar } from "@/components/shell/MobileTabBar";
+import { TabBar } from "@/components/shell/TabBar";
 import { LookCard } from "./LookCard";
 import type { Lang } from "@/lib/i18n";
 import { l } from "@/lib/i18n";
@@ -99,7 +99,7 @@ export function MobileHome({
       </div>
 
       <div className="flex-1 min-h-6" />
-      <MobileTabBar lang={lang} />
+      <TabBar lang={lang} />
     </div>
   );
 }

@@ -9,12 +9,35 @@ import {
   HomeIcon,
   LooksIcon,
   BookIcon,
+  ManageIcon,
   OrdersIcon,
   ProfileIcon,
 } from "@/components/ui/Icons";
 
-export function MobileTabBar({ lang }: { lang: Lang }) {
+export function MobileTabBar({
+  lang,
+  isArtist = false,
+}: {
+  lang: Lang;
+  isArtist?: boolean;
+}) {
   const pathname = usePathname();
+
+  // Shana books nobody but herself, so the artist gets package management in
+  // the slot a client uses to book.
+  const middleTab = isArtist
+    ? {
+        name: l(lang, "Manage", "Kelola"),
+        href: "/manage",
+        Icon: ManageIcon,
+        match: (p: string) => p.startsWith("/manage"),
+      }
+    : {
+        name: l(lang, "Book", "Pesan"),
+        href: "/book",
+        Icon: BookIcon,
+        match: (p: string) => p.startsWith("/book"),
+      };
 
   const tabs = [
     {
@@ -29,12 +52,7 @@ export function MobileTabBar({ lang }: { lang: Lang }) {
       Icon: LooksIcon,
       match: (p: string) => p.startsWith("/looks"),
     },
-    {
-      name: l(lang, "Book", "Pesan"),
-      href: "/book",
-      Icon: BookIcon,
-      match: (p: string) => p.startsWith("/book"),
-    },
+    middleTab,
     {
       name: l(lang, "Orders", "Pesanan"),
       href: "/orders",

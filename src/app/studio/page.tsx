@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Media } from "@/components/ui/Media";
-import { MobileTabBar } from "@/components/shell/MobileTabBar";
+import { TabBar } from "@/components/shell/TabBar";
 import { MobileOnly, DesktopOnly } from "@/components/shell/Viewports";
 import { getLanguage } from "@/lib/language";
 import { l } from "@/lib/i18n";
@@ -87,7 +87,7 @@ export default async function StudioPage() {
         </div>
         <div className="px-5 pt-5 pb-8">{body}</div>
         <div className="flex-1 min-h-6" />
-        <MobileTabBar lang={lang} />
+        <TabBar lang={lang} />
       </div>
       </MobileOnly>
 

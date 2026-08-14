@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Media } from "@/components/ui/Media";
-import { MobileTabBar } from "@/components/shell/MobileTabBar";
+import { TabBar } from "@/components/shell/TabBar";
 import { MobileOnly, DesktopOnly } from "@/components/shell/Viewports";
 import { LookCard } from "@/components/home/LookCard";
 import { getLanguage } from "@/lib/language";
@@ -59,7 +59,7 @@ export default async function BookIndexPage() {
           </div>
 
           <div className="flex-1 min-h-6" />
-          <MobileTabBar lang={lang} />
+          <TabBar lang={lang} />
         </div>
       </MobileOnly>
 
