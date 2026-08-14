@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { reserveUsername } from "@/lib/user-identity";
 import {
   clearSessionCookie,
   createSessionCookie,
@@ -82,8 +83,11 @@ export async function registerAction(formData: FormData) {
   }
 
   const passwordHash = await hashPassword(password);
+  // Assigned rather than asked for: the register form stays two fields, and the
+  // handle is editable straight away under /account/edit.
+  const username = await reserveUsername(name || email.split("@")[0]);
   const user = await prisma.user.create({
-    data: { name, email, passwordHash, role: "CLIENT" },
+    data: { name, email, passwordHash, role: "CLIENT", username },
   });
 
   await createSessionCookie({

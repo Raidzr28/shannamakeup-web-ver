@@ -11,6 +11,9 @@ const EXT_BY_MIME: Record<string, string> = {
   "image/png": "png",
   "image/webp": "webp",
 };
+// Allowlisted rather than taken from the request, so a caller cannot steer the
+// write anywhere it likes inside the store.
+const FOLDERS = new Set(["posts", "avatars"]);
 
 /** Receives an already-compressed image and stores it in Blob.
  *
@@ -46,9 +49,12 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 
+  const requested = String(form.get("folder") ?? "posts");
+  const folder = FOLDERS.has(requested) ? requested : "posts";
+
   try {
     const blob = await put(
-      `posts/${randomUUID()}.${EXT_BY_MIME[file.type]}`,
+      `${folder}/${randomUUID()}.${EXT_BY_MIME[file.type]}`,
       file,
       { access: "public", addRandomSuffix: false }
     );

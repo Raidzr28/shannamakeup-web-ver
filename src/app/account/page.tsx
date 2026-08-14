@@ -44,6 +44,9 @@ export default async function AccountPage() {
           <span className="block font-extrabold text-lg tracking-tight">
             {user?.name ?? l(lang, "Guest", "Tamu")}
           </span>
+          {user?.username && (
+            <span className="block text-[12px] text-muted-3 mt-0.5">@{user.username}</span>
+          )}
           <span className="flex items-center gap-2 mt-1.5">
             <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-tint text-maroon">
               {user
@@ -58,6 +61,26 @@ export default async function AccountPage() {
           </span>
         </span>
       </div>
+
+      {user && (user.bio || user.address || user.city || user.phone) && (
+        <div className="glass-card p-[18px] flex flex-col gap-2.5">
+          {user.bio && (
+            <p className="m-0 text-[13px] leading-relaxed text-[#4a3b32]">{user.bio}</p>
+          )}
+          {(user.address || user.city) && (
+            <div className="flex gap-2 text-[12.5px] text-muted-3">
+              <span>📍</span>
+              <span>{[user.address, user.city].filter(Boolean).join(" · ")}</span>
+            </div>
+          )}
+          {user.phone && (
+            <div className="flex gap-2 text-[12.5px] text-muted-3">
+              <span>☎</span>
+              <span>{user.phone}</span>
+            </div>
+          )}
+        </div>
+      )}
 
       {!user && (
         <div className="glass-card p-[18px]">
@@ -99,6 +122,7 @@ export default async function AccountPage() {
         <>
           <div className="glass-card p-1.5">
             {[
+              { name: l(lang, "Edit profile", "Ubah profil"), meta: "", href: "/account/edit" },
               ...(user.role === "ARTIST"
                 ? [
                     {

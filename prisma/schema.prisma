@@ -24,8 +24,23 @@ model User {
   avatarUrl    String?
   createdAt    DateTime @default(now())
 
-  bookings Booking[]
-  posts    Post[]
+  // The public handle shown as @username on posts and stories. Optional in the
+  // schema so adding it to a populated table needs no downtime, but every path
+  // that creates a user assigns one, and existing rows were backfilled.
+  username String? @unique
+  bio      String?
+
+  // Where Shana travels to. Saved once here, then offered as the default in the
+  // booking wizard rather than retyped for every booking.
+  phone   String?
+  address String?
+  city    String?
+
+  bookings   Booking[]
+  posts      Post[]
+  stories    Story[]
+  storyViews StoryView[]
+
   likes    Like[]
   saves    Save[]
   reviews  Review[]
@@ -92,6 +107,35 @@ model Post {
 
   likes Like[]
   saves Save[]
+}
+
+model Story {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  caption   String
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  // Every read filters on this, so a story disappears on its own 24h after it
+  // was posted even if nothing ever deletes the row.
+  expiresAt DateTime
+
+  views StoryView[]
+
+  @@index([expiresAt])
+}
+
+model StoryView {
+  id      String @id @default(cuid())
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
+  storyId String
+  // Cascade matters here: stories are deleted routinely, both by their owner and
+  // by the expiry sweep, and a view row would otherwise block the delete.
+  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, storyId])
 }
 
 model Like {

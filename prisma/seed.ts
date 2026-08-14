@@ -168,24 +168,35 @@ async function main() {
   const artistPass = await bcrypt.hash("shana2026", 10);
   const artist = await prisma.user.upsert({
     where: { email: "shana@shanamakeup.id" },
-    update: {},
+    // Repeated in update so re-seeding an existing database also fills these in,
+    // not just a fresh one.
+    update: {
+      username: "shana.mua",
+      bio: "Bridal and editorial makeup, Jakarta. Skin first, structure second, colour last.",
+      city: "Jakarta",
+    },
     create: {
       name: "Shana Prameswari",
       email: "shana@shanamakeup.id",
       passwordHash: artistPass,
       role: "ARTIST",
+      username: "shana.mua",
+      bio: "Bridal and editorial makeup, Jakarta. Skin first, structure second, colour last.",
+      city: "Jakarta",
     },
   });
 
   const clientPass = await bcrypt.hash("aruna2026", 10);
   const client = await prisma.user.upsert({
     where: { email: "aruna@studio.co" },
-    update: {},
+    update: { username: "aruna.p", city: "Jakarta" },
     create: {
       name: "Aruna Prameswari",
       email: "aruna@studio.co",
       passwordHash: clientPass,
       role: "CLIENT",
+      username: "aruna.p",
+      city: "Jakarta",
     },
   });
 

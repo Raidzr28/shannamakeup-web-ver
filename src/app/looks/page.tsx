@@ -5,13 +5,15 @@ import { PostCard } from "@/components/looks/PostCard";
 import { MobileOnly, DesktopOnly } from "@/components/shell/Viewports";
 import { getLanguage } from "@/lib/language";
 import { getCurrentUser } from "@/lib/auth";
-import { getFeed, buildStories } from "@/lib/feed";
+import { getFeed, getStories } from "@/lib/feed";
 import { l } from "@/lib/i18n";
 
 export default async function LooksPage() {
   const [lang, user] = await Promise.all([getLanguage(), getCurrentUser()]);
-  const posts = await getFeed(lang, user?.id ?? null);
-  const stories = buildStories(lang);
+  const [posts, stories] = await Promise.all([
+    getFeed(lang, user?.id ?? null),
+    getStories(lang, user?.id ?? null),
+  ]);
 
   const composer = (
     <div className="glass-card p-3 flex gap-3 items-center">
@@ -61,7 +63,7 @@ export default async function LooksPage() {
           </Link>
         </div>
 
-        <StoryBar lang={lang} stories={stories} />
+        <StoryBar lang={lang} stories={stories} canPost={Boolean(user)} />
 
         <div className="px-5 pb-4">{composer}</div>
 
@@ -97,6 +99,10 @@ export default async function LooksPage() {
         >
           {l(lang, "Share a look", "Bagikan tampilan")}
         </Link>
+      </div>
+
+      <div className="-mx-5 mb-6">
+        <StoryBar lang={lang} stories={stories} canPost={Boolean(user)} />
       </div>
 
       <div className="grid grid-cols-2 xl:grid-cols-3 gap-5 items-start pb-24">

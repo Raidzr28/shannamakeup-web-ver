@@ -92,10 +92,22 @@ the Prisma CLI reads `.env` and would otherwise talk to the placeholder in it.
   confirmation page with a status timeline.
 - **Feed** — posts, likes and saves persist per user. Composing a post uploads a real photo to Vercel
   Blob and tags a bookable package, so any viewer can book the same look from the post.
+- **Stories** — signed-in users post a photo + caption to the story rail. Each story carries an
+  `expiresAt` 24 hours out and every read filters on it, so a story vanishes on its own even if no
+  row is ever deleted. The owner can edit the caption or delete the story at any point inside that
+  window; both are scoped by owner id server-side, so nobody can touch someone else's.
+  Opening a story records a `StoryView`, and watched stories shift to the right of the rail on the
+  next load so it always opens on something new. The rail deliberately does not re-sort while the
+  viewer is open — that would slide stories out from under the reader mid-watch.
 - **Package management** — the artist gets `/manage`, a CRUD area for the bookable catalogue with a
   drag-and-drop photo picker. Deleting is refused while bookings reference a package. Clients and
   guests are redirected away; the role is re-checked in every page *and* every action rather than
   trusted from the rendered UI.
+- **Profile** — `/account/edit` covers the photo (uploaded to Blob under `avatars/`), a unique
+  `@username`, display name, bio, phone, address and city. Password changes require the current
+  password. The handle is assigned automatically at registration and is what the feed and story
+  bylines render, replacing the hard-coded `shana.mua`. The saved phone and city become the defaults
+  in the booking wizard, so an address is typed once rather than per booking.
 - **Chat** — keyword-matched assistant replies (price / travel / trial / hold), persisted per user,
   mirroring the prototype's `botReply` logic.
 - **Language** — every string ships EN + ID; the switcher offers English, Bahasa Indonesia, or the
@@ -110,14 +122,15 @@ before this could take live bookings.
 ## Layout
 
 ```
-prisma/schema.prisma     User, Look, Booking, Post, Like, Save, Review, Message
+prisma/schema.prisma     User, Look, Booking, Post, Story, StoryView, Like, Save, Review, Message
 prisma/seed.ts           six packages, two demo users, sample posts and a booking
+prisma/backfill-usernames.ts  one-off: gives pre-username accounts a handle (safe to re-run)
 src/app/globals.css      colour tokens and the frosted-glass utilities
 src/app/api/upload/      Route Handler that stores a compressed photo in Blob
 src/app/manage/          artist-only package CRUD
 src/components/shell/Viewports.tsx   the mobile/desktop breakpoint switch
 src/lib/                 auth, language, looks, feed, booking maths, image compression
-src/lib/actions/         server actions (auth, booking, posts, packages, review, chat)
+src/lib/actions/         server actions (auth, profile, booking, posts, stories, packages, review, chat)
 src/components/          shell/ home/ looks/ booking/ manage/ chat/ ui/
 src/app/                 routes
 ```
@@ -128,7 +141,7 @@ src/app/                 routes
 |---|---|
 | `/`, `/looks`, `/l/[id]`, `/studio` | anyone |
 | `/book`, `/book/[id]` | anyone browses; sign-in required to confirm |
-| `/looks/compose`, `/orders`, `/chat` | signed in |
+| `/looks/compose`, `/looks/story`, `/account/edit`, `/orders`, `/chat` | signed in |
 | `/manage`, `/manage/new`, `/manage/[id]` | artist only |
 
 ## Deploying to Vercel

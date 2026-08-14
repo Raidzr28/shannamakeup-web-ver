@@ -2,6 +2,13 @@ import { prisma } from "./prisma";
 import type { Lang } from "./i18n";
 import { l } from "./i18n";
 import type { FeedPost } from "@/components/looks/PostCard";
+import type { Story } from "@/components/looks/StoryBar";
+
+/** The public handle for a byline. Falls back to the display name only for rows
+ * that predate the username column and somehow escaped the backfill. */
+function handleFor(user: { username: string | null; name: string }) {
+  return user.username ?? user.name;
+}
 
 export async function getFeed(
   lang: Lang,
@@ -19,7 +26,7 @@ export async function getFeed(
 
   return rows.map((post) => ({
     id: post.id,
-    who: post.user.role === "ARTIST" ? "shana.mua" : post.user.name,
+    who: handleFor(post.user),
     avatarUrl: post.user.avatarUrl,
     badge:
       post.user.id === viewerId
@@ -40,58 +47,51 @@ export async function getFeed(
   }));
 }
 
-export function buildStories(lang: Lang) {
+function agoLabel(lang: Lang, createdAt: Date, now: number) {
+  const minutes = Math.floor((now - createdAt.getTime()) / 60_000);
+  if (minutes < 1) return l(lang, "just now", "baru saja");
+  if (minutes < 60) return l(lang, `${minutes}m ago`, `${minutes} mnt lalu`);
+  const hours = Math.floor(minutes / 60);
+  return l(lang, `${hours}h ago`, `${hours} jam lalu`);
+}
+
+function leftLabel(lang: Lang, expiresAt: Date, now: number) {
+  const minutes = Math.max(0, Math.ceil((expiresAt.getTime() - now) / 60_000));
+  if (minutes < 60) return l(lang, `${minutes}m left`, `sisa ${minutes} mnt`);
+  const hours = Math.floor(minutes / 60);
+  return l(lang, `${hours}h left`, `sisa ${hours} jam`);
+}
+
+export async function getStories(
+  lang: Lang,
+  viewerId: string | null
+): Promise<Story[]> {
+  const now = Date.now();
+  const rows = await prisma.story.findMany({
+    where: { expiresAt: { gt: new Date(now) } },
+    orderBy: { createdAt: "desc" },
+    include: {
+      user: true,
+      views: viewerId ? { where: { userId: viewerId }, select: { id: true } } : false,
+    },
+  });
+
+  const stories = rows.map((story) => ({
+    id: story.id,
+    name: handleFor(story.user),
+    avatarUrl: story.user.avatarUrl,
+    time: agoLabel(lang, story.createdAt, now),
+    expiresIn: leftLabel(lang, story.expiresAt, now),
+    caption: story.caption,
+    imageUrl: story.imageUrl,
+    mine: story.userId === viewerId,
+    seen: viewerId ? (story.views as { id: string }[]).length > 0 : false,
+  }));
+
+  // Anything already watched shifts to the right, so the rail always opens on
+  // something new. Each group stays newest-first within itself.
   return [
-    {
-      id: "shana",
-      name: "shana.mua",
-      time: l(lang, "2h ago", "2 jam lalu"),
-      caption: l(
-        lang,
-        "Base test under 4pm daylight — no flash, no filter.",
-        "Uji base di cahaya jam 4 — tanpa flash, tanpa filter."
-      ),
-      imageUrl: null,
-    },
-    {
-      id: "aruna",
-      name: "aruna.p",
-      time: l(lang, "5h ago", "5 jam lalu"),
-      caption: l(
-        lang,
-        "Eleven hours in and the base has not moved.",
-        "Sebelas jam dan base-nya belum bergerak."
-      ),
-      imageUrl: null,
-    },
-    {
-      id: "studio",
-      name: "kemang.studio",
-      time: l(lang, "8h ago", "8 jam lalu"),
-      caption: l(
-        lang,
-        "Chair one, 05:00 call. Kit laid out the night before.",
-        "Kursi satu, panggilan 05:00. Kit disiapkan malam sebelumnya."
-      ),
-      imageUrl: null,
-    },
-    {
-      id: "nadia",
-      name: "nadia.r",
-      time: l(lang, "yesterday", "kemarin"),
-      caption: l(lang, "Sangjit morning, warm tones only.", "Pagi sangjit, hanya nada hangat."),
-      imageUrl: null,
-    },
-    {
-      id: "lens",
-      name: "rifqi.lens",
-      time: l(lang, "yesterday", "kemarin"),
-      caption: l(
-        lang,
-        "Straight off the back of the camera.",
-        "Langsung dari belakang kamera."
-      ),
-      imageUrl: null,
-    },
+    ...stories.filter((story) => !story.seen),
+    ...stories.filter((story) => story.seen),
   ];
 }
