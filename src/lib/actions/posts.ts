@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { saveUpload } from "@/lib/upload";
 
 function gate(reasonEn: string, next: string): never {
   redirect(
@@ -61,8 +60,10 @@ export async function createPostAction(formData: FormData) {
   const lookId = String(formData.get("lookId") ?? "") || null;
   const credit = formData.get("credit") === "on";
   const extras = formData.getAll("extras").map(String);
-  const photo = formData.get("photo");
-  const imageUrl = photo instanceof File ? await saveUpload(photo) : null;
+  // The browser uploads to Blob first and sends only the resulting URL, so the
+  // photo bytes never pass through this action's 1 MB body budget.
+  const submitted = String(formData.get("imageUrl") ?? "").trim();
+  const imageUrl = submitted.startsWith("https://") ? submitted : null;
 
   await prisma.post.create({
     data: {

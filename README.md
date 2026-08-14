@@ -156,5 +156,11 @@ npm run db:seed
 - `postinstall` runs `prisma generate` so the client matches the schema on every Vercel build.
 - Prisma's CLI reads `.env`, not `.env.local`. `db:push` and `db:seed` therefore go through
   `dotenv -e .env.local` so they hit the real Neon database rather than the placeholder.
-- `BLOB_READ_WRITE_TOKEN` is scoped to Production and Preview only, so **image uploads do not work in
-  local dev** until you add it to the Development environment as well.
+- Photos upload **from the browser straight to Blob storage** via `/api/upload`, which issues a
+  short-lived client token. They deliberately do not travel through the Server Action: Next caps
+  action bodies at 1 MB (Vercel caps request bodies around 4.5 MB) and any phone photo exceeds both.
+  The action receives only the resulting URL.
+- `BLOB_READ_WRITE_TOKEN` is scoped to Production and Preview only, so **image uploads fail in local
+  dev** with "Failed to retrieve the client token". `vercel env pull` will not fix this — the value is
+  Sensitive and comes back redacted. Attach the Blob store to the Development environment in the
+  dashboard if you need uploads locally.

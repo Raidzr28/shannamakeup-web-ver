@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
+import { upload } from "@vercel/blob/client";
 import { Input, Textarea, Label } from "@/components/ui/Field";
 import { Radio, Check } from "@/components/ui/Option";
 import { createPostAction } from "@/lib/actions/posts";
@@ -10,6 +11,8 @@ import type { Lang } from "@/lib/i18n";
 import { l, idr } from "@/lib/i18n";
 import type { LookDTO } from "@/lib/looks";
 import { EXTRAS } from "@/lib/static-data";
+
+const MAX_BYTES = 12 * 1024 * 1024;
 
 export function ComposeForm({
   lang,
@@ -22,6 +25,51 @@ export function ComposeForm({
   const [lookId, setLookId] = useState(looks[0]?.id ?? "");
   const [extras, setExtras] = useState<string[]>(["lashes"]);
   const [credit, setCredit] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  /** Send the photo straight to Blob storage, then hand the Server Action just
+   * the URL. Posting the file through the action itself fails at 1 MB, which
+   * is smaller than essentially any phone photo. */
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const photo = data.get("photo");
+
+    setBusy(true);
+    setError(null);
+    try {
+      let imageUrl = "";
+      if (photo instanceof File && photo.size > 0) {
+        if (photo.size > MAX_BYTES) {
+          throw new Error(
+            l(
+              lang,
+              "That photo is larger than 12 MB. Please choose a smaller one.",
+              "Foto itu lebih dari 12 MB. Pilih yang lebih kecil."
+            )
+          );
+        }
+        const blob = await upload(photo.name, photo, {
+          access: "public",
+          handleUploadUrl: "/api/upload",
+        });
+        imageUrl = blob.url;
+      }
+
+      data.delete("photo");
+      data.set("imageUrl", imageUrl);
+      await createPostAction(data);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : l(lang, "Upload failed. Try again.", "Unggahan gagal. Coba lagi.")
+      );
+      setBusy(false);
+    }
+  }
 
   const chosen = looks.find((k) => k.id === lookId) ?? looks[0];
   const addonWord =
@@ -32,7 +80,7 @@ export function ComposeForm({
     : "";
 
   return (
-    <form action={createPostAction} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <input type="hidden" name="lookId" value={lookId} />
       {extras.map((e) => (
         <input key={e} type="hidden" name="extras" value={e} />
@@ -165,11 +213,22 @@ export function ComposeForm({
           <span className="text-xs text-muted-3">{l(lang, "Tagged package", "Paket ditandai")}</span>
           <span className="font-extrabold text-[15px]">{summary}</span>
         </div>
+        {error && (
+          <p
+            role="alert"
+            className="text-[13px] leading-snug text-[#b23a3a] bg-[#f7eeee] border border-[#b23a3a]/25 rounded-2xl px-3.5 py-3"
+          >
+            {error}
+          </p>
+        )}
         <button
           type="submit"
-          className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
+          disabled={busy}
+          className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {l(lang, "Post to Looks", "Unggah ke Looks")}
+          {busy
+            ? l(lang, "Posting…", "Mengunggah…")
+            : l(lang, "Post to Looks", "Unggah ke Looks")}
         </button>
       </div>
     </form>
