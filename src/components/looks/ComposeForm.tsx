@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
-import { upload } from "@vercel/blob/client";
+import { compressImage } from "@/lib/compress-image";
 import { Input, Textarea, Label } from "@/components/ui/Field";
 import { Radio, Check } from "@/components/ui/Option";
 import { createPostAction } from "@/lib/actions/posts";
@@ -28,9 +28,9 @@ export function ComposeForm({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  /** Send the photo straight to Blob storage, then hand the Server Action just
-   * the URL. Posting the file through the action itself fails at 1 MB, which
-   * is smaller than essentially any phone photo. */
+  /** Compress the photo in the browser, hand it to /api/upload, then submit only
+   * the resulting URL. The raw file never goes through the Server Action, which
+   * rejects bodies over 1 MB — smaller than any phone photo. */
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
@@ -51,11 +51,26 @@ export function ComposeForm({
             )
           );
         }
-        const blob = await upload(photo.name, photo, {
-          access: "public",
-          handleUploadUrl: "/api/upload",
+
+        const compressed = await compressImage(photo);
+        const upload = new FormData();
+        upload.set("file", compressed);
+
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: upload,
         });
-        imageUrl = blob.url;
+        const result = (await response.json()) as {
+          url?: string;
+          error?: string;
+        };
+        if (!response.ok || !result.url) {
+          throw new Error(
+            result.error ??
+              l(lang, "Upload failed. Try again.", "Unggahan gagal. Coba lagi.")
+          );
+        }
+        imageUrl = result.url;
       }
 
       data.delete("photo");

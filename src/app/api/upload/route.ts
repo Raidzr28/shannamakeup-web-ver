@@ -1,47 +1,63 @@
-import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
+import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
+import { randomUUID } from "crypto";
 import { getCurrentUser } from "@/lib/auth";
 
-const MAX_BYTES = 12 * 1024 * 1024;
+// The browser downscales before sending, so anything arriving here should be a
+// few hundred KB. The ceiling is a guard, not the expected size.
+const MAX_BYTES = 4 * 1024 * 1024;
+const EXT_BY_MIME: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+};
 
-/** Issues a short-lived token so the browser can upload straight to Blob
- * storage. Routing the bytes through a Server Action instead would cap us at
- * Next's 1 MB body limit (and Vercel's ~4.5 MB request ceiling), which every
- * phone photo exceeds. */
+/** Receives an already-compressed image and stores it in Blob.
+ *
+ * This is a Route Handler rather than a Server Action because actions cap
+ * request bodies at 1 MB. Uploading straight from the browser to Blob with a
+ * client token was tried first, but @vercel/blob 2.8.0 resolves its API host to
+ * https://vercel.com/api/blob, which the browser rejects for CORS. */
 export async function POST(request: Request): Promise<NextResponse> {
-  const body = (await request.json()) as HandleUploadBody;
+  const user = await getCurrentUser();
+  if (!user) {
+    return NextResponse.json(
+      { error: "Sign in to upload a photo." },
+      { status: 401 }
+    );
+  }
+
+  const form = await request.formData();
+  const file = form.get("file");
+
+  if (!(file instanceof File) || file.size === 0) {
+    return NextResponse.json({ error: "No photo received." }, { status: 400 });
+  }
+  if (!(file.type in EXT_BY_MIME)) {
+    return NextResponse.json(
+      { error: "That file type is not supported." },
+      { status: 400 }
+    );
+  }
+  if (file.size > MAX_BYTES) {
+    return NextResponse.json(
+      { error: "That photo is too large." },
+      { status: 413 }
+    );
+  }
 
   try {
-    const result = await handleUpload({
-      body,
-      request,
-      onBeforeGenerateToken: async () => {
-        // The token is what authorises the write, so gate it on a real session.
-        const user = await getCurrentUser();
-        if (!user) throw new Error("Sign in to upload a photo.");
-
-        return {
-          allowedContentTypes: [
-            "image/jpeg",
-            "image/png",
-            "image/webp",
-            "image/gif",
-          ],
-          maximumSizeInBytes: MAX_BYTES,
-          addRandomSuffix: true,
-          tokenPayload: JSON.stringify({ userId: user.id }),
-        };
-      },
-      // No onUploadCompleted: the post row is written by createPostAction when
-      // the form submits. Registering the callback would oblige Blob to reach a
-      // public callbackUrl, which fails outright on localhost.
-    });
-
-    return NextResponse.json(result);
+    const blob = await put(
+      `posts/${randomUUID()}.${EXT_BY_MIME[file.type]}`,
+      file,
+      { access: "public", addRandomSuffix: false }
+    );
+    return NextResponse.json({ url: blob.url });
   } catch (error) {
+    console.error("blob upload failed", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Upload failed." },
-      { status: 400 }
+      { error: "Upload failed. Please try again." },
+      { status: 502 }
     );
   }
 }
