@@ -124,7 +124,7 @@ export default async function OrderPage({
         </div>
         <div className="flex justify-between text-[13.5px] mt-2 text-muted">
           <span>{l(lang, "Deposit paid", "Deposit dibayar")}</span>
-          <span className="font-semibold text-green">{idr(booking.depositIdr)}</span>
+          <span className="font-semibold text-maroon">{idr(booking.depositIdr)}</span>
         </div>
         <div className="flex justify-between text-[13.5px] mt-1 text-muted">
           <span>{l(lang, "Balance on the day", "Sisa di hari-H")}</span>
@@ -142,12 +142,12 @@ export default async function OrderPage({
               <span className="flex flex-col items-center self-stretch">
                 <span
                   className={`w-[22px] h-[22px] rounded-full flex-none flex items-center justify-center text-[11px] font-extrabold text-white border-[1.5px] ${
-                    s.done ? "bg-green border-green" : "bg-[#e6ebe7] border-[#dfe5e0]"
+                    s.done ? "bg-maroon border-maroon" : "bg-[#e6d8c3] border-[#e3d5be]"
                   }`}
                 >
                   {s.done ? "✓" : ""}
                 </span>
-                {!s.last && <span className="flex-1 w-0.5 bg-[#e6ebe7] my-0.5" />}
+                {!s.last && <span className="flex-1 w-0.5 bg-[#e6d8c3] my-0.5" />}
               </span>
               <span className="flex-1 pb-4">
                 <span
@@ -183,7 +183,7 @@ export default async function OrderPage({
         )}
         <Link
           href="/orders"
-          className="w-full h-11 flex items-center justify-center text-green text-[13.5px] font-bold"
+          className="w-full h-11 flex items-center justify-center text-maroon text-[13.5px] font-bold"
         >
           {l(lang, "View all orders", "Lihat semua pesanan")}
         </Link>

@@ -65,7 +65,7 @@ export default async function RegisterPage({
         </button>
       </form>
 
-      <p className="mt-4 text-[11.5px] leading-relaxed text-[#8a998f]">
+      <p className="mt-4 text-[11.5px] leading-relaxed text-[#9c8975]">
         {l(
           lang,
           "By registering you agree to the booking terms and the deposit policy.",
@@ -75,7 +75,7 @@ export default async function RegisterPage({
 
       <Link
         href={`/login?next=${encodeURIComponent(next)}`}
-        className="mt-2 flex items-center justify-center h-11 text-green text-[13.5px] font-bold"
+        className="mt-2 flex items-center justify-center h-11 text-maroon text-[13.5px] font-bold"
       >
         {l(lang, "Already have an account? Sign in", "Sudah punya akun? Masuk")}
       </Link>

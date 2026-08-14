@@ -31,12 +31,12 @@ export default async function ChatPage() {
       >
         ←
       </Link>
-      <span className="w-10 h-10 rounded-2xl bg-green text-white flex items-center justify-center font-extrabold">
+      <span className="w-10 h-10 rounded-2xl bg-gold text-ink flex items-center justify-center font-extrabold">
         S
       </span>
       <span className="flex-1">
         <span className="block font-bold text-[15px]">Shana Studio</span>
-        <span className="block text-[11.5px] text-green mt-0.5">
+        <span className="block text-[11.5px] text-maroon mt-0.5">
           {l(lang, "answers day and night", "menjawab siang malam")}
         </span>
       </span>

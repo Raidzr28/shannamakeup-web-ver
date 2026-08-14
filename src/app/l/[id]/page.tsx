@@ -22,7 +22,7 @@ export default async function LookPage({
   return (
     <>
       <MobileOnly>
-      <div className="min-h-full bg-[#f4f5f3] flex flex-col">
+      <div className="min-h-full bg-[#f7f0e5] flex flex-col">
         <div className="relative h-[344px]">
           <Media src={look.heroImage} alt={title} placeholder={title} shape="rect" className="h-full w-full" />
           <Link
@@ -33,7 +33,7 @@ export default async function LookPage({
           </Link>
         </div>
 
-        <div className="flex-1 bg-[#f4f5f3] rounded-t-[26px] -mt-6.5 relative px-5 pt-5.5">
+        <div className="flex-1 bg-[#f7f0e5] rounded-t-[26px] -mt-6.5 relative px-5 pt-5.5">
           <div className="flex items-start gap-3">
             <div className="flex-1">
               <h1 className="text-[25px] font-extrabold tracking-tight leading-tight">{title}</h1>
@@ -41,7 +41,7 @@ export default async function LookPage({
                 {l(lang, look.category, look.categoryId)} · {look.durationLabel}
               </div>
             </div>
-            <div className="font-extrabold text-xl text-green whitespace-nowrap">
+            <div className="font-extrabold text-xl text-maroon whitespace-nowrap">
               {idr(look.priceIdr)}
             </div>
           </div>
@@ -55,7 +55,7 @@ export default async function LookPage({
           <div className="flex flex-col gap-2 mt-2.5">
             {includes.map((item) => (
               <div key={item} className="flex gap-2.5 items-center glass-card px-3.5 py-3 rounded-2xl">
-                <span className="w-5 h-5 rounded-full bg-tint text-green text-[11px] flex items-center justify-center flex-none font-extrabold">
+                <span className="w-5 h-5 rounded-full bg-tint text-maroon text-[11px] flex items-center justify-center flex-none font-extrabold">
                   ✓
                 </span>
                 <span className="text-[13.5px]">{item}</span>
@@ -95,7 +95,7 @@ export default async function LookPage({
           <div className="text-sm text-muted-2 mt-2">
             {l(lang, look.category, look.categoryId)} · {look.durationLabel}
           </div>
-          <div className="font-extrabold text-[28px] text-green mt-4">{idr(look.priceIdr)}</div>
+          <div className="font-extrabold text-[28px] text-maroon mt-4">{idr(look.priceIdr)}</div>
           <p className="mt-4 text-[14.5px] leading-relaxed text-muted">
             {l(lang, look.blurb, look.blurbId)}
           </p>
@@ -106,7 +106,7 @@ export default async function LookPage({
           <div className="flex flex-col gap-2 mt-3">
             {includes.map((item) => (
               <div key={item} className="flex gap-2.5 items-center">
-                <span className="w-5 h-5 rounded-full bg-tint text-green text-[11px] flex items-center justify-center flex-none font-extrabold">
+                <span className="w-5 h-5 rounded-full bg-tint text-maroon text-[11px] flex items-center justify-center flex-none font-extrabold">
                   ✓
                 </span>
                 <span className="text-sm">{item}</span>

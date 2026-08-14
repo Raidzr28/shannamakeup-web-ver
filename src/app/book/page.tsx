@@ -47,7 +47,7 @@ export default async function BookIndexPage() {
                   <span className="block text-[11.5px] text-muted-3 mt-1">
                     {l(lang, k.category, k.categoryId)} · {k.durationLabel}
                   </span>
-                  <span className="block font-extrabold text-[13.5px] text-green mt-1.5">
+                  <span className="block font-extrabold text-[13.5px] text-maroon mt-1.5">
                     {idr(k.priceIdr)}
                   </span>
                 </span>

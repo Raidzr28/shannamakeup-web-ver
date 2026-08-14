@@ -33,7 +33,7 @@ export default async function ManagePage({
       {params.error && (
         <p
           role="alert"
-          className="text-[13px] leading-snug text-[#b23a3a] bg-[#f7eeee] border border-[#b23a3a]/25 rounded-2xl px-3.5 py-3"
+          className="text-[13px] leading-snug text-[#b23a3a] bg-[#f8e8e2] border border-[#b23a3a]/25 rounded-2xl px-3.5 py-3"
         >
           {params.error}
         </p>
@@ -64,7 +64,7 @@ export default async function ManagePage({
               <span className="block text-[11.5px] text-muted-3 mt-0.5">
                 {l(lang, k.category, k.categoryId)} · {k.durationLabel}
               </span>
-              <span className="block font-extrabold text-[13px] text-green mt-1">
+              <span className="block font-extrabold text-[13px] text-maroon mt-1">
                 {idr(k.priceIdr)}
               </span>
               {used > 0 && (

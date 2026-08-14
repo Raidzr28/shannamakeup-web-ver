@@ -64,7 +64,7 @@ export function DesktopHome({
     <div className="ambient-glow flex-1">
       <div className="px-11 pt-11 grid grid-cols-[1.05fr_1fr] gap-9 items-center">
         <div>
-          <span className="inline-block px-3.5 py-2 rounded-full bg-tint text-green text-[12.5px] font-bold">
+          <span className="inline-block px-3.5 py-2 rounded-full bg-tint text-maroon text-[12.5px] font-bold">
             {p(lang, "Bridal · Editorial · Jakarta", "Pengantin · Editorial · Jakarta")}
           </span>
           <h1 className="mt-5 text-[58px] leading-[1.03] tracking-[-0.04em] font-extrabold max-w-[16ch]">
@@ -138,7 +138,7 @@ export function DesktopHome({
           <div className="grid grid-cols-2 gap-4 mt-5.5">
             {FLOW.map((f) => (
               <div key={f.n} className="glass-card p-[18px]">
-                <span className="w-[34px] h-[34px] rounded-xl bg-tint text-green flex items-center justify-center font-extrabold text-[13px]">
+                <span className="w-[34px] h-[34px] rounded-xl bg-tint text-maroon flex items-center justify-center font-extrabold text-[13px]">
                   {f.n}
                 </span>
                 <div className="font-bold text-[17px] mt-3.5">{l(lang, f.name.en, f.name.id)}</div>
@@ -196,7 +196,7 @@ export function DesktopHome({
             <div className="flex gap-3 mt-6.5">
               <Link
                 href="/book"
-                className="h-[50px] px-6 rounded-2xl text-green text-[14.5px] font-bold flex items-center glass-light"
+                className="h-[50px] px-6 rounded-2xl text-maroon text-[14.5px] font-bold flex items-center glass-light"
               >
                 {l(lang, "Check a date", "Cek tanggal")}
               </Link>

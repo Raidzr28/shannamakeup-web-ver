@@ -33,10 +33,10 @@ export function DesktopNav({
   return (
     <div className="sticky top-0 z-30 flex items-center gap-7 px-11 py-5 bg-gradient-to-b from-white/88 to-white/62 backdrop-blur-2xl backdrop-saturate-150 border-b border-white/75">
       <Link href="/" className="flex items-center gap-2.5 font-extrabold text-lg tracking-tight">
-        <span className="w-8 h-8 rounded-[11px] bg-green text-white flex items-center justify-center text-sm">
+        <span className="w-8 h-8 rounded-[11px] bg-gold text-ink flex items-center justify-center text-sm">
           S
         </span>
-        Shana
+        <span className="text-gold">Shana</span>
       </Link>
       <nav className="flex gap-6 text-sm font-semibold text-muted flex-1">
         {links.map((link) => (
@@ -44,7 +44,7 @@ export function DesktopNav({
             key={link.href}
             href={link.href}
             className={clsx(
-              pathname === link.href ? "text-green" : "text-muted hover:text-ink"
+              pathname === link.href ? "text-maroon" : "text-muted hover:text-ink"
             )}
           >
             {link.name}

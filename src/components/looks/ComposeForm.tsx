@@ -102,7 +102,7 @@ export function ComposeForm({
       ))}
       {credit && <input type="hidden" name="credit" value="on" />}
 
-      <label className="relative h-[300px] glass-card border-[1.5px] border-dashed border-green/50 overflow-hidden cursor-pointer flex items-center justify-center rounded-[22px]">
+      <label className="relative h-[300px] glass-card border-[1.5px] border-dashed border-maroon/50 overflow-hidden cursor-pointer flex items-center justify-center rounded-[22px]">
         <input
           type="file"
           name="photo"
@@ -160,7 +160,7 @@ export function ComposeForm({
               onClick={() => setLookId(k.id)}
               className={clsx(
                 "flex gap-3 items-center w-full p-3.5 rounded-2xl cursor-pointer text-left border-[1.5px]",
-                lookId === k.id ? "bg-[#f1f6f3] border-green" : "bg-white border-line"
+                lookId === k.id ? "bg-[#f5e6dc] border-maroon" : "bg-white border-line"
               )}
             >
               <Radio active={lookId === k.id} />
@@ -170,7 +170,7 @@ export function ComposeForm({
                   {l(lang, k.category, k.categoryId)} · {k.durationLabel}
                 </span>
               </span>
-              <span className="font-extrabold text-[13px] text-green">{idr(k.priceIdr)}</span>
+              <span className="font-extrabold text-[13px] text-maroon">{idr(k.priceIdr)}</span>
             </button>
           ))}
         </div>
@@ -196,7 +196,7 @@ export function ComposeForm({
                   "px-[15px] py-2.5 rounded-full text-[12.5px] font-semibold cursor-pointer whitespace-nowrap border",
                   on
                     ? "glass-fill text-white border-transparent"
-                    : "glass-light text-[#4e5d54] border-white/80"
+                    : "glass-light text-[#5c4a3f] border-white/80"
                 )}
               >
                 {l(lang, e.name, e.nameId)}
@@ -231,7 +231,7 @@ export function ComposeForm({
         {error && (
           <p
             role="alert"
-            className="text-[13px] leading-snug text-[#b23a3a] bg-[#f7eeee] border border-[#b23a3a]/25 rounded-2xl px-3.5 py-3"
+            className="text-[13px] leading-snug text-[#b23a3a] bg-[#f8e8e2] border border-[#b23a3a]/25 rounded-2xl px-3.5 py-3"
           >
             {error}
           </p>

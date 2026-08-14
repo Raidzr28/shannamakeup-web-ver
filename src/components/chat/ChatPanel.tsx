@@ -68,7 +68,7 @@ export function ChatPanel({
                 className={clsx(
                   "text-[13.5px] leading-relaxed px-3.5 py-3",
                   mine
-                    ? "rounded-[18px_18px_6px_18px] bg-green text-white"
+                    ? "rounded-[18px_18px_6px_18px] bg-maroon text-white"
                     : "rounded-[18px_18px_18px_6px] text-ink glass-light"
                 )}
               >
@@ -97,7 +97,7 @@ export function ChatPanel({
               <input type="hidden" name="whenLine" value={whenLine} />
               <button
                 type="submit"
-                className="px-3.5 py-2 rounded-full text-[12px] font-semibold whitespace-nowrap glass-light text-[#4e5d54] cursor-pointer"
+                className="px-3.5 py-2 rounded-full text-[12px] font-semibold whitespace-nowrap glass-light text-[#5c4a3f] cursor-pointer"
               >
                 {text}
               </button>
@@ -121,7 +121,7 @@ export function ChatPanel({
         <input
           name="text"
           placeholder={l(lang, "Ask about a date, price, travel…", "Tanya tanggal, harga, perjalanan…")}
-          className="flex-1 min-h-[44px] box-border rounded-2xl border-[1.5px] border-line-2 bg-white px-3.5 text-sm outline-none focus:border-green"
+          className="flex-1 min-h-[44px] box-border rounded-2xl border-[1.5px] border-line-2 bg-white px-3.5 text-sm outline-none focus:border-maroon"
           autoComplete="off"
         />
         <button

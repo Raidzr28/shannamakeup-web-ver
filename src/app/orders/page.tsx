@@ -68,7 +68,7 @@ export default async function OrdersPage() {
               </span>
               <span
                 className={`flex-none text-[10.5px] font-bold px-2.5 py-1 rounded-full ${
-                  b.status === "confirmed" ? "bg-green text-white" : "bg-[#eef1ee] text-muted-2"
+                  b.status === "confirmed" ? "bg-maroon text-white" : "bg-[#efe4d5] text-muted-2"
                 }`}
               >
                 {b.review
@@ -84,7 +84,7 @@ export default async function OrdersPage() {
               })}{" "}
               · {b.timeLabel} · {b.code}
             </span>
-            <span className="block font-extrabold text-[13.5px] text-green mt-1">
+            <span className="block font-extrabold text-[13.5px] text-maroon mt-1">
               {idr(b.totalIdr)}
             </span>
           </span>

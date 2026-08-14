@@ -45,7 +45,7 @@ export default async function AccountPage() {
             {user?.name ?? l(lang, "Guest", "Tamu")}
           </span>
           <span className="flex items-center gap-2 mt-1.5">
-            <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-tint text-green">
+            <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-tint text-maroon">
               {user
                 ? user.role === "ARTIST"
                   ? l(lang, "Artist · admin", "Artist · admin")
@@ -66,10 +66,10 @@ export default async function AccountPage() {
           </div>
           <div className="flex flex-col gap-2 mt-3">
             {GUEST_LIMITS.map((x) => (
-              <div key={x.en} className="flex gap-2.5 items-center text-[13px] text-[#3d4a43]">
+              <div key={x.en} className="flex gap-2.5 items-center text-[13px] text-[#4a3b32]">
                 <span
                   className={`w-[22px] h-[22px] rounded-full flex-none flex items-center justify-center text-[10.5px] font-extrabold ${
-                    x.ok ? "bg-tint text-green" : "bg-[#f1eeee] text-[#a06a6a]"
+                    x.ok ? "bg-tint text-maroon" : "bg-[#f3e6dc] text-[#a06a6a]"
                   }`}
                 >
                   {x.ok ? "✓" : "🔒"}
@@ -118,7 +118,7 @@ export default async function AccountPage() {
                 className="flex items-center gap-2.5 w-full p-3.5 rounded-2xl text-sm font-semibold text-ink"
               >
                 <span className="flex-1">{m.name}</span>
-                <span className="text-xs text-[#8a998f]">{m.meta}</span>
+                <span className="text-xs text-[#9c8975]">{m.meta}</span>
               </Link>
             ))}
           </div>

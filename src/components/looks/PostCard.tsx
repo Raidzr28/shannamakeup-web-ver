@@ -45,7 +45,7 @@ export function PostCard({
         <span className="flex-1">
           <span className="flex items-center gap-1.5">
             <span className="font-bold text-[13.5px]">{post.who}</span>
-            <span className="text-[9.5px] font-bold px-1.5 py-0.5 rounded-full bg-tint text-green">
+            <span className="text-[9.5px] font-bold px-1.5 py-0.5 rounded-full bg-tint text-maroon">
               {post.badge}
             </span>
           </span>
@@ -63,7 +63,7 @@ export function PostCard({
           sizes="(max-width: 768px) 100vw, 560px"
         />
         {post.packageName && (
-          <span className="absolute left-3 bottom-3 text-[11.5px] font-bold text-white px-3 py-1.5 rounded-full bg-[#141a16]/45 backdrop-blur-md border border-white/25">
+          <span className="absolute left-3 bottom-3 text-[11.5px] font-bold text-white px-3 py-1.5 rounded-full bg-[#1a1a1a]/45 backdrop-blur-md border border-white/25">
             {post.packageName}
           </span>
         )}
@@ -102,7 +102,7 @@ export function PostCard({
         {post.title && (
           <div className="font-bold text-[15px] mb-1.5">{post.title}</div>
         )}
-        <p className="m-0 text-[13px] leading-relaxed text-[#3d4a43]">
+        <p className="m-0 text-[13px] leading-relaxed text-[#4a3b32]">
           {post.caption}
           {post.credit && (
             <span className="text-muted-3">
@@ -114,7 +114,7 @@ export function PostCard({
         {post.lookId && (
           <Link
             href={`/book/${post.lookId}`}
-            className="mt-3 w-full h-11 rounded-2xl text-[13.5px] font-bold flex items-center justify-center text-green glass-light"
+            className="mt-3 w-full h-11 rounded-2xl text-[13.5px] font-bold flex items-center justify-center text-maroon glass-light"
           >
             {l(lang, "Book this look", "Pesan tampilan ini")}
           </Link>

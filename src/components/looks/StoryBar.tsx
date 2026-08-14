@@ -52,11 +52,11 @@ export function StoryBar({ lang, stories }: { lang: Lang; stories: Story[] }) {
                 className={clsx(
                   "relative w-16 h-16 rounded-full flex items-center justify-center box-border p-[2.5px]",
                   isSeen
-                    ? "bg-gradient-to-br from-[#cfd8d2] to-[#cfd8d2]/45"
-                    : "bg-gradient-to-br from-green to-green/45"
+                    ? "bg-gradient-to-br from-[#d9c3a8] to-[#d9c3a8]/45"
+                    : "bg-gradient-to-br from-gold to-maroon"
                 )}
               >
-                <span className="w-full h-full rounded-full overflow-hidden bg-[#e8ebe8] border-2 border-[#f4f5f3] box-border">
+                <span className="w-full h-full rounded-full overflow-hidden bg-[#ead9c7] border-2 border-[#f7f0e5] box-border">
                   <Media
                     src={story.imageUrl}
                     alt={story.name}
@@ -69,7 +69,7 @@ export function StoryBar({ lang, stories }: { lang: Lang; stories: Story[] }) {
               <span
                 className={clsx(
                   "text-[10.5px] font-semibold max-w-[68px] overflow-hidden text-ellipsis whitespace-nowrap",
-                  isSeen ? "text-[#8a998f]" : "text-[#3d4a43]"
+                  isSeen ? "text-[#9c8975]" : "text-[#4a3b32]"
                 )}
               >
                 {story.name}
@@ -80,7 +80,7 @@ export function StoryBar({ lang, stories }: { lang: Lang; stories: Story[] }) {
       </div>
 
       {active && (
-        <div className="fixed inset-0 z-50 flex flex-col pt-[58px] bg-[#101412]/95 backdrop-blur-lg animate-[pop-in_0.28s_ease]">
+        <div className="fixed inset-0 z-50 flex flex-col pt-[58px] bg-[#1a1a1a]/95 backdrop-blur-lg animate-[pop-in_0.28s_ease]">
           <div className="flex gap-1.5 px-3.5">
             {stories.map((s, i) => (
               <span
@@ -124,7 +124,7 @@ export function StoryBar({ lang, stories }: { lang: Lang; stories: Story[] }) {
             </button>
           </div>
 
-          <div className="flex-1 relative mx-3.5 rounded-[22px] overflow-hidden bg-[#1b201d]">
+          <div className="flex-1 relative mx-3.5 rounded-[22px] overflow-hidden bg-[#241e1a]">
             <Media
               src={active.imageUrl}
               alt={active.name}
@@ -133,7 +133,7 @@ export function StoryBar({ lang, stories }: { lang: Lang; stories: Story[] }) {
               className="h-full w-full"
               sizes="100vw"
             />
-            <span className="absolute left-4 right-4 bottom-4 text-white text-[13.5px] leading-relaxed px-3.5 py-3 rounded-2xl bg-[#141a16]/50 backdrop-blur-md border border-white/20">
+            <span className="absolute left-4 right-4 bottom-4 text-white text-[13.5px] leading-relaxed px-3.5 py-3 rounded-2xl bg-[#1a1a1a]/50 backdrop-blur-md border border-white/20">
               {active.caption}
             </span>
             <button

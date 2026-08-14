@@ -86,7 +86,7 @@ export function ImagePicker({
         }}
         className={clsx(
           "relative rounded-[22px] border-[1.5px] border-dashed overflow-hidden transition-colors",
-          dragging ? "border-green bg-tint" : "border-green/40 bg-white/50",
+          dragging ? "border-maroon bg-tint" : "border-maroon/40 bg-white/50",
           url ? "h-[240px]" : "h-[170px]"
         )}
       >
@@ -162,7 +162,7 @@ export function ImagePicker({
       {error && (
         <p
           role="alert"
-          className="text-[12.5px] leading-snug text-[#b23a3a] bg-[#f7eeee] border border-[#b23a3a]/25 rounded-2xl px-3 py-2.5"
+          className="text-[12.5px] leading-snug text-[#b23a3a] bg-[#f8e8e2] border border-[#b23a3a]/25 rounded-2xl px-3 py-2.5"
         >
           {error}
         </p>

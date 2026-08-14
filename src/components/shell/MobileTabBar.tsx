@@ -81,7 +81,7 @@ export function MobileTabBar({
             aria-current={active ? "page" : undefined}
             className={clsx(
               "flex flex-col items-center gap-1 py-1 text-[11px] font-semibold transition-colors",
-              active ? "text-green" : "text-faint"
+              active ? "text-maroon" : "text-faint"
             )}
           >
             {/* The tinted pill echoes the accent chips used elsewhere, so the

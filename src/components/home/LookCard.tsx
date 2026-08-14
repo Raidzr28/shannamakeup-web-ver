@@ -40,7 +40,7 @@ export function LookCard({
       <div className="text-[11.5px] text-muted-2 mt-1">
         {l(lang, look.category, look.categoryId)} · {look.durationLabel}
       </div>
-      <div className={clsx("font-extrabold text-green mt-1.5", size === "sm" ? "text-sm" : "text-[15px]")}>
+      <div className={clsx("font-extrabold text-maroon mt-1.5", size === "sm" ? "text-sm" : "text-[15px]")}>
         {idr(look.priceIdr)}
       </div>
     </Link>

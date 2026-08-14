@@ -164,7 +164,7 @@ export function BookingWizard({
               key={s}
               className={clsx(
                 "h-1 flex-1 rounded-full",
-                i <= idx ? "bg-green" : "bg-[#dfe5e0]"
+                i <= idx ? "bg-maroon" : "bg-[#e3d5be]"
               )}
             />
           ))}
@@ -243,7 +243,7 @@ export function BookingWizard({
                     onClick={() => setVenue(v.id)}
                     className={clsx(
                       "flex gap-3 items-center w-full p-3.5 rounded-2xl cursor-pointer text-left border-[1.5px]",
-                      venue === v.id ? "bg-[#f1f6f3] border-green" : "bg-white border-line"
+                      venue === v.id ? "bg-[#f5e6dc] border-maroon" : "bg-white border-line"
                     )}
                   >
                     <Radio active={venue === v.id} />
@@ -275,7 +275,7 @@ export function BookingWizard({
                   }
                   className={clsx(
                     "flex gap-3 items-center w-full p-3.5 rounded-2xl cursor-pointer text-left border-[1.5px]",
-                    on ? "bg-[#f1f6f3] border-green" : "bg-white border-line"
+                    on ? "bg-[#f5e6dc] border-maroon" : "bg-white border-line"
                   )}
                 >
                   <Check active={on} />
@@ -285,7 +285,7 @@ export function BookingWizard({
                       {l(lang, e.note, e.noteId)}
                     </span>
                   </span>
-                  <span className="font-extrabold text-[13.5px] text-green">{idr(e.price)}</span>
+                  <span className="font-extrabold text-[13.5px] text-maroon">{idr(e.price)}</span>
                 </button>
               );
             })}
@@ -388,7 +388,7 @@ export function BookingWizard({
                     onClick={() => setMethod(m.id)}
                     className={clsx(
                       "flex gap-3 items-center w-full p-3.5 rounded-2xl cursor-pointer text-left border-[1.5px]",
-                      method === m.id ? "bg-[#f1f6f3] border-green" : "bg-white border-line"
+                      method === m.id ? "bg-[#f5e6dc] border-maroon" : "bg-white border-line"
                     )}
                   >
                     <Radio active={method === m.id} />

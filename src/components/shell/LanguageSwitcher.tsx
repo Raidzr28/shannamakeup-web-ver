@@ -30,7 +30,7 @@ export function LanguageSwitcher({
             type="submit"
             className={clsx(
               "px-2.5 py-1 rounded-full text-[11px] font-bold cursor-pointer",
-              lang === opt.id ? "bg-green text-white" : "text-muted"
+              lang === opt.id ? "bg-maroon text-white" : "text-muted"
             )}
           >
             {opt.label}

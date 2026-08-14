@@ -65,7 +65,7 @@ export default async function LoginPage({
         </button>
       </form>
 
-      <div className="flex items-center gap-3 text-[#8a998f] text-[11.5px] my-4">
+      <div className="flex items-center gap-3 text-[#9c8975] text-[11.5px] my-4">
         <span className="flex-1 h-px bg-line-2" />
         {l(lang, "or", "atau")}
         <span className="flex-1 h-px bg-line-2" />
@@ -83,7 +83,7 @@ export default async function LoginPage({
 
       <Link
         href={`/register?next=${encodeURIComponent(next)}`}
-        className="mt-3 flex items-center justify-center h-11 text-green text-[13.5px] font-bold"
+        className="mt-3 flex items-center justify-center h-11 text-maroon text-[13.5px] font-bold"
       >
         {l(lang, "No account yet? Register", "Belum punya akun? Daftar")}
       </Link>

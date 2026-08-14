@@ -46,8 +46,8 @@ export function ReviewForm({
               className={clsx(
                 "w-11 h-11 rounded-2xl cursor-pointer text-lg border-[1.5px]",
                 n <= rating
-                  ? "border-green bg-green text-white"
-                  : "border-line bg-white text-[#c3ccc6]"
+                  ? "border-gold bg-gold text-ink"
+                  : "border-line bg-white text-[#d8c6ae]"
               )}
             >
               ★
@@ -76,7 +76,7 @@ export function ReviewForm({
                   "px-[15px] py-2.5 rounded-full text-[12.5px] font-semibold cursor-pointer whitespace-nowrap border",
                   on
                     ? "glass-fill text-white border-transparent"
-                    : "glass-light text-[#4e5d54] border-white/80"
+                    : "glass-light text-[#5c4a3f] border-white/80"
                 )}
               >
                 {t}
@@ -98,7 +98,7 @@ export function ReviewForm({
           </Label>
         </div>
 
-        <div className="mt-3.5 bg-[#f1f4f1] rounded-2xl px-3.5 py-3 text-xs leading-relaxed text-muted">
+        <div className="mt-3.5 bg-[#f1e7d8] rounded-2xl px-3.5 py-3 text-xs leading-relaxed text-muted">
           {l(
             lang,
             "Shana may show your photographs in the portfolio. You can withdraw this at any time.",

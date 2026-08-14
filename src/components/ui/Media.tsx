@@ -2,7 +2,7 @@ import Image from "next/image";
 import clsx from "clsx";
 
 const PALETTES = [
-  "from-[#dfeee7] to-[#c9e3d6]",
+  "from-[#f2e2c4] to-[#e3c088]",
   "from-[#f0e6d8] to-[#e3d0b2]",
   "from-[#e6e0ef] to-[#d3c4e8]",
   "from-[#f0dbdb] to-[#e5bcbc]",
@@ -60,7 +60,7 @@ export function Media({
         className
       )}
     >
-      <span className="text-[11px] font-bold text-[#3d4a43]/70 text-center px-2 line-clamp-2">
+      <span className="text-[11px] font-bold text-[#4a3b32]/70 text-center px-2 line-clamp-2">
         {placeholder ?? "+"}
       </span>
     </div>
