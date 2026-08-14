@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CLIENT
+  ARTIST
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(CLIENT)
+  avatarUrl    String?
+  createdAt    DateTime @default(now())
+
+  bookings Booking[]
+  posts    Post[]
+  likes    Like[]
+  saves    Save[]
+  reviews  Review[]
+  messages Message[]
+}
+
+model Look {
+  id            String  @id
+  order         Int     @default(0)
+  title         String
+  titleId       String
+  category      String
+  categoryId    String
+  priceIdr      Int
+  durationLabel String
+  blurb         String
+  blurbId       String
+  includes      String
+  includesId    String
+  heroImage     String?
+
+  bookings Booking[]
+  posts    Post[]
+}
+
+model Booking {
+  id         String   @id @default(cuid())
+  code       String   @unique
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  lookId     String
+  look       Look     @relation(fields: [lookId], references: [id])
+  date       DateTime
+  timeLabel  String
+  venue      String
+  extras     String
+  totalIdr   Int
+  depositIdr Int
+  method     String
+  status     String   @default("confirmed")
+  name       String
+  phone      String
+  email      String
+  city       String
+  notes      String?
+  createdAt  DateTime @default(now())
+
+  review Review?
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  lookId      String?
+  look        Look?    @relation(fields: [lookId], references: [id])
+  title       String
+  description String
+  place       String
+  imageUrl    String?
+  credit      Boolean  @default(true)
+  extras      String
+  createdAt   DateTime @default(now())
+
+  likes Like[]
+  saves Save[]
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+}
+
+model Save {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  bookingId String   @unique
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+  rating    Int
+  traits    String
+  note      String?
+  createdAt DateTime @default(now())
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  who       String
+  text      String
+  createdAt DateTime @default(now())
+}
