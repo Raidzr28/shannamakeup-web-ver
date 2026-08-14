@@ -2,7 +2,25 @@
 
 A real web app built from the Claude Design prototype in `../project/Shana Makeup.dc.html`.
 
-Next.js 16 (App Router) · React 19 · Tailwind 4 · Prisma + SQLite · bilingual EN / Bahasa Indonesia.
+Next.js 16 (App Router) · React 19 · Tailwind 4 · Prisma + Postgres (Neon) · Vercel Blob · bilingual
+EN / Bahasa Indonesia.
+
+## Design
+
+The palette moved away from the prototype's cool green and grey to a warm one, defined as tokens at
+the top of `src/app/globals.css`:
+
+| Role | Token | Value |
+|---|---|---|
+| Ground | `--color-bg` / `--color-amb` | `#f5ede1` / `#f8f1e5` warm cream |
+| Cards | `--color-card` | `#fffcf7` |
+| Primary action | `--color-maroon` / `-deep` | `#5f0d14` / `#430a0f` |
+| Secondary accent | `--color-gold` / `-deep` | `#dd9d63` / `#c17f45` |
+| Text | `--color-ink`, `--color-muted*` | `#1a1a1a`, warm browns |
+
+One accent carries every primary action, exactly as the prototype intended — only the hue changed.
+Use the tokens (`text-maroon`, `bg-tint`) rather than raw hex so a future retheme stays a one-file
+edit. The frosted-glass treatment (`.glass-card`, `.glass-light`, `.glass-fill`) is unchanged.
 
 ## Two completely different UIs
 
@@ -30,12 +48,20 @@ and unfocusable.
 
 ## Getting started
 
+The datasource is Postgres, so local dev needs a real connection string — there is no SQLite fallback.
+Pull the deployed values (see [Deploying to Vercel](#deploying-to-vercel) if the project is not linked
+yet):
+
 ```bash
 npm install
 ```
 
 ```bash
-npx prisma db push
+vercel env pull .env.local
+```
+
+```bash
+npm run db:push
 ```
 
 ```bash
@@ -46,7 +72,8 @@ npm run db:seed
 npm run dev
 ```
 
-Then open http://localhost:3000.
+Then open http://localhost:3000. `db:push` and `db:seed` go through `dotenv -e .env.local`, because
+the Prisma CLI reads `.env` and would otherwise talk to the placeholder in it.
 
 ### Demo accounts
 
@@ -63,8 +90,12 @@ Then open http://localhost:3000.
 - **Booking** — a four-step wizard (date/time/venue → add-ons → your details → confirm & pay) that
   writes a `Booking` row, computes a 30% deposit rounded to the nearest Rp 50.000, and lands on a
   confirmation page with a status timeline.
-- **Feed** — posts, likes and saves persist per user. Composing a post uploads a real image to
-  `public/uploads` and tags a bookable package, so any viewer can book the same look from the post.
+- **Feed** — posts, likes and saves persist per user. Composing a post uploads a real photo to Vercel
+  Blob and tags a bookable package, so any viewer can book the same look from the post.
+- **Package management** — the artist gets `/manage`, a CRUD area for the bookable catalogue with a
+  drag-and-drop photo picker. Deleting is refused while bookings reference a package. Clients and
+  guests are redirected away; the role is re-checked in every page *and* every action rather than
+  trusted from the rendered UI.
 - **Chat** — keyword-matched assistant replies (price / travel / trial / hold), persisted per user,
   mirroring the prototype's `botReply` logic.
 - **Language** — every string ships EN + ID; the switcher offers English, Bahasa Indonesia, or the
@@ -81,12 +112,24 @@ before this could take live bookings.
 ```
 prisma/schema.prisma     User, Look, Booking, Post, Like, Save, Review, Message
 prisma/seed.ts           six packages, two demo users, sample posts and a booking
+src/app/globals.css      colour tokens and the frosted-glass utilities
+src/app/api/upload/      Route Handler that stores a compressed photo in Blob
+src/app/manage/          artist-only package CRUD
 src/components/shell/Viewports.tsx   the mobile/desktop breakpoint switch
-src/lib/                 auth, language, looks, feed, booking maths, uploads
-src/lib/actions/         server actions (auth, booking, posts, review, chat)
-src/components/          shell/ home/ looks/ booking/ chat/ ui/
+src/lib/                 auth, language, looks, feed, booking maths, image compression
+src/lib/actions/         server actions (auth, booking, posts, packages, review, chat)
+src/components/          shell/ home/ looks/ booking/ manage/ chat/ ui/
 src/app/                 routes
 ```
+
+## Routes
+
+| Path | Who |
+|---|---|
+| `/`, `/looks`, `/l/[id]`, `/studio` | anyone |
+| `/book`, `/book/[id]` | anyone browses; sign-in required to confirm |
+| `/looks/compose`, `/orders`, `/chat` | signed in |
+| `/manage`, `/manage/new`, `/manage/[id]` | artist only |
 
 ## Deploying to Vercel
 
@@ -142,7 +185,7 @@ Finally seed the six packages and demo accounts once, against the production dat
 npm run db:seed
 ```
 
-(`.env.local` supplies `DATABASE_URL`, so this runs locally but writes to Vercel Postgres.)
+(`.env.local` supplies `DATABASE_URL`, so this runs locally but writes to the Neon database.)
 
 ### Notes
 
@@ -156,11 +199,19 @@ npm run db:seed
 - `postinstall` runs `prisma generate` so the client matches the schema on every Vercel build.
 - Prisma's CLI reads `.env`, not `.env.local`. `db:push` and `db:seed` therefore go through
   `dotenv -e .env.local` so they hit the real Neon database rather than the placeholder.
-- Photos upload **from the browser straight to Blob storage** via `/api/upload`, which issues a
-  short-lived client token. They deliberately do not travel through the Server Action: Next caps
-  action bodies at 1 MB (Vercel caps request bodies around 4.5 MB) and any phone photo exceeds both.
-  The action receives only the resulting URL.
-- `BLOB_READ_WRITE_TOKEN` is scoped to Production and Preview only, so **image uploads fail in local
-  dev** with "Failed to retrieve the client token". `vercel env pull` will not fix this — the value is
-  Sensitive and comes back redacted. Attach the Blob store to the Development environment in the
-  dashboard if you need uploads locally.
+- Photos are **downscaled in the browser** (1600px longest edge, re-encoded JPEG — see
+  `src/lib/compress-image.ts`) and then POSTed to `/api/upload`, which stores them with the
+  server-side token. Two limits force this shape: Server Actions cap request bodies at 1 MB, and
+  Vercel caps serverless request bodies around 4.5 MB, while a phone photo is routinely 3–12 MB. The
+  action itself only ever receives the resulting URL string.
+- Uploading straight from the browser with `@vercel/blob/client` was tried first and **does not
+  work**: v2.8.0 resolves its API host to `https://vercel.com/api/blob`, which returns no
+  `Access-Control-Allow-Origin`, so the browser blocks it and the SDK retries silently forever. The
+  override is read from `VERCEL_BLOB_API_URL`, which is not `NEXT_PUBLIC_`-prefixed and so never
+  reaches the browser bundle. Don't reach for that approach again without checking it upstream first.
+- The Blob store must be created with **public** access. Access is fixed at creation and there is no
+  `update-store` command, so a private store means `put({ access: "public" })` fails with *"Cannot use
+  public access on a private store"* and the only fix is a new store.
+- Attach the Blob store to **Development** as well as Production and Preview, or uploads fail locally.
+  Once attached, `vercel env pull` brings the real `BLOB_READ_WRITE_TOKEN` down (it starts
+  `vercel_blob_rw_`); a short placeholder value means the store is not connected to that environment.
