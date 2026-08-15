@@ -82,6 +82,52 @@ the Prisma CLI reads `.env` and would otherwise talk to the placeholder in it.
 | Client | `aruna@studio.co` | `aruna2026` |
 | Artist | `shana@shanamakeup.id` | `shana2026` |
 
+### Sign in with Google
+
+Optional. Without `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` the button simply does not render
+and everything else works as before — nothing about the app requires it.
+
+| Variable | Purpose |
+|---|---|
+| `GOOGLE_CLIENT_ID` | OAuth 2.0 **Web application** client id |
+| `GOOGLE_CLIENT_SECRET` | its secret |
+| `GOOGLE_REDIRECT_URI` | optional override, see below |
+
+Create the client in [Google Cloud Console](https://console.cloud.google.com/apis/credentials) →
+*Credentials* → *Create credentials* → *OAuth client ID* → *Web application*, and register every
+origin the app runs on as an **authorised redirect URI**, each ending in `/api/auth/google/callback`:
+
+```
+http://localhost:3000/api/auth/google/callback
+https://your-domain.com/api/auth/google/callback
+```
+
+Google matches these character for character. The app derives the URI from the incoming request so
+localhost and preview deploys need no extra configuration — set `GOOGLE_REDIRECT_URI` only if a proxy
+in front rewrites the host and the derived value stops matching what is registered.
+
+Preview deployments get a new hostname per deploy, which no fixed list can cover; either add the ones
+you use or leave Google sign-in to production and sign in with a password on previews.
+
+How it works — Authorization Code with PKCE, one file (`src/lib/google-oauth.ts`), no
+NextAuth/Auth.js. The app already owns its session format, so adopting a framework would have meant
+either running two session systems or rewriting every `getSession()` caller:
+
+1. `/api/auth/google` mints `state` + a PKCE verifier into a ten-minute httpOnly cookie and sends the
+   browser to Google.
+2. `/api/auth/google/callback` checks the returned `state` against that cookie, trades the code for
+   an `id_token`, and verifies its signature, issuer and audience against Google's published keys.
+3. `email_verified` is required. The account is matched on Google's `sub`, then on the email address
+   — so registering with a password and later pressing the Google button lands on **one** account
+   rather than two.
+4. A new account is always created as `CLIENT`. `ARTIST` is granted in the database and never read
+   from Google.
+
+Google accounts start with **no password**, so `/account/edit` offers *Set password* instead of
+*Change password*, and typing that address into the password form answers with a pointer to the
+Google button rather than a generic mismatch. Setting a password does not unlink Google — both then
+work.
+
 ### Studio contact and payment details
 
 Optional — each falls back to a demo value, so the app runs without them. Set them for real use:
@@ -103,9 +149,10 @@ serve the demo bank details in production.
 
 ## What's real
 
-- **Auth** — email/password with bcrypt hashing, JWT session in an httpOnly cookie (`src/lib/auth.ts`).
-  Guests can browse the portfolio, feed, dates and prices; liking, saving, posting, booking, chat and
-  reviews redirect to sign-in with the reason shown.
+- **Auth** — email/password with bcrypt hashing, or **Sign in with Google**; either way the session
+  is the same JWT in an httpOnly cookie (`src/lib/auth.ts`). Guests can browse the portfolio, feed,
+  dates and prices; liking, saving, posting, booking, chat and reviews redirect to sign-in with the
+  reason shown. See [Sign in with Google](#sign-in-with-google) for the flow and its setup.
 - **Booking** — a four-step wizard (date/time/venue → add-ons → your details → review & request) that
   writes a `Booking` row and computes a 30% deposit rounded to the nearest Rp 50.000. Nothing is
   charged at this point; the wizard sends a *request*.
@@ -160,6 +207,8 @@ prisma/seed.ts           six packages, two demo users, sample posts and a bookin
 prisma/backfill-usernames.ts  one-off: gives pre-username accounts a handle (safe to re-run)
 src/app/globals.css      colour tokens and the frosted-glass utilities
 src/app/api/upload/      Route Handler that stores a compressed photo in Blob
+src/app/api/auth/google/ Google OAuth: start (route.ts) and callback (callback/route.ts)
+src/lib/google-oauth.ts  the OAuth 2.0 + PKCE client and id_token verification
 src/app/manage/          artist-only: package CRUD and the reservation queue
 src/lib/booking-status.ts     the reservation state machine, shared by both sides
 src/lib/support.ts       server-only studio WhatsApp and payment destinations
@@ -214,6 +263,16 @@ vercel env add AUTH_SECRET production
 
 Use a long random string (`openssl rand -base64 32`). Do not reuse the dev placeholder — it is
 committed to this README's sibling `.env` and signs every session cookie.
+
+For Google sign-in, add the OAuth client too — optional, and skipping it just hides the button:
+
+```bash
+vercel env add GOOGLE_CLIENT_ID production
+vercel env add GOOGLE_CLIENT_SECRET production
+```
+
+The production domain's `/api/auth/google/callback` has to be an authorised redirect URI on that
+client; see [Sign in with Google](#sign-in-with-google).
 
 Pull the real values down so local dev talks to the same stores:
 

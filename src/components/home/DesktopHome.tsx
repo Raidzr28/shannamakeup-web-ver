@@ -54,11 +54,14 @@ export function DesktopHome({
   looks,
   category,
   featured,
+  chatHref,
 }: {
   lang: Lang;
   looks: LookDTO[];
   category: string;
   featured: LookDTO;
+  /** Points the artist at her client inbox rather than a thread with herself. */
+  chatHref: string;
 }) {
   return (
     <div className="ambient-glow flex-1">
@@ -85,7 +88,7 @@ export function DesktopHome({
               {l(lang, "Check a date", "Cek tanggal")}
             </Link>
             <Link
-              href="/chat"
+              href={chatHref}
               className="h-[54px] px-6 rounded-2xl text-ink text-[15px] font-bold flex items-center glass-light"
             >
               {l(lang, "Ask the assistant", "Tanya asisten")}
@@ -201,7 +204,7 @@ export function DesktopHome({
                 {l(lang, "Check a date", "Cek tanggal")}
               </Link>
               <Link
-                href="/chat"
+                href={chatHref}
                 className="h-[50px] px-6 rounded-2xl text-white text-[14.5px] font-bold flex items-center bg-gradient-to-br from-white/26 to-white/10 backdrop-blur-md border border-white/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.42)]"
               >
                 {l(lang, "Ask the assistant", "Tanya asisten")}

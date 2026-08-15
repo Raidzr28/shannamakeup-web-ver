@@ -6,6 +6,7 @@ import { Textarea, Label } from "@/components/ui/Field";
 import { submitReviewAction } from "@/lib/actions/review";
 import type { Lang } from "@/lib/i18n";
 import { l } from "@/lib/i18n";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 
 export function ReviewForm({
   lang,
@@ -107,12 +108,12 @@ export function ReviewForm({
         </div>
       </div>
 
-      <button
-        type="submit"
+      <SubmitButton
+        pendingLabel={l(lang, "Sending…", "Mengirim…")}
         className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
       >
         {l(lang, "Send review", "Kirim ulasan")}
-      </button>
+      </SubmitButton>
     </form>
   );
 }

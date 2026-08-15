@@ -4,6 +4,7 @@ import { Input, Textarea, Label } from "@/components/ui/Field";
 import type { Lang } from "@/lib/i18n";
 import { l } from "@/lib/i18n";
 import type { LookDTO } from "@/lib/looks";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 
 /** Shared create/edit form. `look` absent means create. */
 export function PackageForm({
@@ -144,16 +145,15 @@ export function PackageForm({
       </div>
 
       <div className="flex gap-3">
-        <button
-          type="submit"
+        <SubmitButton
           className="flex-1 h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
         >
           {editing
             ? l(lang, "Save changes", "Simpan perubahan")
             : l(lang, "Create package", "Buat paket")}
-        </button>
+        </SubmitButton>
         <Link
-          href="/manage"
+          href="/manage/packages"
           className="h-[52px] px-6 rounded-2xl text-ink text-[14.5px] font-bold flex items-center justify-center glass-light"
         >
           {l(lang, "Cancel", "Batal")}

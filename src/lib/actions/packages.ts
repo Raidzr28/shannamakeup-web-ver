@@ -112,9 +112,10 @@ export async function createPackageAction(formData: FormData) {
   });
 
   revalidatePath("/manage");
+  revalidatePath("/manage/packages");
   revalidatePath("/book");
   revalidatePath("/");
-  redirect("/manage");
+  redirect("/manage/packages");
 }
 
 export async function updatePackageAction(formData: FormData) {
@@ -146,10 +147,11 @@ export async function updatePackageAction(formData: FormData) {
   });
 
   revalidatePath("/manage");
+  revalidatePath("/manage/packages");
   revalidatePath("/book");
   revalidatePath("/");
   revalidatePath(`/l/${id}`);
-  redirect("/manage");
+  redirect("/manage/packages");
 }
 
 export async function deletePackageAction(formData: FormData) {
@@ -161,7 +163,7 @@ export async function deletePackageAction(formData: FormData) {
   const bookings = await prisma.booking.count({ where: { lookId: id } });
   if (bookings > 0) {
     redirect(
-      `/manage?error=${encodeURIComponent(
+      `/manage/packages?error=${encodeURIComponent(
         `That package has ${bookings} booking${bookings === 1 ? "" : "s"} against it and cannot be deleted. Edit it instead.`
       )}`
     );
@@ -172,7 +174,8 @@ export async function deletePackageAction(formData: FormData) {
   await prisma.look.delete({ where: { id } });
 
   revalidatePath("/manage");
+  revalidatePath("/manage/packages");
   revalidatePath("/book");
   revalidatePath("/");
-  redirect("/manage");
+  redirect("/manage/packages");
 }

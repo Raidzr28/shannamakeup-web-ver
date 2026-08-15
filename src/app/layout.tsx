@@ -5,6 +5,7 @@ import { getLanguage } from "@/lib/language";
 import { getSession } from "@/lib/auth";
 import { DesktopNav } from "@/components/shell/DesktopNav";
 import { ChatWidgetLoader } from "@/components/shell/ChatWidgetLoader";
+import { getWaitingChatCount } from "@/lib/inbox";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -24,6 +25,10 @@ export default async function RootLayout({
 }) {
   const [lang, session] = await Promise.all([getLanguage(), getSession()]);
 
+  // Only the artist has an inbox, so only she pays for this query.
+  const waitingChats =
+    session?.role === "ARTIST" ? await getWaitingChatCount() : 0;
+
   return (
     <html
       lang={lang === "id" ? "id" : "en"}
@@ -32,7 +37,7 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col bg-bg text-ink font-sans overflow-x-hidden">
         {/* The desktop chrome is CSS-gated, so the phone app never inherits it. */}
         <div className="hidden lg:contents">
-          <DesktopNav lang={lang} session={session} />
+          <DesktopNav lang={lang} session={session} waitingChats={waitingChats} />
         </div>
         <main className="flex-1 flex flex-col">{children}</main>
         <div className="hidden lg:contents">

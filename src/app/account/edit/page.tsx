@@ -34,7 +34,7 @@ export default async function EditProfilePage() {
   const body = (
     <div className="flex flex-col gap-4">
       <ProfileForm lang={lang} profile={profile} />
-      <PasswordForm lang={lang} />
+      <PasswordForm lang={lang} hasPassword={user.passwordHash !== null} />
     </div>
   );
 

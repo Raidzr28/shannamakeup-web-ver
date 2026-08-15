@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AuthShell } from "@/components/auth/AuthShell";
+import { GoogleButton } from "@/components/auth/GoogleButton";
 import { Input, Label } from "@/components/ui/Field";
 import { getLanguage } from "@/lib/language";
 import { getSession } from "@/lib/auth";
+import { googleConfig } from "@/lib/google-oauth";
 import { l } from "@/lib/i18n";
 import { registerAction } from "@/lib/actions/auth";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 
 export default async function RegisterPage({
   searchParams,
@@ -20,6 +23,7 @@ export default async function RegisterPage({
   if (session) redirect(params.next ?? "/");
 
   const next = params.next ?? "/";
+  const googleEnabled = googleConfig() !== null;
 
   return (
     <AuthShell back={`/login?next=${encodeURIComponent(next)}`}>
@@ -57,13 +61,29 @@ export default async function RegisterPage({
             />
           </Label>
         </div>
-        <button
-          type="submit"
+        <SubmitButton
           className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
         >
           {l(lang, "Register", "Daftar")}
-        </button>
+        </SubmitButton>
       </form>
+
+      {googleEnabled && (
+        <>
+          <div className="flex items-center gap-3 text-[#9c8975] text-[11.5px] my-4">
+            <span className="flex-1 h-px bg-line-2" />
+            {l(lang, "or", "atau")}
+            <span className="flex-1 h-px bg-line-2" />
+          </div>
+          {/* Above the terms line on purpose: it has to read as covering this
+              route into an account as much as the form above it. */}
+          <GoogleButton
+            lang={lang}
+            next={next}
+            label={l(lang, "Sign up with Google", "Daftar dengan Google")}
+          />
+        </>
+      )}
 
       <p className="mt-4 text-[11.5px] leading-relaxed text-[#9c8975]">
         {l(

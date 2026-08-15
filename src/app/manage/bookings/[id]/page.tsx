@@ -1,11 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { Media } from "@/components/ui/Media";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { MobileOnly, DesktopOnly } from "@/components/shell/Viewports";
 import { getLanguage } from "@/lib/language";
 import { requireArtistPage } from "@/lib/require-artist";
 import { prisma } from "@/lib/prisma";
 import { asBookingStatus, statusLabel, statusTone } from "@/lib/booking-status";
+import { countdownLabel, locale, longDate, waitingLabel } from "@/lib/booking-time";
 import { whatsappLink, whatsappDisplay } from "@/lib/support";
 import { EXTRAS, venueById, payMethodById } from "@/lib/static-data";
 import { l, idr } from "@/lib/i18n";
@@ -31,15 +34,38 @@ export default async function ManageBookingPage({
   });
   if (!booking) notFound();
 
+  // Day bounds rather than an equality match: the column is a timestamp, and a
+  // clash is about the calendar day, not the stored instant.
+  const dayStart = new Date(booking.date);
+  dayStart.setHours(0, 0, 0, 0);
+  const dayEnd = new Date(dayStart);
+  dayEnd.setDate(dayEnd.getDate() + 1);
+
+  const [sameDay, clientHistory] = await Promise.all([
+    // Shana takes one booking a day, so anything else live on this date is the
+    // single most important thing to see before accepting.
+    prisma.booking.findMany({
+      where: {
+        id: { not: booking.id },
+        status: { not: "declined" },
+        date: { gte: dayStart, lt: dayEnd },
+      },
+      include: { look: true },
+      orderBy: { createdAt: "asc" },
+    }),
+    prisma.booking.findMany({
+      where: { userId: booking.userId },
+      select: { status: true },
+    }),
+  ]);
+
+  const now = new Date();
   const status = asBookingStatus(booking.status);
   const extras = JSON.parse(booking.extras) as string[];
   const venue = venueById(booking.venue);
   const method = payMethodById(booking.method);
-  const whenLine = `${booking.date.toLocaleDateString(lang === "id" ? "id-ID" : "en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  })} · ${booking.timeLabel}`;
+  const confirmedBefore = clientHistory.filter((b) => b.status === "confirmed").length;
+  const isFirstBooking = clientHistory.length <= 1;
 
   // The client's own number, not the studio's — this button is the artist
   // reaching out about this specific booking.
@@ -54,25 +80,70 @@ export default async function ManageBookingPage({
     />
   );
 
+  const fact = (label: string, value: React.ReactNode) => (
+    <div className="flex flex-col gap-1">
+      <span className="text-[10.5px] font-bold tracking-[0.05em] uppercase text-muted-3">
+        {label}
+      </span>
+      <span className="text-[13.5px] font-semibold text-ink leading-snug">{value}</span>
+    </div>
+  );
+
   const body = (
     <div className="flex flex-col gap-4">
-      <div className="glass-card p-[18px] flex flex-col gap-2">
-        <span className="flex items-center gap-2 justify-between">
-          <span className="font-extrabold text-lg tracking-tight">{booking.name}</span>
-          <span
-            className={`flex-none text-[10.5px] font-bold px-2.5 py-1 rounded-full ${statusTone(status)}`}
-          >
-            {statusLabel(lang, status)}
+      <div className="glass-card p-[18px] flex flex-col gap-3">
+        <div className="flex gap-3.5 items-start">
+          <span className="flex-none w-12 h-12">
+            <Media
+              src={booking.user.avatarUrl}
+              alt={booking.name}
+              shape="circle"
+              placeholder={booking.name.slice(0, 1).toUpperCase()}
+              className="w-12 h-12"
+              sizes="48px"
+            />
           </span>
-        </span>
-        <span className="text-[12px] text-muted-3">
-          {booking.code} · {l(lang, "requested", "diminta")}{" "}
-          {booking.createdAt.toLocaleDateString(lang === "id" ? "id-ID" : "en-GB", {
-            day: "numeric",
-            month: "short",
-          })}
-        </span>
-        <div className="flex flex-col gap-1 mt-1.5 text-[13px] text-[#4a3b32]">
+          <span className="flex-1 min-w-0">
+            <span className="flex items-center gap-2 justify-between">
+              <span className="font-extrabold text-lg tracking-tight truncate">
+                {booking.name}
+              </span>
+              <span
+                className={`flex-none text-[10.5px] font-bold px-2.5 py-1 rounded-full ${statusTone(status)}`}
+              >
+                {statusLabel(lang, status)}
+              </span>
+            </span>
+            <span className="block text-[12px] text-muted-3 mt-1">
+              {booking.code} · {waitingLabel(lang, booking.createdAt, now)}
+            </span>
+          </span>
+        </div>
+
+        <div className="flex flex-wrap gap-1.5">
+          {isFirstBooking ? (
+            <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[#e3ece2] text-[#3f6b45]">
+              {l(lang, "First booking", "Pesanan pertama")}
+            </span>
+          ) : (
+            <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[#e8dcf0] text-[#6b4a8a]">
+              {l(
+                lang,
+                `${clientHistory.length} bookings · ${confirmedBefore} confirmed`,
+                `${clientHistory.length} pesanan · ${confirmedBefore} terkonfirmasi`
+              )}
+            </span>
+          )}
+          <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[#efe4d5] text-muted-2">
+            {l(lang, "Client since", "Klien sejak")}{" "}
+            {booking.user.createdAt.toLocaleDateString(locale(lang), {
+              month: "short",
+              year: "numeric",
+            })}
+          </span>
+        </div>
+
+        <div className="flex flex-col gap-1 text-[13px] text-[#4a3b32]">
           <span>✉ {booking.email}</span>
           <span>☎ {booking.phone || l(lang, "no number given", "tidak ada nomor")}</span>
           <span>📍 {booking.city || "—"}</span>
@@ -85,12 +156,70 @@ export default async function ManageBookingPage({
             )}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 h-11 rounded-2xl text-[13.5px] font-bold flex items-center justify-center text-ink glass-light"
+            className="h-11 rounded-2xl text-[13.5px] font-bold flex items-center justify-center text-ink glass-light"
           >
             {l(lang, "WhatsApp the client", "WhatsApp klien")} · {whatsappDisplay(clientPhone)}
           </a>
         )}
       </div>
+
+      {/* The four things that decide whether the date can be taken, before any
+          of the money detail. */}
+      <div className="glass-card p-[18px]">
+        <div className="flex items-baseline justify-between gap-3">
+          <div className="text-xs font-bold tracking-[0.04em] uppercase text-muted-3">
+            {l(lang, "At a glance", "Ringkasan")}
+          </div>
+          <span className="text-[11.5px] font-bold text-maroon">
+            {countdownLabel(lang, booking.date, now)}
+          </span>
+        </div>
+        <div className="grid grid-cols-2 gap-x-3 gap-y-3.5 mt-3">
+          {fact(l(lang, "Date", "Tanggal"), longDate(lang, booking.date))}
+          {fact(l(lang, "Time", "Waktu"), booking.timeLabel)}
+          {fact(l(lang, "Venue", "Lokasi"), l(lang, venue.name, venue.nameId))}
+          {fact(
+            l(lang, "Package", "Paket"),
+            l(lang, booking.look.title, booking.look.titleId)
+          )}
+        </div>
+      </div>
+
+      {sameDay.length > 0 && (
+        <div className="glass-card p-[18px] border-[1.5px] border-[#8a6320]/35">
+          <div className="text-xs font-bold tracking-[0.04em] uppercase text-[#8a6320]">
+            {l(lang, "Also on this day", "Juga di hari ini")}
+          </div>
+          <p className="m-0 mt-2 text-[12.5px] leading-snug text-muted">
+            {l(
+              lang,
+              "You normally take one booking a day. Check these before accepting.",
+              "Biasanya kamu ambil satu pesanan per hari. Periksa ini sebelum menerima."
+            )}
+          </p>
+          <div className="flex flex-col gap-2 mt-3">
+            {sameDay.map((other) => (
+              <Link
+                key={other.id}
+                href={`/manage/bookings/${other.id}`}
+                className="flex items-center gap-2 justify-between rounded-2xl bg-tint px-3.5 py-2.5"
+              >
+                <span className="min-w-0">
+                  <span className="block text-[13px] font-bold truncate">{other.name}</span>
+                  <span className="block text-[11.5px] text-muted-3 truncate">
+                    {l(lang, other.look.title, other.look.titleId)} · {other.timeLabel}
+                  </span>
+                </span>
+                <span
+                  className={`flex-none text-[10.5px] font-bold px-2.5 py-1 rounded-full ${statusTone(other.status)}`}
+                >
+                  {statusLabel(lang, other.status)}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="glass-card p-[18px]">
         <div className="text-xs font-bold tracking-[0.04em] uppercase text-muted-3">
@@ -107,14 +236,6 @@ export default async function ManageBookingPage({
               <span className="font-semibold">{idr(e.price)}</span>
             </div>
           ))}
-          <div className="flex justify-between gap-3">
-            <span className="text-muted">{l(lang, "When", "Kapan")}</span>
-            <span className="font-semibold">{whenLine}</span>
-          </div>
-          <div className="flex justify-between gap-3">
-            <span className="text-muted">{l(lang, "Where", "Lokasi")}</span>
-            <span className="font-semibold">{l(lang, venue.name, venue.nameId)}</span>
-          </div>
         </div>
         <div className="h-px bg-line my-3.5" />
         <div className="flex justify-between font-extrabold text-[15.5px]">
@@ -153,7 +274,7 @@ export default async function ManageBookingPage({
             {booking.paymentSentAt && (
               <span>
                 {l(lang, "Sent", "Dikirim")}:{" "}
-                {booking.paymentSentAt.toLocaleString(lang === "id" ? "id-ID" : "en-GB")}
+                {booking.paymentSentAt.toLocaleString(locale(lang))}
               </span>
             )}
           </div>
@@ -194,22 +315,22 @@ export default async function ManageBookingPage({
           </div>
           <form action={acceptBookingAction}>
             <input type="hidden" name="id" value={booking.id} />
-            <button
-              type="submit"
+            <SubmitButton
+              pendingLabel={l(lang, "Accepting…", "Menerima…")}
               className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
             >
               {l(lang, "Accept and ask for the deposit", "Terima dan minta deposit")}
-            </button>
+            </SubmitButton>
           </form>
           <form action={declineBookingAction} className="flex flex-col gap-2">
             <input type="hidden" name="id" value={booking.id} />
             {reasonField(l(lang, "Reason (shown to the client)", "Alasan (tampil ke klien)"))}
-            <button
-              type="submit"
+            <SubmitButton
+              pendingLabel={l(lang, "Declining…", "Menolak…")}
               className="w-full h-[50px] rounded-2xl text-[14.5px] font-bold cursor-pointer text-[#b23a3a] glass-light border-[#b23a3a]/30"
             >
               {l(lang, "Decline this date", "Tolak tanggal ini")}
-            </button>
+            </SubmitButton>
           </form>
         </div>
       )}
@@ -226,12 +347,12 @@ export default async function ManageBookingPage({
           <form action={declineBookingAction} className="flex flex-col gap-2">
             <input type="hidden" name="id" value={booking.id} />
             {reasonField(l(lang, "Reason (shown to the client)", "Alasan (tampil ke klien)"))}
-            <button
-              type="submit"
+            <SubmitButton
+              pendingLabel={l(lang, "Cancelling…", "Membatalkan…")}
               className="w-full h-[50px] rounded-2xl text-[14.5px] font-bold cursor-pointer text-[#b23a3a] glass-light border-[#b23a3a]/30"
             >
               {l(lang, "Cancel this booking", "Batalkan pesanan ini")}
-            </button>
+            </SubmitButton>
           </form>
         </div>
       )}
@@ -243,22 +364,22 @@ export default async function ManageBookingPage({
           </div>
           <form action={confirmPaymentAction}>
             <input type="hidden" name="id" value={booking.id} />
-            <button
-              type="submit"
+            <SubmitButton
+              pendingLabel={l(lang, "Confirming…", "Mengonfirmasi…")}
               className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
             >
               {l(lang, "Confirm payment and lock the date", "Konfirmasi bayaran dan kunci tanggal")}
-            </button>
+            </SubmitButton>
           </form>
           <form action={rejectPaymentAction} className="flex flex-col gap-2">
             <input type="hidden" name="id" value={booking.id} />
             {reasonField(l(lang, "What was wrong with it?", "Apa yang kurang?"))}
-            <button
-              type="submit"
+            <SubmitButton
+              pendingLabel={l(lang, "Sending back…", "Mengirim balik…")}
               className="w-full h-[50px] rounded-2xl text-[14.5px] font-bold cursor-pointer text-ink glass-light"
             >
               {l(lang, "Ask for another receipt", "Minta bukti lain")}
-            </button>
+            </SubmitButton>
           </form>
         </div>
       )}
@@ -271,8 +392,7 @@ export default async function ManageBookingPage({
               "Confirmed and paid. The client can now see the studio's WhatsApp contact.",
               "Terkonfirmasi dan dibayar. Klien sekarang bisa melihat kontak WhatsApp studio."
             )}
-            {booking.paidAt &&
-              ` · ${booking.paidAt.toLocaleDateString(lang === "id" ? "id-ID" : "en-GB")}`}
+            {booking.paidAt && ` · ${booking.paidAt.toLocaleDateString(locale(lang))}`}
           </p>
         </div>
       )}

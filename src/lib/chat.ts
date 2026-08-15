@@ -2,6 +2,20 @@ import { idr } from "./i18n";
 import type { Lang } from "./i18n";
 import { DEPOSIT_RATE } from "./static-data";
 
+/** Who wrote a message. Stored in `Message.who`, which predates this constant —
+ * "You" is kept verbatim because existing rows use it and the client panel
+ * decides bubble alignment by comparing against it. */
+export const CLIENT_AUTHOR = "You";
+export const BOT_AUTHOR = "bot";
+export const ARTIST_AUTHOR = "Shana";
+
+/** The assistant answers until Shana joins the thread, then stays quiet: two
+ * voices replying to the same client would contradict each other, and only one
+ * of them can actually accept a date. */
+export function artistHasReplied(messages: { who: string }[]) {
+  return messages.some((m) => m.who === ARTIST_AUTHOR);
+}
+
 export function botReply(
   query: string,
   lang: Lang,

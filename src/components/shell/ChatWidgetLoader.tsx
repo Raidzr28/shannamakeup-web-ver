@@ -6,6 +6,11 @@ import { l } from "@/lib/i18n";
 
 export async function ChatWidgetLoader({ lang }: { lang: Lang }) {
   const user = await getCurrentUser();
+
+  // This widget is a client talking to the studio. The artist is the studio —
+  // hers is the client inbox at /manage/chats, not a thread with herself.
+  if (user?.role === "ARTIST") return null;
+
   const rows = user
     ? await prisma.message.findMany({
         where: { userId: user.id },

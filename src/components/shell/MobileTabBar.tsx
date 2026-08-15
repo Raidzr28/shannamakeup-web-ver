@@ -27,16 +27,39 @@ export function MobileTabBar({
   // the slot a client uses to book.
   const middleTab = isArtist
     ? {
-        name: l(lang, "Manage", "Kelola"),
-        href: "/manage",
+        // Home is the studio dashboard for the artist, so this slot is the
+        // price list rather than a second way into the same screen.
+        name: l(lang, "Packages", "Paket"),
+        href: "/manage/packages",
         Icon: ManageIcon,
-        match: (p: string) => p.startsWith("/manage"),
+        // Excludes the queues that have their own tabs, so only one lights up.
+        match: (p: string) =>
+          p.startsWith("/manage") &&
+          !p.startsWith("/manage/bookings") &&
+          !p.startsWith("/manage/chats"),
       }
     : {
         name: l(lang, "Book", "Pesan"),
         href: "/book",
         Icon: BookIcon,
         match: (p: string) => p.startsWith("/book"),
+      };
+
+  // /orders lists the bookings you placed yourself, which for the artist is
+  // always empty — she takes bookings, she does not make them. Hers points at
+  // the queue of client requests instead, which is what "Orders" means to her.
+  const ordersTab = isArtist
+    ? {
+        name: l(lang, "Orders", "Pesanan"),
+        href: "/manage/bookings",
+        Icon: OrdersIcon,
+        match: (p: string) => p.startsWith("/manage/bookings"),
+      }
+    : {
+        name: l(lang, "Orders", "Pesanan"),
+        href: "/orders",
+        Icon: OrdersIcon,
+        match: (p: string) => p.startsWith("/orders"),
       };
 
   const tabs = [
@@ -53,12 +76,7 @@ export function MobileTabBar({
       match: (p: string) => p.startsWith("/looks"),
     },
     middleTab,
-    {
-      name: l(lang, "Orders", "Pesanan"),
-      href: "/orders",
-      Icon: OrdersIcon,
-      match: (p: string) => p.startsWith("/orders"),
-    },
+    ordersTab,
     {
       name: l(lang, "Profile", "Profil"),
       href: "/account",

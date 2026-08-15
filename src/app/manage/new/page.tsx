@@ -25,7 +25,7 @@ export default async function NewPackagePage({
         <div className="ambient-glow min-h-dvh flex flex-col pt-[58px]">
           <div className="px-5 pt-2 flex items-center gap-3">
             <Link
-              href="/manage"
+              href="/manage/packages"
               className="w-[38px] h-[38px] rounded-[13px] flex items-center justify-center glass-light text-[15px] text-ink"
             >
               ←
@@ -38,7 +38,7 @@ export default async function NewPackagePage({
 
       <DesktopOnly>
         <div className="ambient-glow flex-1 px-11 py-11">
-          <Link href="/manage" className="text-[13px] font-semibold text-muted">
+          <Link href="/manage/packages" className="text-[13px] font-semibold text-muted">
             ← {l(lang, "Back to packages", "Kembali ke paket")}
           </Link>
           <h1 className="text-4xl font-extrabold tracking-tight mt-4 mb-7">{heading}</h1>

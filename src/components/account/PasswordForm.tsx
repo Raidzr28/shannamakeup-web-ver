@@ -6,10 +6,27 @@ import { changePasswordAction } from "@/lib/actions/profile";
 import type { Lang } from "@/lib/i18n";
 import { l } from "@/lib/i18n";
 
-export function PasswordForm({ lang }: { lang: Lang }) {
+/** Changes a password, or sets the first one.
+ *
+ * An account that arrived through the Google button has no password to ask
+ * for, so the current-password field is dropped rather than shown and left
+ * impossible to fill — it is `required`, and a Google-only user would be stuck
+ * looking at a form that cannot be submitted. The action makes the same
+ * distinction server-side; this only keeps the form honest about it. */
+export function PasswordForm({
+  lang,
+  hasPassword,
+}: {
+  lang: Lang;
+  hasPassword: boolean;
+}) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  // Seeded from the server, then flipped on the first successful save. Without
+  // that, setting a password and immediately changing it again would submit
+  // without the current one and be refused by an action that now demands it.
+  const [needsCurrent, setNeedsCurrent] = useState(hasPassword);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -24,6 +41,7 @@ export function PasswordForm({ lang }: { lang: Lang }) {
       if (!outcome.ok)
         throw new Error(outcome.error ?? "Could not change your password.");
       setSaved(true);
+      setNeedsCurrent(true);
       form.reset();
     } catch (err) {
       setError(
@@ -41,9 +59,26 @@ export function PasswordForm({ lang }: { lang: Lang }) {
       <div className="text-xs font-bold tracking-[0.04em] uppercase text-muted-3">
         {l(lang, "Password", "Kata sandi")}
       </div>
-      <Label label={l(lang, "Current password", "Kata sandi saat ini")}>
-        <Input type="password" name="current" autoComplete="current-password" required />
-      </Label>
+
+      {needsCurrent ? (
+        <Label label={l(lang, "Current password", "Kata sandi saat ini")}>
+          <Input
+            type="password"
+            name="current"
+            autoComplete="current-password"
+            required
+          />
+        </Label>
+      ) : (
+        <p className="m-0 text-[12.5px] leading-relaxed text-muted">
+          {l(
+            lang,
+            "You signed in with Google, so you have no password yet. Set one to be able to sign in with your email as well.",
+            "Kamu masuk dengan Google, jadi belum punya kata sandi. Atur satu agar bisa masuk dengan email juga."
+          )}
+        </p>
+      )}
+
       <Label label={l(lang, "New password", "Kata sandi baru")}>
         <Input
           type="password"
@@ -76,7 +111,9 @@ export function PasswordForm({ lang }: { lang: Lang }) {
           role="status"
           className="m-0 text-[13px] leading-snug text-maroon bg-tint border border-maroon/20 rounded-2xl px-3.5 py-3"
         >
-          {l(lang, "Password changed.", "Kata sandi diubah.")}
+          {/* Neutral wording covers both a first password and a change,
+              without the message having to guess which just happened. */}
+          {l(lang, "Password saved.", "Kata sandi disimpan.")}
         </p>
       )}
 
@@ -87,7 +124,9 @@ export function PasswordForm({ lang }: { lang: Lang }) {
       >
         {busy
           ? l(lang, "Saving…", "Menyimpan…")
-          : l(lang, "Change password", "Ubah kata sandi")}
+          : needsCurrent
+            ? l(lang, "Change password", "Ubah kata sandi")
+            : l(lang, "Set password", "Atur kata sandi")}
       </button>
     </form>
   );

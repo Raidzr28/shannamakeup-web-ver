@@ -6,6 +6,7 @@ import { MobileOnly, DesktopOnly } from "@/components/shell/Viewports";
 import { getLanguage } from "@/lib/language";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getWaitingChatCount } from "@/lib/inbox";
 import { l } from "@/lib/i18n";
 import { logoutAction } from "@/lib/actions/auth";
 
@@ -31,12 +32,15 @@ export default async function AccountPage() {
 
   // Badge on the artist's queue link, so a waiting request is visible without
   // opening the page.
-  const pendingCount =
+  const [pendingCount, waitingChats] =
     user?.role === "ARTIST"
-      ? await prisma.booking.count({
-          where: { status: { in: ["requested", "payment_review"] } },
-        })
-      : 0;
+      ? await Promise.all([
+          prisma.booking.count({
+            where: { status: { in: ["requested", "payment_review"] } },
+          }),
+          getWaitingChatCount(),
+        ])
+      : [0, 0];
 
   const body = (
     <div className="flex flex-col gap-4">
@@ -142,13 +146,33 @@ export default async function AccountPage() {
                     {
                       name: l(lang, "Manage packages", "Kelola paket"),
                       meta: "",
-                      href: "/manage",
+                      href: "/manage/packages",
+                    },
+                    {
+                      name: l(lang, "Client chats", "Chat klien"),
+                      meta: waitingChats ? String(waitingChats) : "",
+                      href: "/manage/chats",
+                    },
+                    {
+                      name: l(lang, "Knowledge base", "Basis pengetahuan"),
+                      meta: "",
+                      href: "/manage/knowledge",
                     },
                   ]
                 : []),
               { name: l(lang, "My orders", "Pesanan saya"), meta: String(orderCount), href: "/orders" },
               { name: l(lang, "My posts", "Unggahanku"), meta: String(postCount), href: "/looks" },
-              { name: l(lang, "Chat with Shana", "Chat dengan Shana"), meta: "", href: "/chat" },
+              // The artist's own thread with herself is not useful; hers is the
+              // client inbox above.
+              ...(user.role === "ARTIST"
+                ? []
+                : [
+                    {
+                      name: l(lang, "Chat with Shana", "Chat dengan Shana"),
+                      meta: "",
+                      href: "/chat",
+                    },
+                  ]),
             ].map((m) => (
               <Link
                 key={m.href}

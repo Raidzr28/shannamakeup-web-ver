@@ -56,7 +56,7 @@ export default async function LooksPage() {
             </div>
           </div>
           <Link
-            href="/chat"
+            href={user?.role === "ARTIST" ? "/manage/chats" : "/chat"}
             className="w-[38px] h-[38px] rounded-[13px] flex items-center justify-center glass-light text-[15px]"
           >
             ✉

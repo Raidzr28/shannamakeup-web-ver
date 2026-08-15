@@ -3,6 +3,7 @@ import { Media } from "@/components/ui/Media";
 import { toggleLikeAction, toggleSaveAction } from "@/lib/actions/posts";
 import type { Lang } from "@/lib/i18n";
 import { l } from "@/lib/i18n";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 
 export type FeedPost = {
   id: string;
@@ -73,28 +74,26 @@ export function PostCard({
         <form action={toggleLikeAction}>
           <input type="hidden" name="postId" value={post.id} />
           <input type="hidden" name="next" value={next} />
-          <button
-            type="submit"
+          <SubmitButton
             className={`w-[38px] h-[38px] rounded-[13px] text-base cursor-pointer flex items-center justify-center ${
               post.liked ? "bg-[#c2415c] text-white" : "glass-light text-ink"
             }`}
           >
             {post.liked ? "♥" : "♡"}
-          </button>
+          </SubmitButton>
         </form>
         <span className="text-[13px] font-bold">{post.likes.toLocaleString("de-DE")}</span>
         <span className="flex-1" />
         <form action={toggleSaveAction}>
           <input type="hidden" name="postId" value={post.id} />
           <input type="hidden" name="next" value={next} />
-          <button
-            type="submit"
+          <SubmitButton
             className={`w-[38px] h-[38px] rounded-[13px] text-[15px] cursor-pointer flex items-center justify-center ${
               post.saved ? "glass-fill text-white" : "glass-light text-ink"
             }`}
           >
             {post.saved ? "★" : "☆"}
-          </button>
+          </SubmitButton>
         </form>
       </div>
 

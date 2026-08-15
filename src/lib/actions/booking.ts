@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -75,6 +76,11 @@ export async function createBookingAction(formData: FormData) {
       notes: notes || null,
     },
   });
+
+  // A new request has to show up in the artist's queue straight away. Every
+  // other transition refreshes these paths; creation was the one that did not.
+  revalidatePath("/manage/bookings");
+  revalidatePath("/orders");
 
   redirect(`/orders/${booking.id}`);
 }

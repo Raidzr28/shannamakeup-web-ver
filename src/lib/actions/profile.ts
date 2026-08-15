@@ -89,7 +89,13 @@ export async function changePasswordAction(formData: FormData): Promise<ProfileR
 
   // Checked even though the session already proves who they are: it is what
   // stops a walked-away-from browser being turned into a permanent takeover.
-  if (!(await verifyPassword(current, user.passwordHash)))
+  //
+  // An account that has only ever signed in with Google has no hash to check
+  // against, so there is nothing to ask for — that is the "add a password"
+  // case, and the form drops the field to match. The takeover guard really is
+  // weaker in that one case; the only thing that could replace it is a fresh
+  // round trip through Google, which is more machinery than this earns.
+  if (user.passwordHash && !(await verifyPassword(current, user.passwordHash)))
     return { ok: false, error: "Your current password is not right." };
   if (next.length < 6)
     return { ok: false, error: "The new password needs at least 6 characters." };

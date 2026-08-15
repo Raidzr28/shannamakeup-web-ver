@@ -16,13 +16,23 @@ enum Role {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  name         String
-  email        String   @unique
-  passwordHash String
-  role         Role     @default(CLIENT)
-  avatarUrl    String?
-  createdAt    DateTime @default(now())
+  id    String @id @default(cuid())
+  name  String
+  email String @unique
+
+  // Null for accounts that only ever signed in with Google — they never chose
+  // a password. Every password path checks for it rather than assuming a hash
+  // is there, and /account/edit lets such an account add one later.
+  passwordHash String?
+
+  // Google's `sub` claim, not the email. Google lets an account change its
+  // address, and `sub` is the one identifier that stays put when it does, so
+  // this is what a returning Google sign-in is matched on first.
+  googleId String? @unique
+
+  role      Role     @default(CLIENT)
+  avatarUrl String?
+  createdAt DateTime @default(now())
 
   // The public handle shown as @username on posts and stories. Optional in the
   // schema so adding it to a populated table needs no downtime, but every path
@@ -45,6 +55,63 @@ model User {
   saves    Save[]
   reviews  Review[]
   messages Message[]
+
+  chatThread ChatThread?
+}
+
+/** Per-client inbox metadata for the artist.
+ *
+ * Messages stay keyed by userId rather than moving under this model: every
+ * client has exactly one thread with Shana, and leaving the existing rows
+ * untouched means adding the inbox needs no data migration. This row only
+ * carries the flags the artist sets on a conversation. */
+model ChatThread {
+  id       String  @id @default(cuid())
+  userId   String  @unique
+  user     User    @relation(fields: [userId], references: [id])
+  pinned   Boolean @default(false)
+  archived Boolean @default(false)
+  // Mirrored from the newest message so the inbox can sort and show a
+  // timestamp without loading every thread's messages.
+  lastMessageAt DateTime @default(now())
+  // When the artist last opened this thread. A client message newer than this
+  // is what "waiting on you" means; null means she has never opened it.
+  lastReadAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([pinned, lastMessageAt])
+}
+
+/** Credentials the artist manages from inside the app, encrypted at rest.
+ *
+ * `cipher` is AES-256-GCM under a key derived from AUTH_SECRET, so a dump of
+ * this table on its own reveals nothing. `hint` is the last four characters
+ * only — enough to tell two keys apart in the UI without ever sending the
+ * secret back to a browser. */
+model AppSecret {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  cipher    String
+  hint      String
+  updatedAt DateTime @updatedAt
+  updatedBy String?
+}
+
+/** Studio facts the assistant answers from — prices, travel policy, timings.
+ *
+ * Edited by the artist in settings and injected into the model's system
+ * prompt, so answers can change without a deploy. */
+model KnowledgeEntry {
+  id        String   @id @default(cuid())
+  title     String
+  body      String
+  // Unpublishing beats deleting for a fact that is only wrong this season.
+  enabled   Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([enabled, order])
 }
 
 model Look {

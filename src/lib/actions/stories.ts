@@ -5,7 +5,9 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-export const STORY_LIFETIME_MS = 24 * 60 * 60 * 1000;
+// Not exported: a "use server" file may only export async functions, and a
+// plain value here makes Next throw on module load, before any action runs.
+const STORY_LIFETIME_MS = 24 * 60 * 60 * 1000;
 
 const MAX_CAPTION = 280;
 

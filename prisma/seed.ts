@@ -1,7 +1,26 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { randomBytes } from "crypto";
 
 const prisma = new PrismaClient();
+
+/** Seed passwords come from the environment, never from this file.
+ *
+ * A literal here is a working admin password published in the repository —
+ * .gitignore cannot help, because this file has to be committed. When the var
+ * is unset we mint a random one and print it once, so a local seed still works
+ * without ever creating a guessable account.
+ *
+ * Only the `create` branches below use these, so re-seeding an existing
+ * database leaves a password you have already changed alone. */
+function seedPassword(envVar: string, label: string) {
+  const configured = process.env[envVar]?.trim();
+  if (configured) return configured;
+
+  const generated = randomBytes(9).toString("base64url");
+  console.log(`[seed] ${envVar} unset — generated ${label} password: ${generated}`);
+  return generated;
+}
 
 const LOOKS = [
   {
@@ -165,7 +184,10 @@ async function main() {
     });
   }
 
-  const artistPass = await bcrypt.hash("shana2026", 10);
+  const artistPass = await bcrypt.hash(
+    seedPassword("SEED_ARTIST_PASSWORD", "artist"),
+    10
+  );
   const artist = await prisma.user.upsert({
     where: { email: "shana@shanamakeup.id" },
     // Repeated in update so re-seeding an existing database also fills these in,
@@ -186,7 +208,10 @@ async function main() {
     },
   });
 
-  const clientPass = await bcrypt.hash("aruna2026", 10);
+  const clientPass = await bcrypt.hash(
+    seedPassword("SEED_CLIENT_PASSWORD", "client"),
+    10
+  );
   const client = await prisma.user.upsert({
     where: { email: "aruna@studio.co" },
     update: { username: "aruna.p", city: "Jakarta" },
@@ -271,8 +296,11 @@ async function main() {
   }
 
   console.log("Seed complete.");
-  console.log("Artist login: shana@shanamakeup.id / shana2026");
-  console.log("Client login: aruna@studio.co / aruna2026");
+  console.log("Artist login: shana@shanamakeup.id");
+  console.log("Client login: aruna@studio.co");
+  console.log(
+    "Passwords come from SEED_ARTIST_PASSWORD / SEED_CLIENT_PASSWORD, or were printed above if generated."
+  );
 }
 
 main()

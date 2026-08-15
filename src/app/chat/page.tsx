@@ -45,8 +45,11 @@ export default async function ChatPage() {
 
   return (
     <>
-      {/* Phone: the thread owns the whole screen. */}
-      <div className="lg:hidden ambient-glow h-dvh flex flex-col pt-[58px] w-full max-w-[560px] mx-auto">
+      {/* Phone: the thread owns the whole screen. Unlike the scrolling pages,
+          this one is exactly viewport-tall, so the usual 58px top band would
+          come straight out of the conversation — the header provides its own
+          spacing, and env() covers a notch where there is one. */}
+      <div className="lg:hidden ambient-glow h-dvh overflow-hidden flex flex-col pt-[env(safe-area-inset-top)] w-full max-w-[560px] mx-auto">
         {header}
         <ChatPanel lang={lang} messages={messages} signedIn variant="full" />
       </div>

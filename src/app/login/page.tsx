@@ -1,25 +1,36 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AuthShell } from "@/components/auth/AuthShell";
+import { GoogleButton } from "@/components/auth/GoogleButton";
 import { Input, Label } from "@/components/ui/Field";
 import { getLanguage } from "@/lib/language";
 import { getSession } from "@/lib/auth";
+import { googleConfig } from "@/lib/google-oauth";
 import { l } from "@/lib/i18n";
-import { loginAction, demoArtistLoginAction } from "@/lib/actions/auth";
+import { SubmitButton } from "@/components/ui/SubmitButton";
+import {
+  loginAction,
+  demoArtistLoginAction,
+  demoLoginEnabled,
+} from "@/lib/actions/auth";
 
 export default async function LoginPage({
   searchParams,
 }: {
   searchParams: Promise<{ next?: string; error?: string; reason?: string }>;
 }) {
-  const [lang, session, params] = await Promise.all([
+  const [lang, session, params, demoLogin] = await Promise.all([
     getLanguage(),
     getSession(),
     searchParams,
+    demoLoginEnabled(),
   ]);
   if (session) redirect(params.next ?? "/");
 
   const next = params.next ?? "/";
+  // Hidden rather than shown-and-broken when the deploy has no OAuth client.
+  // The route handler refuses on its own too, so this is presentation only.
+  const googleEnabled = googleConfig() !== null;
 
   return (
     <AuthShell>
@@ -57,29 +68,38 @@ export default async function LoginPage({
             <Input name="password" type="password" placeholder="••••••••" required />
           </Label>
         </div>
-        <button
-          type="submit"
+        <SubmitButton
+          pendingLabel={l(lang, "Signing in…", "Masuk…")}
           className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
         >
           {l(lang, "Sign in", "Masuk")}
-        </button>
+        </SubmitButton>
       </form>
 
-      <div className="flex items-center gap-3 text-[#9c8975] text-[11.5px] my-4">
-        <span className="flex-1 h-px bg-line-2" />
-        {l(lang, "or", "atau")}
-        <span className="flex-1 h-px bg-line-2" />
-      </div>
+      {/* One divider covers whatever alternatives exist below it, so turning
+          either of them off does not leave a stray "or" behind. */}
+      {(googleEnabled || demoLogin) && (
+        <div className="flex items-center gap-3 text-[#9c8975] text-[11.5px] my-4">
+          <span className="flex-1 h-px bg-line-2" />
+          {l(lang, "or", "atau")}
+          <span className="flex-1 h-px bg-line-2" />
+        </div>
+      )}
 
-      <form action={demoArtistLoginAction}>
-        <input type="hidden" name="next" value={next} />
-        <button
-          type="submit"
-          className="w-full h-[50px] rounded-2xl text-ink text-[14.5px] font-bold cursor-pointer glass-light"
-        >
-          {l(lang, "Sign in as the artist", "Masuk sebagai artist")}
-        </button>
-      </form>
+      {googleEnabled && <GoogleButton lang={lang} next={next} />}
+
+      {/* Local convenience only. The action refuses to run in production
+          regardless of whether this button is rendered. */}
+      {demoLogin && (
+        <form action={demoArtistLoginAction} className={googleEnabled ? "mt-3" : ""}>
+          <input type="hidden" name="next" value={next} />
+          <SubmitButton
+            className="w-full h-[50px] rounded-2xl text-ink text-[14.5px] font-bold cursor-pointer glass-light"
+          >
+            {l(lang, "Sign in as the artist", "Masuk sebagai artist")}
+          </SubmitButton>
+        </form>
+      )}
 
       <Link
         href={`/register?next=${encodeURIComponent(next)}`}
@@ -88,11 +108,20 @@ export default async function LoginPage({
         {l(lang, "No account yet? Register", "Belum punya akun? Daftar")}
       </Link>
 
-      <div className="glass-card p-4 mt-6 text-[12px] leading-relaxed text-muted">
-        <strong className="text-ink">{l(lang, "Demo accounts", "Akun demo")}</strong>
-        <div className="mt-1.5">Client — aruna@studio.co / aruna2026</div>
-        <div>Artist — shana@shanamakeup.id / shana2026</div>
-      </div>
+      {/* Never in production: this block printed working credentials, the
+          artist's among them, to every visitor of the public login page. */}
+      {demoLogin && (
+        <div className="glass-card p-4 mt-6 text-[12px] leading-relaxed text-muted">
+          <strong className="text-ink">{l(lang, "Demo accounts", "Akun demo")}</strong>
+          <div className="mt-1.5">
+            {l(
+              lang,
+              "Seeded locally from SEED_ARTIST_PASSWORD and SEED_CLIENT_PASSWORD.",
+              "Di-seed lokal dari SEED_ARTIST_PASSWORD dan SEED_CLIENT_PASSWORD."
+            )}
+          </div>
+        </div>
+      )}
     </AuthShell>
   );
 }

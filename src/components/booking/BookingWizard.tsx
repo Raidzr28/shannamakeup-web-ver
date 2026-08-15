@@ -5,6 +5,7 @@ import Link from "next/link";
 import clsx from "clsx";
 import { Input, Textarea, Label } from "@/components/ui/Field";
 import { Radio, Check } from "@/components/ui/Option";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { createBookingAction } from "@/lib/actions/booking";
 import type { Lang } from "@/lib/i18n";
 import { l, idr } from "@/lib/i18n";
@@ -459,12 +460,14 @@ export function BookingWizard({
             </Link>
           )}
           {step === "pay" ? (
-            <button
-              type="submit"
+            // The only step that writes: a second tap here would create a
+            // second booking, with its own code and its own deposit.
+            <SubmitButton
+              pendingLabel={l(lang, "Sending…", "Mengirim…")}
               className="flex-1 h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
             >
               {nextLabel}
-            </button>
+            </SubmitButton>
           ) : (
             <button
               type="button"
