@@ -188,7 +188,7 @@
 ::-webkit-scrollbar-thumb {
   background: var(--paes-prada-deep);
   border: 2px solid var(--paes-ink);
-  border-radius: 99px;
+  border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--paes-prada);
@@ -233,23 +233,20 @@ button:focus-visible {
  * leaf laid on ink, and leaf has an edge, not a haze. */
 
 @layer components {
+/* The page ground is plain warm ink. No grid.
+ *
+ * This carried a hairline two-axis lattice, justified as "the grid the
+ * ornament is set out on". That was a rationalisation: a decorative grid tiled
+ * at a fixed pixel cell is one of the most reliable generated-UI signatures,
+ * which is the exact thing this redesign exists to remove. It was also
+ * implicated in the Android repaint tearing — a viewport-sized gradient field
+ * re-rastering every time `dvh` changed as the URL bar collapsed.
+ *
+ * The lattice survives where it means something: inside `PaesGround`, as the
+ * prepared ground of an image slot with no photograph yet. */
 .ambient-glow,
 .ink-field {
   background-color: var(--paes-ink);
-  /* The lattice the ornament is set out on — prescribed geometry, not an
-     ambient haze. Two hairline grids at near-threshold contrast, so the ground
-     reads as ruled rather than lit. */
-  background-image:
-    repeating-linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--paes-prada) 5%, transparent) 0 1px,
-      transparent 1px 88px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      color-mix(in srgb, var(--paes-prada) 4%, transparent) 0 1px,
-      transparent 1px 88px
-    );
 }
 
 .glass-card,
@@ -316,9 +313,24 @@ button:focus-visible {
 
 .leaf-catch {
   position: relative;
-  isolation: isolate;
 }
-.leaf-catch::after {
+
+/* Desktop only, deliberately.
+ *
+ * The sweep runs an animated registered custom property through a gradient
+ * that is then clipped with `mask-composite: exclude`. That combination is
+ * fine on desktop and is a known trigger for compositing artefacts on Android
+ * GPU drivers — it forces a masked layer to re-raster every frame, and on a
+ * real phone the page tore: repeated wordmarks, doubled ornament, stale bands.
+ *
+ * A decorative shimmer is not worth a broken first viewport on the device most
+ * of these visitors actually use, and `pointer: fine` is the honest gate: the
+ * effect exists for a cursor to catch, not a thumb. */
+@media (hover: hover) and (pointer: fine) {
+  .leaf-catch {
+    isolation: isolate;
+  }
+  .leaf-catch::after {
   content: "";
   position: absolute;
   inset: -1px;
@@ -339,6 +351,7 @@ button:focus-visible {
     linear-gradient(#000 0 0) content-box exclude,
     linear-gradient(#000 0 0);
   animation: leaf-catch 1400ms cubic-bezier(0.16, 1, 0.3, 1) 220ms both;
+  }
 }
 @keyframes leaf-catch {
   from {

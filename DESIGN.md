@@ -43,6 +43,7 @@ rounded:
   arc-sm: "12px 12px 4px 4px"
   arc-md: "18px 18px 6px 6px"
   arc-lg: "26px 26px 8px 8px"
+  pill: "999px"
 spacing:
   gutter-mobile: "20px"
   gutter-desktop: "44px"
