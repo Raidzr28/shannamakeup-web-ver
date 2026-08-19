@@ -139,7 +139,7 @@ export function ChatPanel({
         <SubmitButton
           aria-label={l(lang, "Send", "Kirim")}
           pendingLabel="…"
-          className="w-[46px] h-[46px] flex-none rounded-2xl text-lg cursor-pointer prada-leaf"
+          className="flex h-[46px] w-[46px] flex-none items-center justify-center rounded-2xl cursor-pointer prada-leaf"
         >
           <ForwardIcon className="w-[18px] h-[18px]" />
         </SubmitButton>

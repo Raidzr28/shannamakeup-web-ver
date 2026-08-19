@@ -65,7 +65,7 @@ export function PostCard({
           sizes="(max-width: 768px) 100vw, 560px"
         />
         {post.packageName && (
-          <span className="absolute left-3 bottom-3 text-[11.5px] font-bold text-white px-3 py-1.5 rounded-full bg-[var(--paes-melati)]/45 border border-prada/25">
+          <span className="absolute left-3 bottom-3 text-[11.5px] font-bold text-white px-3 py-1.5 rounded-full bg-[var(--paes-ink)]/60 border border-prada/25">
             {post.packageName}
           </span>
         )}

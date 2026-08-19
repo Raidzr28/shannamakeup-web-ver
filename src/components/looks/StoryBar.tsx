@@ -10,7 +10,7 @@ import {
 } from "@/lib/actions/stories";
 import type { Lang } from "@/lib/i18n";
 import { l } from "@/lib/i18n";
-import { CloseIcon, EditIcon, HeartIcon, TrashIcon } from "@/components/ui/Icons";
+import { CloseIcon, EditIcon, HeartIcon, PlusIcon, TrashIcon } from "@/components/ui/Icons";
 
 export type Story = {
   id: string;
@@ -103,8 +103,8 @@ export function StoryBar({
             href="/looks/story"
             className="flex flex-col items-center gap-1.5 flex-none w-[70px] no-underline"
           >
-            <span className="relative w-16 h-16 rounded-full flex items-center justify-center box-border border-[1.5px] border-dashed border-maroon/50 glass-light text-xl text-maroon">
-              +
+            <span className="relative w-16 h-16 rounded-full flex items-center justify-center box-border border-[1.5px] border-dashed border-prada/50 bg-ground text-prada">
+              <PlusIcon className="w-6 h-6" />
             </span>
             <span className="text-[10.5px] font-semibold text-[var(--paes-melati-2)] max-w-[68px] overflow-hidden text-ellipsis whitespace-nowrap">
               {l(lang, "Your story", "Story kamu")}
@@ -124,9 +124,12 @@ export function StoryBar({
               <span
                 className={clsx(
                   "relative w-16 h-16 rounded-full flex items-center justify-center box-border p-[2.5px]",
+                  // `maroon` maps to gold in this world, so the old unseen
+                  // ring was a flat gold-to-gold gradient and read identically
+                  // to a seen one. Unseen is the lit ring; seen goes quiet.
                   isSeen
-                    ? "bg-gradient-to-br from-prada to-prada-lit/45"
-                    : "bg-gradient-to-br from-gold to-maroon"
+                    ? "bg-melati-3/35"
+                    : "bg-gradient-to-br from-prada-lit via-prada to-prada-deep"
                 )}
               >
                 <span className="w-full h-full rounded-full overflow-hidden bg-ground-3 border-2 border-prada/50 box-border">
@@ -153,7 +156,7 @@ export function StoryBar({
       </div>
 
       {active && (
-        <div className="fixed inset-0 z-50 flex flex-col pt-[58px] bg-[var(--paes-melati)]/95 backdrop-blur-lg animate-[pop-in_0.28s_ease]">
+        <div className="fixed inset-0 z-50 flex flex-col pt-[58px] bg-[var(--paes-ink)]/95 backdrop-blur-lg animate-[pop-in_0.28s_ease]">
           <div className="flex gap-1.5 px-3.5">
             {stories.map((s, i) => (
               <span
@@ -198,7 +201,7 @@ export function StoryBar({
                 <button
                   type="button"
                   onClick={() => setDraft(editing ? null : active.caption)}
-                  className="w-[34px] h-[34px] rounded-xl text-white text-sm cursor-pointer bg-white/16 border border-prada/28 backdrop-blur-md"
+                  className="flex h-[38px] w-[38px] items-center justify-center rounded-xl text-melati cursor-pointer bg-white/16 border border-prada/28 backdrop-blur-md"
                   aria-label={l(lang, "Edit caption", "Ubah keterangan")}
                 >
                   <EditIcon className="w-[18px] h-[18px]" />
@@ -206,7 +209,7 @@ export function StoryBar({
                 <button
                   type="button"
                   onClick={() => remove(active.id)}
-                  className="w-[34px] h-[34px] rounded-xl text-white text-sm cursor-pointer bg-[var(--paes-alarm)]/70 border border-prada/28 backdrop-blur-md"
+                  className="flex h-[38px] w-[38px] items-center justify-center rounded-xl text-melati cursor-pointer bg-[var(--paes-alarm)]/70 border border-prada/28 backdrop-blur-md"
                   aria-label={l(lang, "Delete story", "Hapus story")}
                 >
                   <TrashIcon className="w-[18px] h-[18px]" />
@@ -216,7 +219,7 @@ export function StoryBar({
             <button
               type="button"
               onClick={close}
-              className="w-[34px] h-[34px] rounded-xl text-white text-sm cursor-pointer bg-white/16 border border-prada/28 backdrop-blur-md"
+              className="flex h-[38px] w-[38px] items-center justify-center rounded-xl text-melati cursor-pointer bg-white/16 border border-prada/28 backdrop-blur-md"
               aria-label={l(lang, "Close", "Tutup")}
             >
               <CloseIcon className="w-[18px] h-[18px]" />
@@ -232,7 +235,7 @@ export function StoryBar({
               className="h-full w-full"
               sizes="100vw"
             />
-            <span className="absolute left-4 right-4 bottom-4 text-white text-[13.5px] leading-relaxed px-3.5 py-3 rounded-2xl bg-[var(--paes-melati)]/50 backdrop-blur-md border border-prada/20">
+            <span className="absolute left-4 right-4 bottom-4 text-white text-[13.5px] leading-relaxed px-3.5 py-3 rounded-2xl bg-[var(--paes-ink)]/60 backdrop-blur-md border border-prada/20">
               {active.caption}
             </span>
             {!editing && (

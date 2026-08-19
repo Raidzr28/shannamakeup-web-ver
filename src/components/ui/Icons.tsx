@@ -225,3 +225,19 @@ export function ReplyIcon(props: SVGProps<SVGSVGElement>) {
     </Icon>
   );
 }
+
+export function PlusIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <Icon {...props}>
+      <path d="M12 5.5v13M5.5 12h13" />
+    </Icon>
+  );
+}
+
+export function ChatIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <Icon {...props}>
+      <path d="M20.5 11.7c0 4-3.8 7.2-8.5 7.2a9.8 9.8 0 0 1-2.6-.35L4.6 20.2l1.2-3.5a6.9 6.9 0 0 1-2.3-5c0-4 3.8-7.2 8.5-7.2s8.5 3.2 8.5 7.2Z" />
+    </Icon>
+  );
+}
