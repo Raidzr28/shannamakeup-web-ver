@@ -78,12 +78,17 @@ export function MobileHome({
           one leaf-filled action of the surface at its right. A date and a price
           are figures: tabular, and never wrapped. */}
       <section className="px-5 pt-8">
-        <div className="prada-edge leaf-catch flex items-center gap-3 px-4 py-3.5">
+        {/* Below 360px the date and the action cannot share a row: the button
+            will not shrink, so the date lost its time to an ellipsis on an
+            iPhone SE ("Tue 25 Aug ·…"). The one fact this band exists to state
+            is never abbreviated — under 360 the action drops to its own
+            full-width row instead, which is a better tap target anyway. */}
+        <div className="prada-edge leaf-catch flex flex-col items-stretch gap-3 px-4 py-3.5 min-[360px]:flex-row min-[360px]:items-center">
           <div className="min-w-0 flex-1">
             <div className="text-[9.5px] uppercase tracking-[0.14em] text-melati-3">
               {l(lang, "Next opening", "Slot terdekat")}
             </div>
-            <div className="font-display tabular-nums text-[20px] leading-tight mt-1 truncate">
+            <div className="font-display tabular-nums text-[20px] leading-tight mt-1">
               {formatOpeningLine(opening, lang)}
             </div>
             <div className="text-[11px] text-melati-3 mt-1.5 leading-snug">
@@ -96,7 +101,7 @@ export function MobileHome({
           </div>
           <Link
             href="/book"
-            className="prada-leaf flex-none inline-flex h-[42px] items-center px-4 text-[12.5px]"
+            className="prada-leaf inline-flex h-[42px] w-full items-center justify-center px-4 text-[12.5px] min-[360px]:w-auto min-[360px]:flex-none"
           >
             {l(lang, "Take this slot", "Ambil slot ini")}
           </Link>
