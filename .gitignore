@@ -50,3 +50,6 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# impeccable review captures (the design.json sidecar IS committed)
+/.impeccable/review/

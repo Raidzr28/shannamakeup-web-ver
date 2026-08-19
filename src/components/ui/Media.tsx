@@ -1,18 +1,6 @@
 import Image from "next/image";
 import clsx from "clsx";
-
-const PALETTES = [
-  "from-[#f2e2c4] to-[#e3c088]",
-  "from-[#f0e6d8] to-[#e3d0b2]",
-  "from-[#e6e0ef] to-[#d3c4e8]",
-  "from-[#f0dbdb] to-[#e5bcbc]",
-];
-
-function paletteFor(seed: string) {
-  let h = 0;
-  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
-  return PALETTES[h % PALETTES.length];
-}
+import { PaesCrown, PaesGround } from "./Paes";
 
 export function Media({
   src,
@@ -54,15 +42,26 @@ export function Media({
   return (
     <div
       className={clsx(
-        "relative overflow-hidden bg-gradient-to-br flex items-center justify-center",
-        paletteFor(alt || placeholder || "shana"),
+        "relative overflow-hidden flex items-center justify-center",
         radius,
         className
       )}
     >
-      <span className="text-[11px] font-bold text-[#4a3b32]/70 text-center px-2 line-clamp-2">
-        {placeholder ?? "+"}
-      </span>
+      {/* No photograph yet. The slot renders as prepared ground — the lattice
+          the ornament is set out on — rather than as a coloured hole, so an
+          unfilled portfolio still reads as the world it belongs to. The
+          ornament's scale is driven off the slot, so it works from a 34px
+          avatar to a full-bleed hero. */}
+      <PaesGround className="absolute inset-0 w-full h-full" />
+      <PaesCrown
+        tone="edge"
+        className="absolute left-1/2 top-1/2 w-[72%] -translate-x-1/2 -translate-y-1/2 opacity-80"
+      />
+      {placeholder ? (
+        <span className="relative text-[11px] font-medium tracking-[0.06em] uppercase text-melati-3 text-center px-2 line-clamp-2">
+          {placeholder}
+        </span>
+      ) : null}
     </div>
   );
 }

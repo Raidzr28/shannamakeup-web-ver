@@ -18,6 +18,7 @@ import {
   confirmPaymentAction,
   rejectPaymentAction,
 } from "@/lib/actions/reservations";
+import { BackIcon, MailIcon, PhoneIcon, PinIcon } from "@/components/ui/Icons";
 
 export default async function ManageBookingPage({
   params,
@@ -76,7 +77,7 @@ export default async function ManageBookingPage({
       name="reason"
       maxLength={300}
       placeholder={placeholder}
-      className="w-full box-border h-[46px] rounded-2xl border-[1.5px] border-line-2 bg-white px-3.5 text-sm text-ink outline-none focus:border-maroon"
+      className="w-full box-border h-[46px] rounded-2xl border-[1.5px] border-line-2 bg-card px-3.5 text-sm text-ink outline-none focus:border-maroon"
     />
   );
 
@@ -122,11 +123,11 @@ export default async function ManageBookingPage({
 
         <div className="flex flex-wrap gap-1.5">
           {isFirstBooking ? (
-            <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[#e3ece2] text-[#3f6b45]">
+            <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[#e3ece2] text-[var(--paes-sirih)]">
               {l(lang, "First booking", "Pesanan pertama")}
             </span>
           ) : (
-            <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[#e8dcf0] text-[#6b4a8a]">
+            <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[var(--paes-ground-2)] text-[#6b4a8a]">
               {l(
                 lang,
                 `${clientHistory.length} bookings · ${confirmedBefore} confirmed`,
@@ -143,10 +144,10 @@ export default async function ManageBookingPage({
           </span>
         </div>
 
-        <div className="flex flex-col gap-1 text-[13px] text-[#4a3b32]">
-          <span>✉ {booking.email}</span>
-          <span>☎ {booking.phone || l(lang, "no number given", "tidak ada nomor")}</span>
-          <span>📍 {booking.city || "—"}</span>
+        <div className="flex flex-col gap-1 text-[13px] text-[var(--paes-melati-2)]">
+          <span className="flex items-center gap-1.5"><MailIcon className="w-4 h-4 flex-none text-melati-3" />{booking.email}</span>
+          <span className="flex items-center gap-1.5"><PhoneIcon className="w-4 h-4 flex-none text-melati-3" />{booking.phone || l(lang, "no number given", "tidak ada nomor")}</span>
+          <span className="flex items-center gap-1.5"><PinIcon className="w-4 h-4 flex-none text-melati-3" />{booking.city || "—"}</span>
         </div>
         {clientPhone && (
           <a
@@ -186,8 +187,8 @@ export default async function ManageBookingPage({
       </div>
 
       {sameDay.length > 0 && (
-        <div className="glass-card p-[18px] border-[1.5px] border-[#8a6320]/35">
-          <div className="text-xs font-bold tracking-[0.04em] uppercase text-[#8a6320]">
+        <div className="glass-card p-[18px] border-[1.5px] border-[var(--paes-prada-deep)]/35">
+          <div className="text-xs font-bold tracking-[0.04em] uppercase text-[var(--paes-prada-deep)]">
             {l(lang, "Also on this day", "Juga di hari ini")}
           </div>
           <p className="m-0 mt-2 text-[12.5px] leading-snug text-muted">
@@ -247,7 +248,7 @@ export default async function ManageBookingPage({
           <span className="font-semibold text-maroon">{idr(booking.depositIdr)}</span>
         </div>
         {booking.notes && (
-          <p className="mt-3.5 m-0 text-[13px] leading-relaxed text-[#4a3b32] bg-tint rounded-2xl px-3.5 py-3">
+          <p className="mt-3.5 m-0 text-[13px] leading-relaxed text-[var(--paes-melati-2)] bg-tint rounded-2xl px-3.5 py-3">
             {booking.notes}
           </p>
         )}
@@ -317,7 +318,7 @@ export default async function ManageBookingPage({
             <input type="hidden" name="id" value={booking.id} />
             <SubmitButton
               pendingLabel={l(lang, "Accepting…", "Menerima…")}
-              className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
+              className="w-full h-[52px] rounded-2xl text-[15px] font-bold cursor-pointer prada-leaf"
             >
               {l(lang, "Accept and ask for the deposit", "Terima dan minta deposit")}
             </SubmitButton>
@@ -327,7 +328,7 @@ export default async function ManageBookingPage({
             {reasonField(l(lang, "Reason (shown to the client)", "Alasan (tampil ke klien)"))}
             <SubmitButton
               pendingLabel={l(lang, "Declining…", "Menolak…")}
-              className="w-full h-[50px] rounded-2xl text-[14.5px] font-bold cursor-pointer text-[#b23a3a] glass-light border-[#b23a3a]/30"
+              className="w-full h-[50px] rounded-2xl text-[14.5px] font-bold cursor-pointer text-[var(--paes-alarm)] glass-light border-[var(--paes-alarm)]/30"
             >
               {l(lang, "Decline this date", "Tolak tanggal ini")}
             </SubmitButton>
@@ -349,7 +350,7 @@ export default async function ManageBookingPage({
             {reasonField(l(lang, "Reason (shown to the client)", "Alasan (tampil ke klien)"))}
             <SubmitButton
               pendingLabel={l(lang, "Cancelling…", "Membatalkan…")}
-              className="w-full h-[50px] rounded-2xl text-[14.5px] font-bold cursor-pointer text-[#b23a3a] glass-light border-[#b23a3a]/30"
+              className="w-full h-[50px] rounded-2xl text-[14.5px] font-bold cursor-pointer text-[var(--paes-alarm)] glass-light border-[var(--paes-alarm)]/30"
             >
               {l(lang, "Cancel this booking", "Batalkan pesanan ini")}
             </SubmitButton>
@@ -366,7 +367,7 @@ export default async function ManageBookingPage({
             <input type="hidden" name="id" value={booking.id} />
             <SubmitButton
               pendingLabel={l(lang, "Confirming…", "Mengonfirmasi…")}
-              className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
+              className="w-full h-[52px] rounded-2xl text-[15px] font-bold cursor-pointer prada-leaf"
             >
               {l(lang, "Confirm payment and lock the date", "Konfirmasi bayaran dan kunci tanggal")}
             </SubmitButton>
@@ -416,7 +417,7 @@ export default async function ManageBookingPage({
               href="/manage/bookings"
               className="w-[38px] h-[38px] rounded-[13px] flex items-center justify-center glass-light text-[15px] text-ink"
             >
-              ←
+              <BackIcon className="w-[18px] h-[18px]" />
             </Link>
             <div className="flex-1 text-center font-bold text-[15.5px]">
               {l(lang, "Reservation", "Reservasi")}
@@ -430,9 +431,9 @@ export default async function ManageBookingPage({
       <DesktopOnly>
         <div className="ambient-glow flex-1 px-11 py-11">
           <Link href="/manage/bookings" className="text-[13px] font-semibold text-muted">
-            ← {l(lang, "Back to reservations", "Kembali ke reservasi")}
+            <BackIcon className="w-4 h-4" /> {l(lang, "Back to reservations", "Kembali ke reservasi")}
           </Link>
-          <h1 className="text-4xl font-extrabold tracking-tight mt-4 mb-7">
+          <h1 className="text-4xl font-display mt-4 mb-7">
             {l(lang, "Reservation", "Reservasi")}
           </h1>
           <div className="max-w-[620px] pb-24">{body}</div>

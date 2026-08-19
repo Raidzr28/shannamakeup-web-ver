@@ -1,5 +1,4 @@
 "use client";
-
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import clsx from "clsx";
@@ -11,6 +10,7 @@ import {
 } from "@/lib/actions/stories";
 import type { Lang } from "@/lib/i18n";
 import { l } from "@/lib/i18n";
+import { CloseIcon, EditIcon, HeartIcon, TrashIcon } from "@/components/ui/Icons";
 
 export type Story = {
   id: string;
@@ -106,7 +106,7 @@ export function StoryBar({
             <span className="relative w-16 h-16 rounded-full flex items-center justify-center box-border border-[1.5px] border-dashed border-maroon/50 glass-light text-xl text-maroon">
               +
             </span>
-            <span className="text-[10.5px] font-semibold text-[#4a3b32] max-w-[68px] overflow-hidden text-ellipsis whitespace-nowrap">
+            <span className="text-[10.5px] font-semibold text-[var(--paes-melati-2)] max-w-[68px] overflow-hidden text-ellipsis whitespace-nowrap">
               {l(lang, "Your story", "Story kamu")}
             </span>
           </Link>
@@ -142,7 +142,7 @@ export function StoryBar({
               <span
                 className={clsx(
                   "text-[10.5px] font-semibold max-w-[68px] overflow-hidden text-ellipsis whitespace-nowrap",
-                  isSeen ? "text-[#9c8975]" : "text-[#4a3b32]"
+                  isSeen ? "text-[var(--paes-melati-3)]" : "text-[var(--paes-melati-2)]"
                 )}
               >
                 {story.mine ? l(lang, "You", "Kamu") : story.name}
@@ -153,7 +153,7 @@ export function StoryBar({
       </div>
 
       {active && (
-        <div className="fixed inset-0 z-50 flex flex-col pt-[58px] bg-[#1a1a1a]/95 backdrop-blur-lg animate-[pop-in_0.28s_ease]">
+        <div className="fixed inset-0 z-50 flex flex-col pt-[58px] bg-[var(--paes-melati)]/95 backdrop-blur-lg animate-[pop-in_0.28s_ease]">
           <div className="flex gap-1.5 px-3.5">
             {stories.map((s, i) => (
               <span
@@ -161,7 +161,7 @@ export function StoryBar({
                 className="flex-1 h-[3px] rounded-full bg-white/28 overflow-hidden"
               >
                 <span
-                  className="block h-full rounded-full bg-white origin-left"
+                  className="block h-full rounded-full bg-card origin-left"
                   style={
                     i < open
                       ? { transform: "scaleX(1)" }
@@ -198,28 +198,28 @@ export function StoryBar({
                 <button
                   type="button"
                   onClick={() => setDraft(editing ? null : active.caption)}
-                  className="w-[34px] h-[34px] rounded-xl text-white text-sm cursor-pointer bg-white/16 border border-white/28 backdrop-blur-md"
+                  className="w-[34px] h-[34px] rounded-xl text-white text-sm cursor-pointer bg-white/16 border border-prada/28 backdrop-blur-md"
                   aria-label={l(lang, "Edit caption", "Ubah keterangan")}
                 >
-                  ✎
+                  <EditIcon className="w-[18px] h-[18px]" />
                 </button>
                 <button
                   type="button"
                   onClick={() => remove(active.id)}
-                  className="w-[34px] h-[34px] rounded-xl text-white text-sm cursor-pointer bg-[#c2415c]/70 border border-white/28 backdrop-blur-md"
+                  className="w-[34px] h-[34px] rounded-xl text-white text-sm cursor-pointer bg-[#c2415c]/70 border border-prada/28 backdrop-blur-md"
                   aria-label={l(lang, "Delete story", "Hapus story")}
                 >
-                  🗑
+                  <TrashIcon className="w-[18px] h-[18px]" />
                 </button>
               </>
             )}
             <button
               type="button"
               onClick={close}
-              className="w-[34px] h-[34px] rounded-xl text-white text-sm cursor-pointer bg-white/16 border border-white/28 backdrop-blur-md"
+              className="w-[34px] h-[34px] rounded-xl text-white text-sm cursor-pointer bg-white/16 border border-prada/28 backdrop-blur-md"
               aria-label={l(lang, "Close", "Tutup")}
             >
-              ✕
+              <CloseIcon className="w-[18px] h-[18px]" />
             </button>
           </div>
 
@@ -232,7 +232,7 @@ export function StoryBar({
               className="h-full w-full"
               sizes="100vw"
             />
-            <span className="absolute left-4 right-4 bottom-4 text-white text-[13.5px] leading-relaxed px-3.5 py-3 rounded-2xl bg-[#1a1a1a]/50 backdrop-blur-md border border-white/20">
+            <span className="absolute left-4 right-4 bottom-4 text-white text-[13.5px] leading-relaxed px-3.5 py-3 rounded-2xl bg-[var(--paes-melati)]/50 backdrop-blur-md border border-prada/20">
               {active.caption}
             </span>
             {!editing && (
@@ -263,12 +263,12 @@ export function StoryBar({
                 maxLength={280}
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder={l(lang, "Update your caption…", "Perbarui keteranganmu…")}
-                className="flex-1 box-border h-11 rounded-2xl px-3.5 text-[13.5px] text-white bg-white/12 border border-white/25 backdrop-blur-md outline-none placeholder:text-white/50"
+                className="flex-1 box-border h-11 rounded-2xl px-3.5 text-[13.5px] text-white bg-white/12 border border-prada/25 backdrop-blur-md outline-none placeholder:text-white/50"
               />
               <button
                 type="button"
                 onClick={() => saveCaption(active.id, draft)}
-                className="h-11 px-4 flex-none rounded-2xl text-[13.5px] font-bold cursor-pointer text-white bg-white/14 border border-white/28 backdrop-blur-md"
+                className="h-11 px-4 flex-none rounded-2xl text-[13.5px] font-bold cursor-pointer text-white bg-white/14 border border-prada/28 backdrop-blur-md"
               >
                 {l(lang, "Save", "Simpan")}
               </button>
@@ -277,17 +277,17 @@ export function StoryBar({
             <div className="flex gap-2.5 items-center p-3.5 pb-8">
               <input
                 placeholder={l(lang, "Reply to this story…", "Balas story ini…")}
-                className="flex-1 box-border h-11 rounded-2xl px-3.5 text-[13.5px] text-white bg-white/12 border border-white/25 backdrop-blur-md outline-none placeholder:text-white/50"
+                className="flex-1 box-border h-11 rounded-2xl px-3.5 text-[13.5px] text-white bg-white/12 border border-prada/25 backdrop-blur-md outline-none placeholder:text-white/50"
               />
               <button
                 type="button"
                 onClick={() => setLiked((v) => !v)}
                 className={clsx(
-                  "w-11 h-11 flex-none rounded-2xl text-lg cursor-pointer text-white bg-white/14 border border-white/28 backdrop-blur-md",
+                  "w-11 h-11 flex-none rounded-2xl text-lg cursor-pointer text-white bg-white/14 border border-prada/28 backdrop-blur-md",
                   liked && "animate-[heart-pop_0.32s_ease]"
                 )}
               >
-                {liked ? "♥" : "♡"}
+                <HeartIcon filled={liked} className="h-[19px] w-[19px]" />
               </button>
             </div>
           )}

@@ -15,6 +15,7 @@ import {
   toggleArchiveAction,
   deleteThreadAction,
 } from "@/lib/actions/inbox";
+import { BackIcon, ChevronDownIcon, StarIcon } from "@/components/ui/Icons";
 
 export default async function ManageChatThreadPage({
   params,
@@ -83,12 +84,12 @@ export default async function ManageChatThreadPage({
   );
 
   const header = (
-    <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-b from-white/90 to-white/66 backdrop-blur-2xl border-b border-white/80">
+    <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-b from-bg to-bg border-b border-prada/80">
       <Link
         href="/manage/chats"
         className="w-[38px] h-[38px] flex-none rounded-[13px] flex items-center justify-center glass-light text-[15px] text-ink"
       >
-        ←
+        <BackIcon className="w-[18px] h-[18px]" />
       </Link>
       <span className="w-10 h-10 flex-none">
         <Media
@@ -116,7 +117,7 @@ export default async function ManageChatThreadPage({
             thread?.pinned ? "glass-fill text-white" : "glass-light text-ink"
           }`}
         >
-          ★
+          <StarIcon className="w-[18px] h-[18px]" />
         </SubmitButton>
       </form>
     </div>
@@ -126,13 +127,13 @@ export default async function ManageChatThreadPage({
      the thread reads as a chat rather than a stack of forms. `details` keeps
      it working without shipping any JavaScript for it. */
   const aside = (
-    <details className="flex-none border-b border-line bg-white/60 max-h-[50vh] overflow-auto">
+    <details className="flex-none border-b border-line bg-ground-2 max-h-[50vh] overflow-auto">
       <summary className="px-4 py-3 text-[12.5px] font-bold text-muted-2 cursor-pointer list-none [&::-webkit-details-marker]:hidden flex items-center justify-between">
         <span>
           {l(lang, "Client details and actions", "Detail klien dan tindakan")}
         </span>
         <span aria-hidden="true" className="text-muted-3">
-          ⌄
+          <ChevronDownIcon className="w-[18px] h-[18px]" />
         </span>
       </summary>
 
@@ -191,7 +192,7 @@ export default async function ManageChatThreadPage({
           <form action={deleteThreadAction} className="flex-1">
             <input type="hidden" name="userId" value={userId} />
             <SubmitButton
-              className="w-full h-[38px] rounded-xl text-[12.5px] font-bold cursor-pointer text-[#b23a3a] glass-light border-[#b23a3a]/30"
+              className="w-full h-[38px] rounded-xl text-[12.5px] font-bold cursor-pointer text-[var(--paes-alarm)] glass-light border-[var(--paes-alarm)]/30"
             >
               {l(lang, "Delete conversation", "Hapus percakapan")}
             </SubmitButton>
@@ -227,7 +228,7 @@ export default async function ManageChatThreadPage({
             href="/manage/chats"
             className="text-[13px] font-semibold text-muted mb-4"
           >
-            ← {l(lang, "Back to client chats", "Kembali ke chat klien")}
+            <BackIcon className="w-4 h-4" /> {l(lang, "Back to client chats", "Kembali ke chat klien")}
           </Link>
           <div className="glass-card overflow-hidden p-0 flex flex-col h-[680px]">
             {header}

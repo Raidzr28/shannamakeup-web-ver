@@ -140,7 +140,7 @@ export default async function ManageBookingsPage({
     `flex-none px-3.5 py-2 rounded-full text-[12.5px] font-semibold whitespace-nowrap border ${
       on
         ? "glass-fill text-white border-transparent"
-        : "glass-light text-[#5c4a3f] border-white/80"
+        : "glass-light text-[var(--paes-melati-2)] border-prada/80"
     }`;
 
   const controls = (
@@ -159,11 +159,11 @@ export default async function ManageBookingsPage({
             "Search name, code, city or email",
             "Cari nama, kode, kota atau email"
           )}
-          className="flex-1 min-w-0 box-border h-[46px] rounded-2xl border-[1.5px] border-line-2 bg-white px-3.5 text-sm text-ink outline-none focus:border-maroon"
+          className="flex-1 min-w-0 box-border h-[46px] rounded-2xl border-[1.5px] border-line-2 bg-card px-3.5 text-sm text-ink outline-none focus:border-maroon"
         />
         <button
           type="submit"
-          className="flex-none h-[46px] px-4 rounded-2xl text-white text-[13.5px] font-bold cursor-pointer glass-fill"
+          className="flex-none h-[46px] px-4 rounded-2xl text-[13.5px] font-bold cursor-pointer prada-leaf"
         >
           {l(lang, "Search", "Cari")}
         </button>
@@ -214,7 +214,7 @@ export default async function ManageBookingsPage({
             className={`flex-none px-3 py-1.5 rounded-full text-[12px] font-semibold whitespace-nowrap border ${
               s.id === sort
                 ? "bg-tint text-maroon border-maroon/25"
-                : "bg-white/70 text-muted-2 border-line"
+                : "bg-ground-2 text-muted-2 border-line"
             }`}
           >
             {l(lang, s.en, s.id_)}
@@ -252,7 +252,7 @@ export default async function ManageBookingsPage({
             key={b.id}
             href={`/manage/bookings/${b.id}`}
             className={`glass-card p-[18px] flex flex-col gap-3 ${
-              urgent ? "border-[1.5px] border-[#b23a3a]/35" : ""
+              urgent ? "border-[1.5px] border-[var(--paes-alarm)]/35" : ""
             }`}
           >
             <span className="flex gap-3.5 items-start">
@@ -301,22 +301,22 @@ export default async function ManageBookingsPage({
             {(clash || history > 1 || b.paymentProof || urgent) && (
               <span className="flex flex-wrap gap-1.5">
                 {urgent && (
-                  <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[#f8e8e2] text-[#b23a3a]">
+                  <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[var(--paes-ground-2)] text-[var(--paes-alarm)]">
                     {waitingLabel(lang, b.createdAt, now)}
                   </span>
                 )}
                 {clash && (
-                  <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[#f7e6cf] text-[#8a6320]">
+                  <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[var(--paes-ground-3)] text-[var(--paes-prada-deep)]">
                     {l(lang, "Two on this day", "Dua di hari ini")}
                   </span>
                 )}
                 {history > 1 && (
-                  <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[#e8dcf0] text-[#6b4a8a]">
+                  <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[var(--paes-ground-2)] text-[#6b4a8a]">
                     {l(lang, `Repeat · ${history}`, `Berulang · ${history}`)}
                   </span>
                 )}
                 {b.paymentProof && (
-                  <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[#e3ece2] text-[#3f6b45]">
+                  <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[#e3ece2] text-[var(--paes-sirih)]">
                     {l(lang, "Receipt attached", "Ada bukti bayar")}
                   </span>
                 )}
@@ -354,7 +354,7 @@ export default async function ManageBookingsPage({
       <MobileOnly>
         <div className="ambient-glow min-h-dvh flex flex-col pt-[58px]">
           <div className="px-5 pt-2">
-            <h1 className="font-extrabold text-[22px] tracking-tight">{heading}</h1>
+            <h1 className="font-display text-[22px]">{heading}</h1>
             <p className="text-xs text-muted-3 mt-1.5 leading-snug">{sub}</p>
           </div>
           <div className="px-5 pt-4.5">{body}</div>
@@ -365,7 +365,7 @@ export default async function ManageBookingsPage({
 
       <DesktopOnly>
         <div className="ambient-glow flex-1 px-11 py-11">
-          <h1 className="text-4xl font-extrabold tracking-tight">{heading}</h1>
+          <h1 className="text-4xl font-display">{heading}</h1>
           <p className="text-sm text-muted mt-3 max-w-[60ch]">{sub}</p>
           <div className="max-w-[760px] mt-8 pb-24">{body}</div>
         </div>

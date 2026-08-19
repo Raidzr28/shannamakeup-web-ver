@@ -1,5 +1,4 @@
 "use client";
-
 import { useRef, useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
@@ -102,7 +101,7 @@ export function ImagePicker({
             <button
               type="button"
               onClick={() => setUrl("")}
-              className="absolute top-3 right-3 px-3 py-2 rounded-xl text-[12px] font-bold text-[#b23a3a] bg-white/90 backdrop-blur-md border border-[#b23a3a]/25 cursor-pointer"
+              className="absolute top-3 right-3 px-3 py-2 rounded-xl text-[12px] font-bold text-[var(--paes-alarm)] bg-white/90 border border-[var(--paes-alarm)]/25 cursor-pointer"
             >
               {l(lang, "Remove", "Hapus")}
             </button>
@@ -125,7 +124,7 @@ export function ImagePicker({
         )}
 
         {busy && url && (
-          <span className="absolute inset-0 flex items-center justify-center bg-white/70 text-[13px] font-bold text-ink">
+          <span className="absolute inset-0 flex items-center justify-center bg-ground-2 text-[13px] font-bold text-ink">
             {l(lang, "Uploading…", "Mengunggah…")}
           </span>
         )}
@@ -162,7 +161,7 @@ export function ImagePicker({
       {error && (
         <p
           role="alert"
-          className="text-[12.5px] leading-snug text-[#b23a3a] bg-[#f8e8e2] border border-[#b23a3a]/25 rounded-2xl px-3 py-2.5"
+          className="text-[12.5px] leading-snug text-[var(--paes-alarm)] bg-[var(--paes-ground-2)] border border-[var(--paes-alarm)]/25 rounded-2xl px-3 py-2.5"
         >
           {error}
         </p>

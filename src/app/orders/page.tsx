@@ -107,7 +107,7 @@ export default async function OrdersPage() {
 
       <DesktopOnly>
     <div className="ambient-glow flex-1 px-11 py-11">
-      <h1 className="text-4xl font-extrabold tracking-tight mb-7">
+      <h1 className="text-4xl font-display mb-7">
         {l(lang, "My orders", "Pesanan saya")}
       </h1>
       <div className="max-w-[720px] pb-24">{list}</div>

@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
@@ -7,6 +6,7 @@ import type { Lang } from "@/lib/i18n";
 import { l } from "@/lib/i18n";
 import type { SessionPayload } from "@/lib/auth";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { PaesMark } from "@/components/ui/Paes";
 
 export function DesktopNav({
   lang,
@@ -67,44 +67,52 @@ export function DesktopNav({
   ];
 
   return (
-    <div className="sticky top-0 z-30 flex items-center gap-7 px-11 py-5 bg-gradient-to-b from-white/88 to-white/62 backdrop-blur-2xl backdrop-saturate-150 border-b border-white/75">
-      <Link href="/" className="flex items-center gap-2.5 font-extrabold text-lg tracking-tight">
-        <span className="w-8 h-8 rounded-[11px] bg-gold text-ink flex items-center justify-center text-sm">
-          S
+    <div className="sticky top-0 z-30 flex items-center gap-7 border-b border-prada/30 bg-bg px-11 py-4">
+      {/* The mark is the penunggul — the ornament's centre shape — not a letter
+          in a rounded square. */}
+      <Link href="/" className="flex items-center gap-2.5">
+        <PaesMark tone="edge" className="h-7 w-7 text-prada" />
+        <span className="font-display text-[22px] leading-none text-melati">
+          Shana
         </span>
-        <span className="text-gold">Shana</span>
       </Link>
-      <nav className="flex gap-6 text-sm font-semibold text-muted flex-1">
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={clsx(
-              "flex items-center gap-1.5",
-              (link.match ? link.match(pathname) : pathname === link.href)
-                ? "text-maroon"
-                : "text-muted hover:text-ink"
-            )}
-          >
-            {link.name}
-            {!!link.badge && link.badge > 0 && (
-              <span className="min-w-[18px] h-[18px] px-1 rounded-full bg-[#b23a3a] text-white text-[10.5px] font-bold flex items-center justify-center">
-                {link.badge}
-              </span>
-            )}
-          </Link>
-        ))}
+      <nav className="flex flex-1 gap-6 text-[13.5px]">
+        {links.map((link) => {
+          const active = link.match
+            ? link.match(pathname)
+            : pathname === link.href;
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              aria-current={active ? "page" : undefined}
+              className={clsx(
+                "flex items-center gap-1.5 border-b py-1 transition-colors",
+                active
+                  ? "border-prada text-prada"
+                  : "border-transparent text-melati-2 hover:text-melati"
+              )}
+            >
+              {link.name}
+              {!!link.badge && link.badge > 0 && (
+                <span className="flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-alarm px-1 text-[10.5px] font-semibold tabular-nums text-melati">
+                  {link.badge}
+                </span>
+              )}
+            </Link>
+          );
+        })}
       </nav>
       <LanguageSwitcher lang={lang} />
       <Link
         href={session ? "/account" : "/login"}
-        className="h-[42px] px-[18px] rounded-2xl text-sm font-bold cursor-pointer text-ink glass-light flex items-center"
+        className="flex h-[40px] cursor-pointer items-center rounded-xl border border-prada/35 px-[18px] text-[13.5px] text-melati-2 transition-colors hover:border-prada/70 hover:text-melati"
       >
         {session ? session.name.split(" ")[0] : l(lang, "Sign in", "Masuk")}
       </Link>
       <Link
         href={isArtist ? "/manage/new" : "/book"}
-        className="h-[42px] px-5 rounded-2xl text-sm font-bold cursor-pointer text-white glass-fill flex items-center"
+        className="prada-leaf flex h-[40px] cursor-pointer items-center px-5 text-[13.5px]"
       >
         {isArtist
           ? l(lang, "New package", "Paket baru")

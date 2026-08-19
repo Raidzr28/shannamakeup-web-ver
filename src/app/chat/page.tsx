@@ -5,6 +5,7 @@ import { getLanguage } from "@/lib/language";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { l } from "@/lib/i18n";
+import { BackIcon } from "@/components/ui/Icons";
 
 export default async function ChatPage() {
   const [lang, user] = await Promise.all([getLanguage(), getCurrentUser()]);
@@ -24,14 +25,14 @@ export default async function ChatPage() {
   });
 
   const header = (
-    <div className="px-5 pt-2 pb-3.5 flex items-center gap-3 bg-gradient-to-b from-white/90 to-white/66 backdrop-blur-2xl border-b border-white/80">
+    <div className="px-5 pt-2 pb-3.5 flex items-center gap-3 bg-gradient-to-b from-bg to-bg border-b border-prada/80">
       <Link
         href="/"
         className="w-[38px] h-[38px] rounded-[13px] flex items-center justify-center glass-light text-[15px] text-ink"
       >
-        ←
+        <BackIcon className="w-[18px] h-[18px]" />
       </Link>
-      <span className="w-10 h-10 rounded-2xl bg-gold text-ink flex items-center justify-center font-extrabold">
+      <span className="w-10 h-10 rounded-2xl bg-gold text-onprada flex items-center justify-center font-extrabold">
         S
       </span>
       <span className="flex-1">

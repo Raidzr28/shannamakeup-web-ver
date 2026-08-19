@@ -27,7 +27,7 @@ export default async function RegisterPage({
 
   return (
     <AuthShell back={`/login?next=${encodeURIComponent(next)}`}>
-      <h1 className="text-[30px] font-extrabold tracking-[-0.03em] leading-tight">
+      <h1 className="text-[30px] font-display leading-tight">
         {l(lang, "Create your account", "Buat akunmu")}
       </h1>
       <p className="mt-2.5 text-[13.5px] leading-relaxed text-muted">
@@ -39,7 +39,7 @@ export default async function RegisterPage({
       </p>
 
       {params.error && (
-        <p className="mt-4 text-[13px] font-semibold text-[#b23a3a]">{params.error}</p>
+        <p className="mt-4 text-[13px] font-semibold text-[var(--paes-alarm)]">{params.error}</p>
       )}
 
       <form action={registerAction} className="flex flex-col gap-4 mt-5.5">
@@ -62,7 +62,7 @@ export default async function RegisterPage({
           </Label>
         </div>
         <SubmitButton
-          className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
+          className="w-full h-[52px] rounded-2xl text-[15px] font-bold cursor-pointer prada-leaf"
         >
           {l(lang, "Register", "Daftar")}
         </SubmitButton>
@@ -70,7 +70,7 @@ export default async function RegisterPage({
 
       {googleEnabled && (
         <>
-          <div className="flex items-center gap-3 text-[#9c8975] text-[11.5px] my-4">
+          <div className="flex items-center gap-3 text-[var(--paes-melati-3)] text-[11.5px] my-4">
             <span className="flex-1 h-px bg-line-2" />
             {l(lang, "or", "atau")}
             <span className="flex-1 h-px bg-line-2" />
@@ -85,7 +85,7 @@ export default async function RegisterPage({
         </>
       )}
 
-      <p className="mt-4 text-[11.5px] leading-relaxed text-[#9c8975]">
+      <p className="mt-4 text-[11.5px] leading-relaxed text-[var(--paes-melati-3)]">
         {l(
           lang,
           "By registering you agree to the booking terms and the deposit policy.",

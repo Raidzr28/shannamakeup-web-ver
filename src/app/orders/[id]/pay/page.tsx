@@ -8,6 +8,7 @@ import { prisma } from "@/lib/prisma";
 import { canPay } from "@/lib/booking-status";
 import { BANK_TRANSFER, QRIS_IMAGE_URL, QRIS_MERCHANT } from "@/lib/support";
 import { l } from "@/lib/i18n";
+import { BackIcon } from "@/components/ui/Icons";
 
 export default async function PayPage({
   params,
@@ -48,7 +49,7 @@ export default async function PayPage({
   const retry = booking.adminNote ? (
     <p
       role="alert"
-      className="m-0 text-[13px] leading-snug text-[#b23a3a] bg-[#f8e8e2] border border-[#b23a3a]/25 rounded-2xl px-3.5 py-3 mb-4"
+      className="m-0 text-[13px] leading-snug text-[var(--paes-alarm)] bg-[var(--paes-ground-2)] border border-[var(--paes-alarm)]/25 rounded-2xl px-3.5 py-3 mb-4"
     >
       {booking.adminNote}
     </p>
@@ -63,7 +64,7 @@ export default async function PayPage({
               href={`/orders/${booking.id}`}
               className="w-[38px] h-[38px] rounded-[13px] flex items-center justify-center glass-light text-[15px] text-ink"
             >
-              ←
+              <BackIcon className="w-[18px] h-[18px]" />
             </Link>
             <div className="flex-1 text-center font-bold text-[15.5px]">
               {l(lang, "Pay the deposit", "Bayar deposit")}
@@ -80,9 +81,9 @@ export default async function PayPage({
       <DesktopOnly>
         <div className="ambient-glow flex-1 px-11 py-11">
           <Link href={`/orders/${booking.id}`} className="text-[13px] font-semibold text-muted">
-            ← {l(lang, "Back to the order", "Kembali ke pesanan")}
+            <BackIcon className="w-4 h-4" /> {l(lang, "Back to the order", "Kembali ke pesanan")}
           </Link>
-          <h1 className="text-4xl font-extrabold tracking-tight mt-4 mb-7">
+          <h1 className="text-4xl font-display mt-4 mb-7">
             {l(lang, "Pay the deposit", "Bayar deposit")}
           </h1>
           <div className="max-w-[620px] pb-24">

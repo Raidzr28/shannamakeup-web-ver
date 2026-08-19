@@ -1,5 +1,4 @@
 "use client";
-
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { useRef, useEffect } from "react";
@@ -8,6 +7,7 @@ import { SubmitButton } from "@/components/ui/SubmitButton";
 import type { Lang } from "@/lib/i18n";
 import { l } from "@/lib/i18n";
 import { QUICK_REPLIES } from "@/lib/chat";
+import { ForwardIcon } from "@/components/ui/Icons";
 
 export type ChatMessage = { id: string; who: string; text: string };
 
@@ -106,7 +106,7 @@ export function ChatPanel({
               <input type="hidden" name="lookTitle" value={lookTitle} />
               <input type="hidden" name="lookPrice" value={lookPrice} />
               <input type="hidden" name="whenLine" value={whenLine} />
-              <SubmitButton className="px-3.5 py-2 rounded-full text-[12px] font-semibold whitespace-nowrap glass-light text-[#5c4a3f] cursor-pointer">
+              <SubmitButton className="px-3.5 py-2 rounded-full text-[12px] font-semibold whitespace-nowrap glass-light text-[var(--paes-melati-2)] cursor-pointer">
                 {text}
               </SubmitButton>
             </form>
@@ -117,7 +117,7 @@ export function ChatPanel({
       <form
         action={sendMessageAction}
         className={clsx(
-          "flex gap-2.5 items-center bg-white border-t border-line flex-none",
+          "flex gap-2.5 items-center bg-card border-t border-line flex-none",
           // The extra bottom padding clears a phone's home indicator or gesture
           // bar; env() adds the device's own inset on top where it reports one.
           variant === "full"
@@ -133,15 +133,15 @@ export function ChatPanel({
         <input
           name="text"
           placeholder={l(lang, "Ask about a date, price, travel…", "Tanya tanggal, harga, perjalanan…")}
-          className="flex-1 min-h-[44px] box-border rounded-2xl border-[1.5px] border-line-2 bg-white px-3.5 text-sm outline-none focus:border-maroon"
+          className="flex-1 min-h-[44px] box-border rounded-2xl border-[1.5px] border-line-2 bg-card px-3.5 text-sm outline-none focus:border-maroon"
           autoComplete="off"
         />
         <SubmitButton
           aria-label={l(lang, "Send", "Kirim")}
           pendingLabel="…"
-          className="w-[46px] h-[46px] flex-none rounded-2xl text-white text-lg cursor-pointer glass-fill"
+          className="w-[46px] h-[46px] flex-none rounded-2xl text-lg cursor-pointer prada-leaf"
         >
-          →
+          <ForwardIcon className="w-[18px] h-[18px]" />
         </SubmitButton>
       </form>
       {!signedIn && (

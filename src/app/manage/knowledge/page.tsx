@@ -17,6 +17,7 @@ import {
 } from "@/lib/actions/knowledge";
 import { setGeminiKeyAction, clearGeminiKeyAction } from "@/lib/actions/secrets";
 import { SubmitButton } from "@/components/ui/SubmitButton";
+import { BackIcon, ChevronDownIcon } from "@/components/ui/Icons";
 
 export default async function KnowledgePage({
   searchParams,
@@ -36,15 +37,15 @@ export default async function KnowledgePage({
   const enabledCount = entries.filter((e) => e.enabled).length;
 
   const field =
-    "w-full box-border rounded-2xl border-[1.5px] border-line-2 bg-white px-3.5 text-sm text-ink outline-none focus:border-maroon";
+    "w-full box-border rounded-2xl border-[1.5px] border-line-2 bg-card px-3.5 text-sm text-ink outline-none focus:border-maroon";
 
   const notice = (params.saved || params.error) && (
     <p
       role="alert"
       className={`m-0 text-[13px] leading-snug rounded-2xl px-3.5 py-3 border ${
         params.error
-          ? "text-[#b23a3a] bg-[#f8e8e2] border-[#b23a3a]/25"
-          : "text-[#3f6b45] bg-[#e3ece2] border-[#3f6b45]/25"
+          ? "text-[var(--paes-alarm)] bg-[var(--paes-ground-2)] border-[var(--paes-alarm)]/25"
+          : "text-[var(--paes-sirih)] bg-[#e3ece2] border-[var(--paes-sirih)]/25"
       }`}
     >
       {params.error ?? params.saved}
@@ -98,7 +99,7 @@ export default async function KnowledgePage({
       />
       <SubmitButton
         pendingLabel={l(lang, "Saving…", "Menyimpan…")}
-        className="w-full h-[50px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
+        className="w-full h-[50px] rounded-2xl text-[15px] font-bold cursor-pointer prada-leaf"
       >
         {l(lang, "Save API key", "Simpan kunci API")}
       </SubmitButton>
@@ -133,7 +134,7 @@ export default async function KnowledgePage({
       />
       <SubmitButton
         pendingLabel={l(lang, "Removing…", "Menghapus…")}
-        className="w-full h-[46px] rounded-2xl text-[14px] font-bold cursor-pointer text-[#b23a3a] glass-light border-[#b23a3a]/30"
+        className="w-full h-[46px] rounded-2xl text-[14px] font-bold cursor-pointer text-[var(--paes-alarm)] glass-light border-[var(--paes-alarm)]/30"
       >
         {l(lang, "Remove API key", "Hapus kunci API")}
       </SubmitButton>
@@ -145,7 +146,7 @@ export default async function KnowledgePage({
       {notice}
       <div
         className={`glass-card p-[18px] flex flex-col gap-2 ${
-          live ? "" : "border-[1.5px] border-[#8a6320]/35"
+          live ? "" : "border-[1.5px] border-[var(--paes-prada-deep)]/35"
         }`}
       >
         <div className="flex items-center gap-2 justify-between">
@@ -154,7 +155,7 @@ export default async function KnowledgePage({
           </span>
           <span
             className={`text-[10.5px] font-bold px-2.5 py-1 rounded-full ${
-              live ? "bg-maroon text-white" : "bg-[#f7e6cf] text-[#8a6320]"
+              live ? "bg-maroon text-white" : "bg-[var(--paes-ground-3)] text-[var(--paes-prada-deep)]"
             }`}
           >
             {live ? l(lang, "Connected", "Terhubung") : l(lang, "Not connected", "Belum terhubung")}
@@ -214,7 +215,7 @@ export default async function KnowledgePage({
         />
         <SubmitButton
           pendingLabel={l(lang, "Saving…", "Menyimpan…")}
-          className="w-full h-[50px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
+          className="w-full h-[50px] rounded-2xl text-[15px] font-bold cursor-pointer prada-leaf"
         >
           {l(lang, "Save note", "Simpan catatan")}
         </SubmitButton>
@@ -286,7 +287,7 @@ export default async function KnowledgePage({
                   aria-label={l(lang, "Move up", "Naikkan")}
                   className="w-[42px] h-[38px] rounded-xl text-[13px] font-bold cursor-pointer text-ink glass-light"
                 >
-                  ↑
+                  <ChevronDownIcon className="h-[18px] w-[18px] rotate-180" />
                 </SubmitButton>
               </form>
             )}
@@ -303,7 +304,7 @@ export default async function KnowledgePage({
             <form action={deleteKnowledgeAction} className="flex-1">
               <input type="hidden" name="id" value={entry.id} />
               <SubmitButton
-                className="w-full h-[38px] rounded-xl text-[12.5px] font-bold cursor-pointer text-[#b23a3a] glass-light border-[#b23a3a]/30"
+                className="w-full h-[38px] rounded-xl text-[12.5px] font-bold cursor-pointer text-[var(--paes-alarm)] glass-light border-[var(--paes-alarm)]/30"
               >
                 {l(lang, "Delete", "Hapus")}
               </SubmitButton>
@@ -330,7 +331,7 @@ export default async function KnowledgePage({
               href="/account"
               className="w-[38px] h-[38px] rounded-[13px] flex items-center justify-center glass-light text-[15px] text-ink"
             >
-              ←
+              <BackIcon className="w-[18px] h-[18px]" />
             </Link>
             <div className="flex-1 text-center font-bold text-[15.5px]">{heading}</div>
             <span className="w-[38px]" />
@@ -347,9 +348,9 @@ export default async function KnowledgePage({
       <DesktopOnly>
         <div className="ambient-glow flex-1 px-11 py-11">
           <Link href="/account" className="text-[13px] font-semibold text-muted">
-            ← {l(lang, "Back to profile", "Kembali ke profil")}
+            <BackIcon className="w-4 h-4" /> {l(lang, "Back to profile", "Kembali ke profil")}
           </Link>
-          <h1 className="text-4xl font-extrabold tracking-tight mt-4">{heading}</h1>
+          <h1 className="text-4xl font-display mt-4">{heading}</h1>
           <p className="text-sm text-muted mt-3 max-w-[60ch]">{sub}</p>
           <div className="max-w-[680px] mt-8 pb-24">{body}</div>
         </div>

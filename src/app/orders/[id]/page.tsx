@@ -10,6 +10,7 @@ import { l, idr } from "@/lib/i18n";
 import { EXTRAS, VENUES } from "@/lib/static-data";
 import { asBookingStatus, canPay, showsSupport, statusLabel, statusTone } from "@/lib/booking-status";
 import { SUPPORT_HOURS_EN, SUPPORT_HOURS_ID, whatsappDisplay, whatsappLink } from "@/lib/support";
+import { CheckIcon, ClockIcon, CloseIcon, PhoneIcon } from "@/components/ui/Icons";
 
 export default async function OrderPage({
   params,
@@ -80,7 +81,7 @@ export default async function OrderPage({
 
   const headline = declined
     ? {
-        icon: "✕",
+        Icon: CloseIcon,
         title: l(lang, "This date did not work.", "Tanggal ini tidak bisa."),
         blurb:
           booking.adminNote ??
@@ -92,7 +93,7 @@ export default async function OrderPage({
       }
     : status === "confirmed"
       ? {
-          icon: "✓",
+          Icon: CheckIcon,
           title: l(lang, "You’re in the book.", "Tanggalmu terkunci."),
           blurb: l(
             lang,
@@ -102,7 +103,7 @@ export default async function OrderPage({
         }
       : status === "payment_review"
         ? {
-            icon: "⏳",
+            Icon: ClockIcon,
             title: l(lang, "Checking your receipt.", "Memeriksa buktimu."),
             blurb: l(
               lang,
@@ -112,7 +113,7 @@ export default async function OrderPage({
           }
         : status === "accepted"
           ? {
-              icon: "◷",
+              Icon: ClockIcon,
               title: l(lang, "The date is yours to lock.", "Tinggal kunci tanggalnya."),
               blurb: l(
                 lang,
@@ -121,7 +122,7 @@ export default async function OrderPage({
               ),
             }
           : {
-              icon: "◷",
+              Icon: ClockIcon,
               title: l(lang, "Request sent.", "Permintaan terkirim."),
               blurb: l(
                 lang,
@@ -135,12 +136,12 @@ export default async function OrderPage({
       <div className="flex flex-col items-center text-center pb-2">
         <span
           className={`w-[76px] h-[76px] rounded-[26px] flex items-center justify-center text-[32px] ${
-            declined ? "bg-[#f3e0e0] text-[#b23a3a]" : "glass-fill text-white"
+            declined ? "bg-[#f3e0e0] text-[var(--paes-alarm)]" : "glass-fill text-white"
           }`}
         >
-          {headline.icon}
+          <headline.Icon className="w-7 h-7" />
         </span>
-        <h1 className="mt-5 text-[26px] font-extrabold tracking-[-0.03em]">{headline.title}</h1>
+        <h1 className="mt-5 text-[26px] font-display">{headline.title}</h1>
         <p className="mt-2.5 text-[13.5px] leading-relaxed text-muted-2 max-w-[32ch]">
           {headline.blurb}
         </p>
@@ -159,7 +160,7 @@ export default async function OrderPage({
       {canPay(status) && (
         <Link
           href={`/orders/${booking.id}/pay`}
-          className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold flex items-center justify-center glass-fill"
+          className="w-full h-[52px] rounded-2xl text-[15px] font-bold flex items-center justify-center prada-leaf"
         >
           {l(lang, "Pay the deposit", "Bayar deposit")} · {idr(booking.depositIdr)}
         </Link>
@@ -230,16 +231,16 @@ export default async function OrderPage({
               <span className="flex flex-col items-center self-stretch">
                 <span
                   className={`w-[22px] h-[22px] rounded-full flex-none flex items-center justify-center text-[11px] font-extrabold text-white border-[1.5px] ${
-                    s.done ? "bg-maroon border-maroon" : "bg-[#e6d8c3] border-[#e3d5be]"
+                    s.done ? "bg-prada border-prada text-ink" : "bg-ground border-line-2 text-melati-3"
                   }`}
                 >
-                  {s.done ? "✓" : ""}
+                  {s.done ? <CheckIcon className="w-3.5 h-3.5" /> : null}
                 </span>
                 {!s.last && <span className="flex-1 w-0.5 bg-[#e6d8c3] my-0.5" />}
               </span>
               <span className="flex-1 pb-4">
                 <span
-                  className={`block font-bold text-[14.5px] ${s.done ? "text-ink" : "text-faint"}`}
+                  className={`block font-bold text-[14.5px] ${s.done ? "text-melati" : "text-melati-3"}`}
                 >
                   {s.name}
                 </span>
@@ -274,7 +275,7 @@ export default async function OrderPage({
             rel="noopener noreferrer"
             className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold flex items-center justify-center gap-2 bg-[#1f8f4e]"
           >
-            <span aria-hidden>✆</span>
+            <PhoneIcon aria-hidden className="w-4 h-4" />
             {l(lang, "Chat on WhatsApp", "Chat lewat WhatsApp")}
           </a>
           <div className="flex flex-col gap-0.5 text-center">
@@ -289,7 +290,7 @@ export default async function OrderPage({
       <div className="flex flex-col gap-2.5">
         <Link
           href="/chat"
-          className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold flex items-center justify-center glass-fill"
+          className="w-full h-[52px] rounded-2xl text-[15px] font-bold flex items-center justify-center prada-leaf"
         >
           {l(lang, "Message Shana", "Chat Shana")}
         </Link>

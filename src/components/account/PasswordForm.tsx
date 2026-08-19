@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { Input, Label } from "@/components/ui/Field";
 import { changePasswordAction } from "@/lib/actions/profile";
@@ -101,7 +100,7 @@ export function PasswordForm({
       {error && (
         <p
           role="alert"
-          className="m-0 text-[13px] leading-snug text-[#b23a3a] bg-[#f8e8e2] border border-[#b23a3a]/25 rounded-2xl px-3.5 py-3"
+          className="m-0 text-[13px] leading-snug text-[var(--paes-alarm)] bg-[var(--paes-ground-2)] border border-[var(--paes-alarm)]/25 rounded-2xl px-3.5 py-3"
         >
           {error}
         </p>

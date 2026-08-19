@@ -4,6 +4,7 @@ import { toggleLikeAction, toggleSaveAction } from "@/lib/actions/posts";
 import type { Lang } from "@/lib/i18n";
 import { l } from "@/lib/i18n";
 import { SubmitButton } from "@/components/ui/SubmitButton";
+import { HeartIcon, StarIcon } from "@/components/ui/Icons";
 
 export type FeedPost = {
   id: string;
@@ -64,7 +65,7 @@ export function PostCard({
           sizes="(max-width: 768px) 100vw, 560px"
         />
         {post.packageName && (
-          <span className="absolute left-3 bottom-3 text-[11.5px] font-bold text-white px-3 py-1.5 rounded-full bg-[#1a1a1a]/45 backdrop-blur-md border border-white/25">
+          <span className="absolute left-3 bottom-3 text-[11.5px] font-bold text-white px-3 py-1.5 rounded-full bg-[var(--paes-melati)]/45 border border-prada/25">
             {post.packageName}
           </span>
         )}
@@ -75,24 +76,32 @@ export function PostCard({
           <input type="hidden" name="postId" value={post.id} />
           <input type="hidden" name="next" value={next} />
           <SubmitButton
-            className={`w-[38px] h-[38px] rounded-[13px] text-base cursor-pointer flex items-center justify-center ${
-              post.liked ? "bg-[#c2415c] text-white" : "glass-light text-ink"
+            aria-pressed={post.liked}
+            className={`w-[38px] h-[38px] rounded-xl cursor-pointer flex items-center justify-center border transition-colors ${
+              post.liked
+                ? "border-alarm text-alarm bg-alarm/12"
+                : "border-prada/30 text-melati-3 hover:text-melati"
             }`}
           >
-            {post.liked ? "♥" : "♡"}
+            <HeartIcon filled={post.liked} className="w-[19px] h-[19px]" />
           </SubmitButton>
         </form>
-        <span className="text-[13px] font-bold">{post.likes.toLocaleString("de-DE")}</span>
+        <span className="text-[13px] tabular-nums text-melati-2">
+          {post.likes.toLocaleString("de-DE")}
+        </span>
         <span className="flex-1" />
         <form action={toggleSaveAction}>
           <input type="hidden" name="postId" value={post.id} />
           <input type="hidden" name="next" value={next} />
           <SubmitButton
-            className={`w-[38px] h-[38px] rounded-[13px] text-[15px] cursor-pointer flex items-center justify-center ${
-              post.saved ? "glass-fill text-white" : "glass-light text-ink"
+            aria-pressed={post.saved}
+            className={`w-[38px] h-[38px] rounded-xl cursor-pointer flex items-center justify-center border transition-colors ${
+              post.saved
+                ? "border-prada text-prada bg-prada/12"
+                : "border-prada/30 text-melati-3 hover:text-melati"
             }`}
           >
-            {post.saved ? "★" : "☆"}
+            <StarIcon filled={post.saved} className="w-[19px] h-[19px]" />
           </SubmitButton>
         </form>
       </div>
@@ -101,7 +110,7 @@ export function PostCard({
         {post.title && (
           <div className="font-bold text-[15px] mb-1.5">{post.title}</div>
         )}
-        <p className="m-0 text-[13px] leading-relaxed text-[#4a3b32]">
+        <p className="m-0 text-[13px] leading-relaxed text-[var(--paes-melati-2)]">
           {post.caption}
           {post.credit && (
             <span className="text-muted-3">

@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
@@ -160,7 +159,7 @@ export function ComposeForm({
               onClick={() => setLookId(k.id)}
               className={clsx(
                 "flex gap-3 items-center w-full p-3.5 rounded-2xl cursor-pointer text-left border-[1.5px]",
-                lookId === k.id ? "bg-[#f5e6dc] border-maroon" : "bg-white border-line"
+                lookId === k.id ? "bg-[var(--paes-ground-3)] border-maroon" : "bg-card border-line"
               )}
             >
               <Radio active={lookId === k.id} />
@@ -196,7 +195,7 @@ export function ComposeForm({
                   "px-[15px] py-2.5 rounded-full text-[12.5px] font-semibold cursor-pointer whitespace-nowrap border",
                   on
                     ? "glass-fill text-white border-transparent"
-                    : "glass-light text-[#5c4a3f] border-white/80"
+                    : "glass-light text-[var(--paes-melati-2)] border-prada/80"
                 )}
               >
                 {l(lang, e.name, e.nameId)}
@@ -231,7 +230,7 @@ export function ComposeForm({
         {error && (
           <p
             role="alert"
-            className="text-[13px] leading-snug text-[#b23a3a] bg-[#f8e8e2] border border-[#b23a3a]/25 rounded-2xl px-3.5 py-3"
+            className="text-[13px] leading-snug text-[var(--paes-alarm)] bg-[var(--paes-ground-2)] border border-[var(--paes-alarm)]/25 rounded-2xl px-3.5 py-3"
           >
             {error}
           </p>
@@ -239,7 +238,7 @@ export function ComposeForm({
         <button
           type="submit"
           disabled={busy}
-          className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full h-[52px] rounded-2xl text-[15px] font-bold cursor-pointer prada-leaf disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {busy
             ? l(lang, "Posting…", "Mengunggah…")

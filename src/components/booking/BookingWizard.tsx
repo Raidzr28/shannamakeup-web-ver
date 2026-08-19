@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Link from "next/link";
 import clsx from "clsx";
@@ -12,6 +11,7 @@ import { l, idr } from "@/lib/i18n";
 import type { LookDTO } from "@/lib/looks";
 import { EXTRAS, VENUES, TIME_SLOTS, DEPOSIT_RATE } from "@/lib/static-data";
 import { bookingTotal, depositFor } from "@/lib/booking-calc";
+import { BackIcon } from "@/components/ui/Icons";
 
 const STEPS = ["when", "extras", "details", "pay"] as const;
 type Step = (typeof STEPS)[number];
@@ -241,7 +241,7 @@ export function BookingWizard({
                     onClick={() => setVenue(v.id)}
                     className={clsx(
                       "flex gap-3 items-center w-full p-3.5 rounded-2xl cursor-pointer text-left border-[1.5px]",
-                      venue === v.id ? "bg-[#f5e6dc] border-maroon" : "bg-white border-line"
+                      venue === v.id ? "bg-[var(--paes-ground-3)] border-maroon" : "bg-card border-line"
                     )}
                   >
                     <Radio active={venue === v.id} />
@@ -273,7 +273,7 @@ export function BookingWizard({
                   }
                   className={clsx(
                     "flex gap-3 items-center w-full p-3.5 rounded-2xl cursor-pointer text-left border-[1.5px]",
-                    on ? "bg-[#f5e6dc] border-maroon" : "bg-white border-line"
+                    on ? "bg-[var(--paes-ground-3)] border-maroon" : "bg-card border-line"
                   )}
                 >
                   <Check active={on} />
@@ -364,7 +364,7 @@ export function BookingWizard({
                   `Deposit setelah diterima — ${DEPOSIT_RATE}%`
                 )}
               </div>
-              <div className="font-extrabold text-[28px] mt-2 tracking-tight">{idr(deposit)}</div>
+              <div className="font-display text-[28px] mt-2">{idr(deposit)}</div>
               <div className="text-xs leading-snug opacity-85 mt-1.5">
                 {l(
                   lang,
@@ -396,7 +396,7 @@ export function BookingWizard({
                     "Shana memeriksa bukti dan tanggalnya terkunci."
                   ),
                 ].map((line, i) => (
-                  <li key={line} className="flex gap-3 items-start text-[13px] text-[#4a3b32]">
+                  <li key={line} className="flex gap-3 items-start text-[13px] text-[var(--paes-melati-2)]">
                     <span className="w-[22px] h-[22px] rounded-full flex-none flex items-center justify-center text-[11px] font-extrabold bg-tint text-maroon">
                       {i + 1}
                     </span>
@@ -428,8 +428,8 @@ export function BookingWizard({
 
       <div
         className={clsx(
-          "sticky bottom-0 mt-5 pt-3.5 pb-5 bg-gradient-to-b from-white/72 to-white/90 backdrop-blur-2xl border-t border-white/80",
-          "px-5 lg:px-0 lg:bg-none lg:border-0 lg:backdrop-blur-none"
+          "sticky bottom-0 mt-5 pt-3.5 pb-5 bg-gradient-to-b from-bg to-bg border-t border-prada/80",
+          "px-5 lg:px-0 lg:bg-none lg:border-0 lg:"
         )}
       >
         <div className="flex justify-between items-baseline mb-2.5">
@@ -449,14 +449,14 @@ export function BookingWizard({
               onClick={() => setStep(STEPS[idx - 1])}
               className="h-[52px] px-5 rounded-2xl text-ink text-[14.5px] font-bold cursor-pointer glass-light"
             >
-              ←
+              <BackIcon className="w-[18px] h-[18px]" />
             </button>
           ) : (
             <Link
               href={`/l/${look.id}`}
               className="h-[52px] px-5 rounded-2xl text-ink text-[14.5px] font-bold flex items-center glass-light"
             >
-              ←
+              <BackIcon className="w-[18px] h-[18px]" />
             </Link>
           )}
           {step === "pay" ? (
@@ -464,7 +464,7 @@ export function BookingWizard({
             // second booking, with its own code and its own deposit.
             <SubmitButton
               pendingLabel={l(lang, "Sending…", "Mengirim…")}
-              className="flex-1 h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
+              className="flex-1 h-[52px] rounded-2xl text-[15px] font-bold cursor-pointer prada-leaf"
             >
               {nextLabel}
             </SubmitButton>
@@ -472,7 +472,7 @@ export function BookingWizard({
             <button
               type="button"
               onClick={() => setStep(STEPS[idx + 1])}
-              className="flex-1 h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
+              className="flex-1 h-[52px] rounded-2xl text-[15px] font-bold cursor-pointer prada-leaf"
             >
               {nextLabel}
             </button>

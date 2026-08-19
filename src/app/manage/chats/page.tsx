@@ -10,6 +10,7 @@ import { waitingLabel } from "@/lib/booking-time";
 import { l } from "@/lib/i18n";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { togglePinAction, toggleArchiveAction } from "@/lib/actions/inbox";
+import { ReplyIcon, StarIcon } from "@/components/ui/Icons";
 
 export default async function ManageChatsPage({
   searchParams,
@@ -34,13 +35,13 @@ export default async function ManageChatsPage({
     `flex-none px-3.5 py-2 rounded-full text-[12.5px] font-semibold whitespace-nowrap border ${
       on
         ? "glass-fill text-white border-transparent"
-        : "glass-light text-[#5c4a3f] border-white/80"
+        : "glass-light text-[var(--paes-melati-2)] border-prada/80"
     }`;
 
   const body = (
     <div className="flex flex-col gap-3">
       {waitingCount > 0 && !showArchived && (
-        <p className="m-0 text-[13px] font-semibold leading-snug text-[#8a6320] bg-[#f7e6cf] border border-[#8a6320]/25 rounded-2xl px-3.5 py-3">
+        <p className="m-0 text-[13px] font-semibold leading-snug text-[var(--paes-prada-deep)] bg-[var(--paes-ground-3)] border border-[var(--paes-prada-deep)]/25 rounded-2xl px-3.5 py-3">
           {waitingCount === 1
             ? l(
                 lang,
@@ -101,7 +102,7 @@ export default async function ManageChatsPage({
           key={t.userId}
           className={`glass-card p-[18px] flex flex-col gap-3 ${
             t.waiting
-              ? "border-[1.5px] border-[#8a6320]/45"
+              ? "border-[1.5px] border-[var(--paes-prada-deep)]/45"
               : t.pinned
                 ? "border-[1.5px] border-gold/60"
                 : ""
@@ -124,7 +125,7 @@ export default async function ManageChatsPage({
                   {t.waiting && (
                     <span
                       aria-hidden="true"
-                      className="w-2 h-2 flex-none rounded-full bg-[#b23a3a]"
+                      className="w-2 h-2 flex-none rounded-full bg-[var(--paes-alarm)]"
                     />
                   )}
                   <span className="font-bold text-[15px] truncate">{t.name}</span>
@@ -144,11 +145,11 @@ export default async function ManageChatsPage({
                   t.waiting ? "text-ink font-semibold" : "text-muted-2"
                 }`}
               >
-                {t.lastFromClient ? "" : "↩ "}
+                {t.lastFromClient ? null : <ReplyIcon className="mr-1 inline-block h-3.5 w-3.5 align-[-2px]" />}
                 {t.lastText || l(lang, "No messages yet.", "Belum ada pesan.")}
               </span>
               {t.waiting && (
-                <span className="inline-block text-[10.5px] font-bold px-2 py-1 rounded-full bg-[#f8e8e2] text-[#b23a3a] mt-1.5">
+                <span className="inline-block text-[10.5px] font-bold px-2 py-1 rounded-full bg-[var(--paes-ground-2)] text-[var(--paes-alarm)] mt-1.5">
                   {l(lang, "Waiting for you", "Menunggu kamu")}
                 </span>
               )}
@@ -160,7 +161,7 @@ export default async function ManageChatsPage({
                   ` · ${t.openBookings} ${l(lang, "open booking", "pesanan aktif")}`}
               </span>
             </span>
-            {t.pinned && <span className="flex-none text-gold text-sm">★</span>}
+            {t.pinned && <StarIcon className="h-4 w-4 flex-none text-prada" />}
           </Link>
 
           <div className="flex gap-2 border-t border-line pt-2.5">
@@ -206,7 +207,7 @@ export default async function ManageChatsPage({
       <MobileOnly>
         <div className="ambient-glow min-h-dvh flex flex-col pt-[58px]">
           <div className="px-5 pt-2">
-            <h1 className="font-extrabold text-[22px] tracking-tight">{heading}</h1>
+            <h1 className="font-display text-[22px]">{heading}</h1>
             <p className="text-xs text-muted-3 mt-1.5 leading-snug">{sub}</p>
           </div>
           <div className="px-5 pt-4.5">{body}</div>
@@ -217,7 +218,7 @@ export default async function ManageChatsPage({
 
       <DesktopOnly>
         <div className="ambient-glow flex-1 px-11 py-11">
-          <h1 className="text-4xl font-extrabold tracking-tight">{heading}</h1>
+          <h1 className="text-4xl font-display">{heading}</h1>
           <p className="text-sm text-muted mt-3 max-w-[60ch]">{sub}</p>
           <div className="max-w-[760px] mt-8 pb-24">{body}</div>
         </div>

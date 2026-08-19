@@ -1,11 +1,11 @@
 "use client";
-
 import { useEffect, useRef } from "react";
 import clsx from "clsx";
 import { replyToClientAction } from "@/lib/actions/inbox";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import type { Lang } from "@/lib/i18n";
 import { l } from "@/lib/i18n";
+import { ForwardIcon } from "@/components/ui/Icons";
 
 export type AdminMessage = {
   id: string;
@@ -90,7 +90,7 @@ export function AdminChatPanel({
                     ? "rounded-[18px_18px_18px_6px] text-ink glass-light"
                     : fromArtist
                       ? "rounded-[18px_18px_6px_18px] bg-maroon text-white"
-                      : "rounded-[18px_18px_6px_18px] bg-[#e8dcf0] text-[#4a3b32]"
+                      : "rounded-[18px_18px_6px_18px] bg-[var(--paes-ground-2)] text-[var(--paes-melati-2)]"
                 )}
               >
                 {m.text}
@@ -109,7 +109,7 @@ export function AdminChatPanel({
         }}
         // flex-none so the composer is never squeezed by a long transcript, and
         // the extra bottom padding clears a phone's gesture bar.
-        className="flex gap-2.5 items-center bg-white border-t border-line flex-none px-4 py-3.5 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
+        className="flex gap-2.5 items-center bg-card border-t border-line flex-none px-4 py-3.5 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
       >
         <input type="hidden" name="userId" value={userId} />
         <input
@@ -118,14 +118,14 @@ export function AdminChatPanel({
           maxLength={2000}
           autoComplete="off"
           placeholder={l(lang, `Reply to ${firstName}…`, `Balas ${firstName}…`)}
-          className="flex-1 min-w-0 min-h-[44px] box-border rounded-2xl border-[1.5px] border-line-2 bg-white px-3.5 text-sm outline-none focus:border-maroon"
+          className="flex-1 min-w-0 min-h-[44px] box-border rounded-2xl border-[1.5px] border-line-2 bg-card px-3.5 text-sm outline-none focus:border-maroon"
         />
         <SubmitButton
           aria-label={l(lang, "Send reply", "Kirim balasan")}
           pendingLabel="…"
-          className="w-[46px] h-[46px] flex-none rounded-2xl text-white text-lg cursor-pointer glass-fill"
+          className="w-[46px] h-[46px] flex-none rounded-2xl text-lg cursor-pointer prada-leaf"
         >
-          →
+          <ForwardIcon className="w-[18px] h-[18px]" />
         </SubmitButton>
       </form>
     </div>

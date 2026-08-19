@@ -7,6 +7,7 @@ import { getLook } from "@/lib/looks";
 import { requireArtistPage } from "@/lib/require-artist";
 import { l } from "@/lib/i18n";
 import { updatePackageAction } from "@/lib/actions/packages";
+import { BackIcon } from "@/components/ui/Icons";
 
 export default async function EditPackagePage({
   params,
@@ -43,7 +44,7 @@ export default async function EditPackagePage({
               href="/manage/packages"
               className="w-[38px] h-[38px] rounded-[13px] flex items-center justify-center glass-light text-[15px] text-ink"
             >
-              ←
+              <BackIcon className="w-[18px] h-[18px]" />
             </Link>
             <h1 className="font-extrabold text-[19px] tracking-tight truncate">
               {l(lang, look.title, look.titleId)}
@@ -56,9 +57,9 @@ export default async function EditPackagePage({
       <DesktopOnly>
         <div className="ambient-glow flex-1 px-11 py-11">
           <Link href="/manage/packages" className="text-[13px] font-semibold text-muted">
-            ← {l(lang, "Back to packages", "Kembali ke paket")}
+            <BackIcon className="w-4 h-4" /> {l(lang, "Back to packages", "Kembali ke paket")}
           </Link>
-          <h1 className="text-4xl font-extrabold tracking-tight mt-4">{heading}</h1>
+          <h1 className="text-4xl font-display mt-4">{heading}</h1>
           <p className="text-sm text-muted mt-2">{l(lang, look.title, look.titleId)}</p>
           <div className="max-w-[620px] mt-7">{form}</div>
         </div>

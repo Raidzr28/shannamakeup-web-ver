@@ -4,6 +4,7 @@ import { statusLabel, statusTone } from "@/lib/booking-status";
 import { countdownLabel, dayParts, longDate, waitingLabel } from "@/lib/booking-time";
 import type { Lang } from "@/lib/i18n";
 import { l, idr } from "@/lib/i18n";
+import { ForwardIcon } from "@/components/ui/Icons";
 
 /** The shape both lists need — a structural subset of the Prisma row, so the
  * component does not depend on every column a booking happens to carry. */
@@ -65,7 +66,7 @@ export function StudioDashboard({
       >
         {label}
       </span>
-      <span className="text-[22px] font-extrabold leading-none tracking-tight">
+      <span className="text-[22px] font-display leading-none">
         {value}
       </span>
       <span className={`text-[11px] ${accent ? "opacity-80" : "text-muted-3"}`}>
@@ -87,12 +88,12 @@ export function StudioDashboard({
         </span>
       </span>
       {!!badge && badge > 0 && (
-        <span className="flex-none min-w-[22px] h-[22px] px-1.5 rounded-full bg-[#b23a3a] text-white text-[11px] font-bold flex items-center justify-center">
+        <span className="flex-none min-w-[22px] h-[22px] px-1.5 rounded-full bg-[var(--paes-alarm)] text-white text-[11px] font-bold flex items-center justify-center">
           {badge}
         </span>
       )}
       <span aria-hidden="true" className="flex-none text-maroon">
-        →
+        <ForwardIcon className="w-[18px] h-[18px]" />
       </span>
     </Link>
   );
@@ -101,8 +102,8 @@ export function StudioDashboard({
     <div className="flex flex-col gap-4">
       {/* The one line that says whether anything is on fire. */}
       {needsAction + stats.waitingChats > 0 ? (
-        <div className="glass-card p-[18px] border-[1.5px] border-[#8a6320]/40 flex flex-col gap-2">
-          <span className="text-xs font-bold tracking-[0.04em] uppercase text-[#8a6320]">
+        <div className="glass-card p-[18px] border-[1.5px] border-[var(--paes-prada-deep)]/40 flex flex-col gap-2">
+          <span className="text-xs font-bold tracking-[0.04em] uppercase text-[var(--paes-prada-deep)]">
             {l(lang, "Waiting on you", "Menunggu kamu")}
           </span>
           <p className="m-0 text-[13.5px] leading-snug text-ink">
@@ -175,17 +176,17 @@ export function StudioDashboard({
       {stats.doubleBookedDays > 0 && (
         <Link
           href="/manage/bookings?filter=all&sort=event"
-          className="glass-card p-3.5 flex items-center gap-3 border-[1.5px] border-[#8a6320]/35"
+          className="glass-card p-3.5 flex items-center gap-3 border-[1.5px] border-[var(--paes-prada-deep)]/35"
         >
-          <span className="flex-1 text-[13px] leading-snug text-[#8a6320] font-semibold">
+          <span className="flex-1 text-[13px] leading-snug text-[var(--paes-prada-deep)] font-semibold">
             {l(
               lang,
               `${stats.doubleBookedDays} ${stats.doubleBookedDays === 1 ? "day has" : "days have"} more than one live booking.`,
               `${stats.doubleBookedDays} hari punya lebih dari satu pesanan aktif.`
             )}
           </span>
-          <span aria-hidden="true" className="flex-none text-[#8a6320]">
-            →
+          <span aria-hidden="true" className="flex-none text-[var(--paes-prada-deep)]">
+            <ForwardIcon className="w-[18px] h-[18px]" />
           </span>
         </Link>
       )}
@@ -249,7 +250,7 @@ export function StudioDashboard({
                 </span>
               </span>
               <span aria-hidden="true" className="flex-none text-maroon">
-                →
+                <ForwardIcon className="w-[18px] h-[18px]" />
               </span>
             </Link>
           ))}

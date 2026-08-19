@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -104,7 +103,7 @@ export function PaymentForm({
         <div className="text-[11.5px] font-semibold tracking-[0.06em] uppercase opacity-80">
           {l(lang, "Deposit due", "Deposit yang harus dibayar")}
         </div>
-        <div className="font-extrabold text-[28px] mt-2 tracking-tight">
+        <div className="font-display text-[28px] mt-2">
           {idr(depositIdr)}
         </div>
         <div className="text-xs leading-snug opacity-85 mt-1.5">
@@ -128,7 +127,7 @@ export function PaymentForm({
               onClick={() => setMethod(m.id)}
               className={clsx(
                 "flex gap-3 items-center w-full p-3.5 rounded-2xl cursor-pointer text-left border-[1.5px]",
-                method === m.id ? "bg-[#f5e6dc] border-maroon" : "bg-white border-line"
+                method === m.id ? "bg-[var(--paes-ground-3)] border-maroon" : "bg-card border-line"
               )}
             >
               <Radio active={method === m.id} />
@@ -167,7 +166,7 @@ export function PaymentForm({
             {l(lang, "Scan to pay", "Pindai untuk bayar")}
           </div>
           {channels.qrisImageUrl ? (
-            <span className="relative w-[220px] h-[220px] mt-4 rounded-2xl overflow-hidden bg-white">
+            <span className="relative w-[220px] h-[220px] mt-4 rounded-2xl overflow-hidden bg-card">
               <Image
                 src={channels.qrisImageUrl}
                 alt="QRIS"
@@ -194,7 +193,7 @@ export function PaymentForm({
         <div className="text-xs font-bold tracking-[0.04em] uppercase text-muted-3">
           {l(lang, "Your receipt", "Bukti pembayaranmu")}
         </div>
-        <label className="relative h-[240px] border-[1.5px] border-dashed border-maroon/50 rounded-[18px] overflow-hidden cursor-pointer flex items-center justify-center bg-white/60">
+        <label className="relative h-[240px] border-[1.5px] border-dashed border-maroon/50 rounded-[18px] overflow-hidden cursor-pointer flex items-center justify-center bg-ground-2">
           <input
             type="file"
             accept="image/png,image/jpeg,image/webp"
@@ -231,7 +230,7 @@ export function PaymentForm({
         {error && (
           <p
             role="alert"
-            className="m-0 text-[13px] leading-snug text-[#b23a3a] bg-[#f8e8e2] border border-[#b23a3a]/25 rounded-2xl px-3.5 py-3"
+            className="m-0 text-[13px] leading-snug text-[var(--paes-alarm)] bg-[var(--paes-ground-2)] border border-[var(--paes-alarm)]/25 rounded-2xl px-3.5 py-3"
           >
             {error}
           </p>
@@ -246,7 +245,7 @@ export function PaymentForm({
         <button
           type="submit"
           disabled={busy}
-          className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full h-[52px] rounded-2xl text-[15px] font-bold cursor-pointer prada-leaf disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {busy
             ? l(lang, "Sending…", "Mengirim…")

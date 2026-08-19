@@ -9,6 +9,7 @@ import { prisma } from "@/lib/prisma";
 import { getWaitingChatCount } from "@/lib/inbox";
 import { l } from "@/lib/i18n";
 import { logoutAction } from "@/lib/actions/auth";
+import { CheckIcon, LockIcon, PhoneIcon, PinIcon } from "@/components/ui/Icons";
 
 const GUEST_LIMITS = [
   { en: "Browse the portfolio and the Looks feed", id: "Lihat portofolio dan feed Looks", ok: true },
@@ -78,17 +79,17 @@ export default async function AccountPage() {
       {user && (user.bio || user.address || user.city || user.phone) && (
         <div className="glass-card p-[18px] flex flex-col gap-2.5">
           {user.bio && (
-            <p className="m-0 text-[13px] leading-relaxed text-[#4a3b32]">{user.bio}</p>
+            <p className="m-0 text-[13px] leading-relaxed text-[var(--paes-melati-2)]">{user.bio}</p>
           )}
           {(user.address || user.city) && (
             <div className="flex gap-2 text-[12.5px] text-muted-3">
-              <span>📍</span>
+              <PinIcon className="w-4 h-4 flex-none text-melati-3" />
               <span>{[user.address, user.city].filter(Boolean).join(" · ")}</span>
             </div>
           )}
           {user.phone && (
             <div className="flex gap-2 text-[12.5px] text-muted-3">
-              <span>☎</span>
+              <PhoneIcon className="w-4 h-4 flex-none text-melati-3" />
               <span>{user.phone}</span>
             </div>
           )}
@@ -102,13 +103,13 @@ export default async function AccountPage() {
           </div>
           <div className="flex flex-col gap-2 mt-3">
             {GUEST_LIMITS.map((x) => (
-              <div key={x.en} className="flex gap-2.5 items-center text-[13px] text-[#4a3b32]">
+              <div key={x.en} className="flex gap-2.5 items-center text-[13px] text-[var(--paes-melati-2)]">
                 <span
                   className={`w-[22px] h-[22px] rounded-full flex-none flex items-center justify-center text-[10.5px] font-extrabold ${
                     x.ok ? "bg-tint text-maroon" : "bg-[#f3e6dc] text-[#a06a6a]"
                   }`}
                 >
-                  {x.ok ? "✓" : "🔒"}
+                  {x.ok ? <CheckIcon className="w-4 h-4" /> : <LockIcon className="w-4 h-4" />}
                 </span>
                 {l(lang, x.en, x.id)}
               </div>
@@ -117,7 +118,7 @@ export default async function AccountPage() {
           <div className="flex flex-col gap-2.5 mt-4.5">
             <Link
               href="/login?next=/account"
-              className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold flex items-center justify-center glass-fill"
+              className="w-full h-[52px] rounded-2xl text-[15px] font-bold flex items-center justify-center prada-leaf"
             >
               {l(lang, "Sign in", "Masuk")}
             </Link>
@@ -180,14 +181,14 @@ export default async function AccountPage() {
                 className="flex items-center gap-2.5 w-full p-3.5 rounded-2xl text-sm font-semibold text-ink"
               >
                 <span className="flex-1">{m.name}</span>
-                <span className="text-xs text-[#9c8975]">{m.meta}</span>
+                <span className="text-xs text-[var(--paes-melati-3)]">{m.meta}</span>
               </Link>
             ))}
           </div>
           <form action={logoutAction}>
             <button
               type="submit"
-              className="w-full h-[50px] rounded-2xl text-[14.5px] font-bold cursor-pointer text-[#b23a3a] glass-light border-[#b23a3a]/30"
+              className="w-full h-[50px] rounded-2xl text-[14.5px] font-bold cursor-pointer text-[var(--paes-alarm)] glass-light border-[var(--paes-alarm)]/30"
             >
               {l(lang, "Log out", "Keluar")}
             </button>
@@ -229,7 +230,7 @@ export default async function AccountPage() {
 
       <DesktopOnly>
     <div className="ambient-glow flex-1 px-11 py-11">
-      <h1 className="text-4xl font-extrabold tracking-tight mb-7">
+      <h1 className="text-4xl font-display mb-7">
         {l(lang, "Profile", "Profil")}
       </h1>
       <div className="max-w-[560px]">{body}</div>

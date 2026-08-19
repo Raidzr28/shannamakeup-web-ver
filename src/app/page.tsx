@@ -48,7 +48,7 @@ export default async function HomePage({
         <MobileOnly>
           <div className="ambient-glow min-h-dvh flex flex-col pt-[58px]">
             <div className="px-5 pt-2">
-              <h1 className="font-extrabold text-[22px] tracking-tight">{heading}</h1>
+              <h1 className="font-display text-[22px]">{heading}</h1>
               <p className="text-xs text-muted-3 mt-1.5 leading-snug">{sub}</p>
             </div>
             <div className="px-5 pt-4.5">{dashboard}</div>
@@ -59,7 +59,7 @@ export default async function HomePage({
 
         <DesktopOnly>
           <div className="ambient-glow flex-1 px-11 py-11">
-            <h1 className="text-4xl font-extrabold tracking-tight">{heading}</h1>
+            <h1 className="text-4xl font-display">{heading}</h1>
             <p className="text-sm text-muted mt-3 max-w-[60ch]">{sub}</p>
             <div className="max-w-[760px] mt-8 pb-24">{dashboard}</div>
           </div>

@@ -13,6 +13,7 @@ import {
   demoArtistLoginAction,
   demoLoginEnabled,
 } from "@/lib/actions/auth";
+import { LockIcon } from "@/components/ui/Icons";
 
 export default async function LoginPage({
   searchParams,
@@ -37,13 +38,13 @@ export default async function LoginPage({
       {params.reason && (
         <div className="glass-card p-4 mb-5 flex gap-3 items-start">
           <span className="w-9 h-9 rounded-xl glass-fill text-white flex items-center justify-center flex-none">
-            🔒
+            <LockIcon className="w-[18px] h-[18px]" />
           </span>
           <p className="text-[13px] leading-relaxed text-muted">{params.reason}</p>
         </div>
       )}
 
-      <h1 className="text-[30px] font-extrabold tracking-[-0.03em] leading-tight">
+      <h1 className="text-[30px] font-display leading-tight">
         {l(lang, "Welcome back", "Selamat datang kembali")}
       </h1>
       <p className="mt-2.5 text-[13.5px] leading-relaxed text-muted">
@@ -55,7 +56,7 @@ export default async function LoginPage({
       </p>
 
       {params.error && (
-        <p className="mt-4 text-[13px] font-semibold text-[#b23a3a]">{params.error}</p>
+        <p className="mt-4 text-[13px] font-semibold text-[var(--paes-alarm)]">{params.error}</p>
       )}
 
       <form action={loginAction} className="flex flex-col gap-4 mt-5.5">
@@ -70,7 +71,7 @@ export default async function LoginPage({
         </div>
         <SubmitButton
           pendingLabel={l(lang, "Signing in…", "Masuk…")}
-          className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
+          className="w-full h-[52px] rounded-2xl text-[15px] font-bold cursor-pointer prada-leaf"
         >
           {l(lang, "Sign in", "Masuk")}
         </SubmitButton>
@@ -79,7 +80,7 @@ export default async function LoginPage({
       {/* One divider covers whatever alternatives exist below it, so turning
           either of them off does not leave a stray "or" behind. */}
       {(googleEnabled || demoLogin) && (
-        <div className="flex items-center gap-3 text-[#9c8975] text-[11.5px] my-4">
+        <div className="flex items-center gap-3 text-[var(--paes-melati-3)] text-[11.5px] my-4">
           <span className="flex-1 h-px bg-line-2" />
           {l(lang, "or", "atau")}
           <span className="flex-1 h-px bg-line-2" />

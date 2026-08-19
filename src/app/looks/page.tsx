@@ -7,6 +7,7 @@ import { getLanguage } from "@/lib/language";
 import { getCurrentUser } from "@/lib/auth";
 import { getFeed, getStories } from "@/lib/feed";
 import { l } from "@/lib/i18n";
+import { MailIcon } from "@/components/ui/Icons";
 
 export default async function LooksPage() {
   const [lang, user] = await Promise.all([getLanguage(), getCurrentUser()]);
@@ -44,7 +45,7 @@ export default async function LooksPage() {
       <div className="ambient-glow min-h-dvh flex flex-col pt-[58px] relative">
         <div className="px-5 pt-2 pb-3 flex items-center gap-3">
           <div className="flex-1">
-            <div className="font-extrabold text-[22px] tracking-tight">
+            <div className="font-display text-[22px]">
               {l(lang, "Looks", "Looks")}
             </div>
             <div className="text-xs text-muted-3 mt-0.5">
@@ -59,7 +60,7 @@ export default async function LooksPage() {
             href={user?.role === "ARTIST" ? "/manage/chats" : "/chat"}
             className="w-[38px] h-[38px] rounded-[13px] flex items-center justify-center glass-light text-[15px]"
           >
-            ✉
+            <MailIcon className="w-[18px] h-[18px]" />
           </Link>
         </div>
 
@@ -82,7 +83,7 @@ export default async function LooksPage() {
     <div className="ambient-glow flex-1 px-11 py-11">
       <div className="flex items-end justify-between gap-6 mb-7">
         <div>
-          <h1 className="text-4xl font-extrabold tracking-tight">
+          <h1 className="text-4xl font-display">
             {l(lang, "Looks", "Looks")}
           </h1>
           <p className="text-sm text-muted mt-2">
@@ -95,7 +96,7 @@ export default async function LooksPage() {
         </div>
         <Link
           href="/looks/compose"
-          className="h-[46px] px-5 rounded-2xl text-white text-sm font-bold flex items-center glass-fill"
+          className="h-[46px] px-5 rounded-2xl text-sm font-bold flex items-center prada-leaf"
         >
           {l(lang, "Share a look", "Bagikan tampilan")}
         </Link>

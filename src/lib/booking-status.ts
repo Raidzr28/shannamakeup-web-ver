@@ -50,11 +50,11 @@ export function statusTone(status: string) {
     case "confirmed":
       return "bg-maroon text-white";
     case "declined":
-      return "bg-[#f3e0e0] text-[#b23a3a]";
+      return "bg-[#f3e0e0] text-[var(--paes-alarm)]";
     case "payment_review":
-      return "bg-[#e8dcf0] text-[#6b4a8a]";
+      return "bg-[var(--paes-ground-2)] text-[#6b4a8a]";
     case "accepted":
-      return "bg-[#f7e6cf] text-[#8a6320]";
+      return "bg-[var(--paes-ground-3)] text-[var(--paes-prada-deep)]";
     default:
       return "bg-[#efe4d5] text-muted-2";
   }

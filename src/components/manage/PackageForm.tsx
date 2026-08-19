@@ -27,7 +27,7 @@ export function PackageForm({
       {error && (
         <p
           role="alert"
-          className="text-[13px] leading-snug text-[#b23a3a] bg-[#f8e8e2] border border-[#b23a3a]/25 rounded-2xl px-3.5 py-3"
+          className="text-[13px] leading-snug text-[var(--paes-alarm)] bg-[var(--paes-ground-2)] border border-[var(--paes-alarm)]/25 rounded-2xl px-3.5 py-3"
         >
           {error}
         </p>
@@ -146,7 +146,7 @@ export function PackageForm({
 
       <div className="flex gap-3">
         <SubmitButton
-          className="flex-1 h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
+          className="flex-1 h-[52px] rounded-2xl text-[15px] font-bold cursor-pointer prada-leaf"
         >
           {editing
             ? l(lang, "Save changes", "Simpan perubahan")

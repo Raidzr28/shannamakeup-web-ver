@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Image from "next/image";
 import { compressImage } from "@/lib/compress-image";
@@ -138,7 +137,7 @@ export function ProfileForm({
                   setPhoto("remove");
                   setPreview(null);
                 }}
-                className="h-[42px] px-4 rounded-2xl text-[13px] font-bold cursor-pointer glass-light text-[#b23a3a] border-[#b23a3a]/30"
+                className="h-[42px] px-4 rounded-2xl text-[13px] font-bold cursor-pointer glass-light text-[var(--paes-alarm)] border-[var(--paes-alarm)]/30"
               >
                 {l(lang, "Remove photo", "Hapus foto")}
               </button>
@@ -221,7 +220,7 @@ export function ProfileForm({
         {error && (
           <p
             role="alert"
-            className="m-0 text-[13px] leading-snug text-[#b23a3a] bg-[#f8e8e2] border border-[#b23a3a]/25 rounded-2xl px-3.5 py-3"
+            className="m-0 text-[13px] leading-snug text-[var(--paes-alarm)] bg-[var(--paes-ground-2)] border border-[var(--paes-alarm)]/25 rounded-2xl px-3.5 py-3"
           >
             {error}
           </p>
@@ -237,7 +236,7 @@ export function ProfileForm({
         <button
           type="submit"
           disabled={busy || Boolean(usernameError)}
-          className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full h-[52px] rounded-2xl text-[15px] font-bold cursor-pointer prada-leaf disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {busy ? l(lang, "Saving…", "Menyimpan…") : l(lang, "Save profile", "Simpan profil")}
         </button>

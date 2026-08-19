@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Media } from "@/components/ui/Media";
 import { PersonPlaceholder } from "@/components/ui/PersonPlaceholder";
+import { PaesCrown } from "@/components/ui/Paes";
 import { ChipLink } from "@/components/ui/Option";
 import { TabBar } from "@/components/shell/TabBar";
 import { LookCard } from "./LookCard";
@@ -32,107 +33,125 @@ export function MobileHome({
   waitingChats: number;
 }) {
   const opening = nextOpening();
+  // The first look in the current filter leads the surface. Null-safe: an empty
+  // category still renders, the slot falling back to prepared ground.
+  const hero = looks[0];
 
   return (
-    <div className="ambient-glow min-h-dvh flex flex-col pt-[58px]">
-      <div className="px-5 pt-2 pb-1 flex items-center gap-3">
-        <div className="flex-1">
-          <div className="text-[12.5px] text-muted-2">
-            {l(lang, "Good evening", "Selamat malam")}
-          </div>
-          <div className="font-extrabold text-[19px] tracking-tight mt-0.5">
-            {l(lang, "Find your look", "Temukan tampilanmu")}
-          </div>
+    <div className="ink-field min-h-dvh flex flex-col">
+      {/* The work leads. A portrait runs full-bleed off the top edge and
+          resolves down into the ink ground, with the ornament set across the
+          line where it resolves — the ground of the page and the ground of the
+          ornament are the same surface. The wordmark then sits INTO that fade
+          rather than after it, so the first viewport is one object. */}
+      <header className="relative">
+        <div className="relative h-[392px] w-full overflow-hidden">
+          <Media
+            src={hero?.heroImage ?? null}
+            alt={hero ? l(lang, hero.title, hero.titleId) : "Shana"}
+            shape="rect"
+            className="absolute inset-0 h-full w-full"
+            sizes="100vw"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-gradient-to-b from-bg/55 via-bg/5 to-bg"
+          />
+          <PaesCrown
+            tone="edge"
+            className="absolute left-1/2 bottom-6 w-[66%] -translate-x-1/2"
+          />
         </div>
-      </div>
+        <h1 className="relative -mt-8 text-center font-display text-[clamp(3.5rem,19vw,5.5rem)] leading-[0.84]">
+          Shana
+        </h1>
+        <p className="mx-auto mt-5 max-w-[34ch] px-5 text-center text-[12.5px] leading-[1.65] text-melati-2">
+          {l(
+            lang,
+            "Skin first, structure second, colour last. Bridal work built to survive tears, prayer and photographers.",
+            "Kulit dulu, struktur kedua, warna terakhir. Rias pengantin yang tahan tangis, doa dan kamera."
+          )}
+        </p>
+      </header>
 
-      <div className="px-5 pt-3">
-        <Link
-          href="/looks"
-          className="h-[46px] flex items-center text-[13.5px] text-muted glass-card px-4"
-        >
-          {l(lang, "Search looks, dates, add-ons", "Cari tampilan, tanggal, tambahan")}
-        </Link>
-      </div>
-
-      <div className="px-5 pt-3.5">
-        <div className="flex gap-3.5 items-center text-white rounded-[22px] p-4.5 glass-fill">
-          <div className="flex-1">
-            <div className="text-[11px] font-semibold tracking-[0.08em] uppercase opacity-75">
+      {/* The commercial facts, on a band closed by a prada hairline, with the
+          one leaf-filled action of the surface at its right. A date and a price
+          are figures: tabular, and never wrapped. */}
+      <section className="px-5 pt-8">
+        <div className="prada-edge leaf-catch flex items-center gap-3 px-4 py-3.5">
+          <div className="min-w-0 flex-1">
+            <div className="text-[9.5px] uppercase tracking-[0.14em] text-melati-3">
               {l(lang, "Next opening", "Slot terdekat")}
             </div>
-            <div className="font-extrabold text-xl mt-2 tracking-tight">
+            <div className="font-display tabular-nums text-[20px] leading-tight mt-1 truncate">
               {formatOpeningLine(opening, lang)}
             </div>
-            <div className="text-xs opacity-80 mt-1">
+            <div className="text-[11px] text-melati-3 mt-1.5 leading-snug">
               {l(
                 lang,
                 "One booking a day, travel included",
                 "Satu pesanan per hari, termasuk perjalanan"
               )}
             </div>
-            <Link
-              href="/book"
-              className="mt-3.5 inline-flex h-[38px] px-4 rounded-xl text-white text-[13px] font-bold items-center bg-gradient-to-br from-white/34 to-white/16 backdrop-blur-md border border-white/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]"
-            >
-              {l(lang, "Take this slot", "Ambil slot ini")}
-            </Link>
           </div>
-          <span className="w-24 h-[110px] rounded-[20px] overflow-hidden flex-none bg-white/18">
+          <Link
+            href="/book"
+            className="prada-leaf flex-none inline-flex h-[42px] items-center px-4 text-[12.5px]"
+          >
+            {l(lang, "Take this slot", "Ambil slot ini")}
+          </Link>
+        </div>
+      </section>
+
+      <div className="px-5 pt-3">
+        <Link
+          href="/looks"
+          className="plate-quiet flex h-[44px] items-center px-4 text-[12.5px] text-melati-3"
+        >
+          {l(lang, "Search looks, dates, add-ons", "Cari tampilan, tanggal, tambahan")}
+        </Link>
+      </div>
+
+      {/* Directly under the slot band: someone who has just read a date and a
+          price is exactly the person with a question about it. */}
+      <div className="px-5 pt-3">
+        <Link
+          href={chatHref}
+          className="plate-quiet flex items-center gap-3.5 px-4 py-3.5"
+        >
+          <span className="relative h-11 w-11 flex-none overflow-hidden rounded-full border border-prada/40">
             {viewer?.avatarUrl ? (
-              // `shape="rect"` because the wrapper already rounds and clips, and
-              // `Media` needs an explicit size or its `fill` image collapses.
               <Media
                 src={viewer.avatarUrl}
                 alt={viewer.name}
                 shape="rect"
-                className="w-full h-full"
-                sizes="96px"
+                className="h-full w-full"
+                sizes="44px"
               />
             ) : (
               <PersonPlaceholder
-                className="w-full h-full"
+                className="h-full w-full"
                 label={l(lang, "Your profile photo", "Foto profilmu")}
               />
             )}
-          </span>
-        </div>
-      </div>
-
-      {/* Directly under the slot card: someone who has just read a date and a
-          price is exactly the person with a question about it. The old entry
-          point was a "◔" glyph in the header, which said nothing. */}
-      <div className="px-5 pt-3">
-        <Link href={chatHref} className="glass-card p-4 flex gap-3.5 items-center">
-          <span className="relative w-12 h-12 flex-none rounded-2xl flex items-center justify-center glass-fill text-white text-lg">
-            ✦
             {waitingChats > 0 ? (
-              <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-[#b23a3a] text-white text-[11px] font-bold flex items-center justify-center border-2 border-[#fffcf7]">
+              <span className="absolute -right-1 -top-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full border border-bg bg-alarm px-1 text-[10px] font-semibold tabular-nums text-melati">
                 {waitingChats}
               </span>
             ) : (
               <span
                 aria-hidden="true"
-                className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-[#4e9a5f] border-2 border-[#fffcf7]"
+                className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border border-bg bg-sirih"
               />
             )}
           </span>
-          <span className="flex-1 min-w-0">
-            <span className="flex items-center gap-2">
-              <span className="font-bold text-[15px]">
-                {isArtist
-                  ? l(lang, "Client chats", "Chat klien")
-                  : l(lang, "Ask the assistant", "Tanya asisten")}
-              </span>
-              <span className="flex-none text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-tint text-maroon uppercase tracking-[0.04em]">
-                {isArtist
-                  ? waitingChats > 0
-                    ? l(lang, "Waiting", "Menunggu")
-                    : l(lang, "Inbox", "Masuk")
-                  : l(lang, "Live", "Aktif")}
-              </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-[14px] text-melati">
+              {isArtist
+                ? l(lang, "Client chats", "Chat klien")
+                : l(lang, "Ask the assistant", "Tanya asisten")}
             </span>
-            <span className="block text-[12px] text-muted-3 mt-1 leading-snug">
+            <span className="mt-1 block text-[11.5px] leading-snug text-melati-3">
               {isArtist
                 ? waitingChats > 0
                   ? l(
@@ -152,13 +171,10 @@ export function MobileHome({
                   )}
             </span>
           </span>
-          <span aria-hidden="true" className="flex-none text-maroon text-lg">
-            →
-          </span>
         </Link>
       </div>
 
-      <div className="no-scrollbar flex gap-2 px-5 pt-4.5 pb-0.5 overflow-auto">
+      <div className="no-scrollbar flex gap-2 overflow-auto px-5 pt-7 pb-0.5">
         {CATEGORIES.map((c) => (
           <ChipLink
             key={c.id}
@@ -170,16 +186,16 @@ export function MobileHome({
         ))}
       </div>
 
-      <div className="text-xs font-bold tracking-[0.04em] uppercase text-muted-3 px-5 pt-4">
+      <h2 className="px-5 pt-6 font-display text-[26px] leading-none">
         {l(lang, "Most booked", "Paling banyak dipesan")}
-      </div>
-      <div className="grid grid-cols-2 gap-3 px-5 pt-3">
+      </h2>
+      <div className="grid grid-cols-2 gap-3 px-5 pt-4">
         {looks.map((k) => (
           <LookCard key={k.id} look={k} lang={lang} size="sm" />
         ))}
       </div>
 
-      <div className="flex-1 min-h-6" />
+      <div className="min-h-8 flex-1" />
       <TabBar lang={lang} />
     </div>
   );

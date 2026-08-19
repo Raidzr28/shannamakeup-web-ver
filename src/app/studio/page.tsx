@@ -53,7 +53,7 @@ export default async function StudioPage() {
       <div className="flex gap-3 mt-7">
         <Link
           href="/book"
-          className="h-[52px] px-6 rounded-2xl text-white text-[15px] font-bold flex items-center glass-fill"
+          className="h-[52px] px-6 rounded-2xl text-[15px] font-bold flex items-center prada-leaf"
         >
           {l(lang, "Check a date", "Cek tanggal")}
         </Link>
@@ -72,7 +72,7 @@ export default async function StudioPage() {
       <MobileOnly>
       <div className="ambient-glow min-h-dvh flex flex-col pt-[58px]">
         <div className="px-5 pt-2">
-          <h1 className="text-[28px] font-extrabold tracking-tight">
+          <h1 className="text-[28px] font-display">
             {l(lang, "The studio", "Studio")}
           </h1>
         </div>
@@ -95,7 +95,7 @@ export default async function StudioPage() {
     <div className="ambient-glow flex-1 px-11 py-11">
       <div className="grid grid-cols-[1fr_1.1fr] gap-10 items-start pb-24">
         <div>
-          <h1 className="text-5xl font-extrabold tracking-[-0.03em]">
+          <h1 className="text-5xl font-display">
             {l(lang, "The studio", "Studio")}
           </h1>
           <div className="mt-6">{body}</div>
@@ -104,7 +104,7 @@ export default async function StudioPage() {
           src={null}
           alt="Kemang studio"
           placeholder={l(lang, "Kemang studio", "Studio Kemang")}
-          className="h-[520px] rounded-[28px] border border-white/70 shadow-[0_18px_44px_rgba(28,38,32,0.12)]"
+          className="h-[520px] rounded-[28px] border border-prada/70 shadow-[0_18px_44px_rgba(28,38,32,0.12)]"
           sizes="55vw"
         />
       </div>

@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import clsx from "clsx";
 import { Textarea, Label } from "@/components/ui/Field";
@@ -7,6 +6,7 @@ import { submitReviewAction } from "@/lib/actions/review";
 import type { Lang } from "@/lib/i18n";
 import { l } from "@/lib/i18n";
 import { SubmitButton } from "@/components/ui/SubmitButton";
+import { StarIcon } from "@/components/ui/Icons";
 
 export function ReviewForm({
   lang,
@@ -48,10 +48,10 @@ export function ReviewForm({
                 "w-11 h-11 rounded-2xl cursor-pointer text-lg border-[1.5px]",
                 n <= rating
                   ? "border-gold bg-gold text-ink"
-                  : "border-line bg-white text-[#d8c6ae]"
+                  : "border-line bg-card text-[#d8c6ae]"
               )}
             >
-              ★
+              <StarIcon className="w-[18px] h-[18px]" />
             </button>
           ))}
         </div>
@@ -77,7 +77,7 @@ export function ReviewForm({
                   "px-[15px] py-2.5 rounded-full text-[12.5px] font-semibold cursor-pointer whitespace-nowrap border",
                   on
                     ? "glass-fill text-white border-transparent"
-                    : "glass-light text-[#5c4a3f] border-white/80"
+                    : "glass-light text-[var(--paes-melati-2)] border-prada/80"
                 )}
               >
                 {t}
@@ -110,7 +110,7 @@ export function ReviewForm({
 
       <SubmitButton
         pendingLabel={l(lang, "Sending…", "Mengirim…")}
-        className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill"
+        className="w-full h-[52px] rounded-2xl text-[15px] font-bold cursor-pointer prada-leaf"
       >
         {l(lang, "Send review", "Kirim ulasan")}
       </SubmitButton>

@@ -6,6 +6,7 @@ import { getLanguage } from "@/lib/language";
 import { getCurrentUser } from "@/lib/auth";
 import { getLooks } from "@/lib/looks";
 import { l } from "@/lib/i18n";
+import { BackIcon } from "@/components/ui/Icons";
 
 export default async function ComposePage() {
   const [lang, user] = await Promise.all([
@@ -32,7 +33,7 @@ export default async function ComposePage() {
             href="/looks"
             className="w-[38px] h-[38px] rounded-[13px] flex items-center justify-center glass-light text-[15px] text-ink"
           >
-            ←
+            <BackIcon className="w-[18px] h-[18px]" />
           </Link>
           <div className="flex-1 text-center font-bold text-[15.5px]">
             {l(lang, "New post", "Unggahan baru")}
@@ -48,9 +49,9 @@ export default async function ComposePage() {
       <DesktopOnly>
     <div className="ambient-glow flex-1 px-11 py-11">
       <Link href="/looks" className="text-[13px] font-semibold text-muted">
-        ← {l(lang, "Back to Looks", "Kembali ke Looks")}
+        <BackIcon className="w-4 h-4" /> {l(lang, "Back to Looks", "Kembali ke Looks")}
       </Link>
-      <h1 className="text-4xl font-extrabold tracking-tight mt-4 mb-7">
+      <h1 className="text-4xl font-display mt-4 mb-7">
         {l(lang, "New post", "Unggahan baru")}
       </h1>
       <div className="max-w-[620px] pb-24">

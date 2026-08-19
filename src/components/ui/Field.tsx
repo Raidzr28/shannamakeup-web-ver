@@ -2,7 +2,7 @@ import clsx from "clsx";
 import type { InputHTMLAttributes, TextareaHTMLAttributes, ReactNode } from "react";
 
 const fieldStyle =
-  "w-full box-border rounded-2xl border-[1.5px] border-line-2 bg-white px-3.5 text-sm text-ink outline-none focus:border-maroon";
+  "w-full box-border rounded-2xl border-[1.5px] border-line-2 bg-card px-3.5 text-sm text-ink outline-none focus:border-maroon";
 
 export function Input({
   className,

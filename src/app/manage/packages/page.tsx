@@ -8,6 +8,7 @@ import { requireArtistPage } from "@/lib/require-artist";
 import { prisma } from "@/lib/prisma";
 import { l, idr } from "@/lib/i18n";
 import { deletePackageAction } from "@/lib/actions/packages";
+import { BackIcon } from "@/components/ui/Icons";
 
 export default async function ManagePackagesPage({
   searchParams,
@@ -33,7 +34,7 @@ export default async function ManagePackagesPage({
       {params.error && (
         <p
           role="alert"
-          className="text-[13px] leading-snug text-[#b23a3a] bg-[#f8e8e2] border border-[#b23a3a]/25 rounded-2xl px-3.5 py-3"
+          className="text-[13px] leading-snug text-[var(--paes-alarm)] bg-[var(--paes-ground-2)] border border-[var(--paes-alarm)]/25 rounded-2xl px-3.5 py-3"
         >
           {params.error}
         </p>
@@ -41,7 +42,7 @@ export default async function ManagePackagesPage({
 
       <Link
         href="/manage/new"
-        className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold flex items-center justify-center glass-fill"
+        className="w-full h-[52px] rounded-2xl text-[15px] font-bold flex items-center justify-center prada-leaf"
       >
         {l(lang, "+ New package", "+ Paket baru")}
       </Link>
@@ -84,7 +85,7 @@ export default async function ManagePackagesPage({
                 <input type="hidden" name="id" value={k.id} />
                 <button
                   type="submit"
-                  className="w-full px-3.5 py-2 rounded-xl text-[12.5px] font-bold text-[#b23a3a] glass-light border-[#b23a3a]/25 cursor-pointer"
+                  className="w-full px-3.5 py-2 rounded-xl text-[12.5px] font-bold text-[var(--paes-alarm)] glass-light border-[var(--paes-alarm)]/25 cursor-pointer"
                 >
                   {l(lang, "Delete", "Hapus")}
                 </button>
@@ -115,9 +116,9 @@ export default async function ManagePackagesPage({
         <div className="ambient-glow min-h-dvh flex flex-col pt-[58px]">
           <div className="px-5 pt-2">
             <Link href="/manage" className="text-[12.5px] font-semibold text-muted">
-              ← {l(lang, "Studio", "Studio")}
+              <BackIcon className="w-4 h-4" /> {l(lang, "Studio", "Studio")}
             </Link>
-            <h1 className="font-extrabold text-[22px] tracking-tight mt-2">{heading}</h1>
+            <h1 className="font-display text-[22px] mt-2">{heading}</h1>
             <p className="text-xs text-muted-3 mt-1.5 leading-snug">{sub}</p>
           </div>
           <div className="px-5 pt-4.5">{body}</div>
@@ -129,9 +130,9 @@ export default async function ManagePackagesPage({
       <DesktopOnly>
         <div className="ambient-glow flex-1 px-11 py-11">
           <Link href="/manage" className="text-[13px] font-semibold text-muted">
-            ← {l(lang, "Back to studio", "Kembali ke studio")}
+            <BackIcon className="w-4 h-4" /> {l(lang, "Back to studio", "Kembali ke studio")}
           </Link>
-          <h1 className="text-4xl font-extrabold tracking-tight mt-4">{heading}</h1>
+          <h1 className="text-4xl font-display mt-4">{heading}</h1>
           <p className="text-sm text-muted mt-3 max-w-[60ch]">{sub}</p>
           <div className="max-w-[760px] mt-8 pb-24">{body}</div>
         </div>

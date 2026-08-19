@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Image from "next/image";
 import { compressImage } from "@/lib/compress-image";
@@ -118,7 +117,7 @@ export function StoryForm({ lang }: { lang: Lang }) {
         {error && (
           <p
             role="alert"
-            className="text-[13px] leading-snug text-[#b23a3a] bg-[#f8e8e2] border border-[#b23a3a]/25 rounded-2xl px-3.5 py-3"
+            className="text-[13px] leading-snug text-[var(--paes-alarm)] bg-[var(--paes-ground-2)] border border-[var(--paes-alarm)]/25 rounded-2xl px-3.5 py-3"
           >
             {error}
           </p>
@@ -126,7 +125,7 @@ export function StoryForm({ lang }: { lang: Lang }) {
         <button
           type="submit"
           disabled={busy}
-          className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold cursor-pointer glass-fill disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full h-[52px] rounded-2xl text-[15px] font-bold cursor-pointer prada-leaf disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {busy
             ? l(lang, "Posting…", "Mengunggah…")

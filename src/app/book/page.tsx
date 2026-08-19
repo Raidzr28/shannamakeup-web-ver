@@ -6,6 +6,7 @@ import { LookCard } from "@/components/home/LookCard";
 import { getLanguage } from "@/lib/language";
 import { getLooks } from "@/lib/looks";
 import { l, idr } from "@/lib/i18n";
+import { ForwardIcon } from "@/components/ui/Icons";
 
 export default async function BookIndexPage() {
   const [lang, looks] = await Promise.all([getLanguage(), getLooks()]);
@@ -22,7 +23,7 @@ export default async function BookIndexPage() {
       <MobileOnly>
         <div className="ambient-glow min-h-dvh flex flex-col pt-[58px]">
           <div className="px-5 pt-2">
-            <h1 className="font-extrabold text-[22px] tracking-tight">{heading}</h1>
+            <h1 className="font-display text-[22px]">{heading}</h1>
             <p className="text-xs text-muted-3 mt-1.5 leading-snug">{sub}</p>
           </div>
 
@@ -52,7 +53,7 @@ export default async function BookIndexPage() {
                   </span>
                 </span>
                 <span className="text-muted-2 text-lg flex-none" aria-hidden="true">
-                  ›
+                  <ForwardIcon className="w-[18px] h-[18px]" />
                 </span>
               </Link>
             ))}
@@ -65,7 +66,7 @@ export default async function BookIndexPage() {
 
       <DesktopOnly>
         <div className="ambient-glow flex-1 px-11 py-11">
-          <h1 className="text-4xl font-extrabold tracking-tight">{heading}</h1>
+          <h1 className="text-4xl font-display">{heading}</h1>
           <p className="text-sm text-muted mt-3 max-w-[60ch]">{sub}</p>
           <div className="grid grid-cols-2 xl:grid-cols-4 gap-4.5 mt-8 pb-24">
             {looks.map((k) => (

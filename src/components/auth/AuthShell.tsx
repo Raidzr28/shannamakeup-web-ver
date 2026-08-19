@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { BackIcon } from "@/components/ui/Icons";
 
 /** Auth screens share one body; only the chrome around it differs — a back
  * chevron on the phone, a centred column on the desktop site. */
@@ -18,7 +19,7 @@ export function AuthShell({
             href={back}
             className="w-[38px] h-[38px] rounded-[13px] flex items-center justify-center glass-light text-[15px] text-ink"
           >
-            ←
+            <BackIcon className="w-[18px] h-[18px]" />
           </Link>
         </div>
         <div className="px-5 pb-10">{children}</div>

@@ -7,6 +7,7 @@ import { getLanguage } from "@/lib/language";
 import { getCurrentUser } from "@/lib/auth";
 import { getLook } from "@/lib/looks";
 import { l, idr } from "@/lib/i18n";
+import { BackIcon } from "@/components/ui/Icons";
 
 type SP = Record<string, string | string[] | undefined>;
 
@@ -65,7 +66,7 @@ export default async function BookPage({
             href={`/l/${look.id}`}
             className="w-[38px] h-[38px] rounded-[13px] flex items-center justify-center glass-light text-[15px] text-ink"
           >
-            ←
+            <BackIcon className="w-[18px] h-[18px]" />
           </Link>
           <div className="flex-1 text-center font-bold text-[15.5px]">
             {l(lang, look.title, look.titleId)}
@@ -79,11 +80,11 @@ export default async function BookPage({
       <DesktopOnly>
     <div className="ambient-glow flex-1 px-11 py-11">
       <Link href={`/l/${look.id}`} className="text-[13px] font-semibold text-muted">
-        ← {l(lang, "Back to the look", "Kembali ke tampilan")}
+        <BackIcon className="w-4 h-4" /> {l(lang, "Back to the look", "Kembali ke tampilan")}
       </Link>
       <div className="grid grid-cols-[1fr_400px] gap-9 mt-5 items-start pb-24">
         <div>
-          <h1 className="text-4xl font-extrabold tracking-tight mb-6">
+          <h1 className="text-4xl font-display mb-6">
             {l(lang, "Book", "Pesan")} {l(lang, look.title, look.titleId)}
           </h1>
           {wizard}
@@ -97,7 +98,7 @@ export default async function BookPage({
             sizes="400px"
           />
           <div>
-            <div className="font-extrabold text-xl tracking-tight">
+            <div className="font-display text-xl">
               {l(lang, look.title, look.titleId)}
             </div>
             <div className="text-[12.5px] text-muted-2 mt-1">

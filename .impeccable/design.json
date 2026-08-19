@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-19T00:00:00.000Z",
+  "title": "Design System: Shana Makeup",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Cangkeman Ink",
+        "canonical": "#120e0c",
+        "tonalRamp": ["#0a0806", "#120e0c", "#1b1512", "#241c17", "#2f2519", "#4a3a29", "#6d573f", "#9a8e7c"]
+      },
+      "prada": {
+        "role": "primary",
+        "displayName": "Prada Leaf",
+        "canonical": "#c4922f",
+        "tonalRamp": ["#2b1f0a", "#4a3612", "#6a4d19", "#8a6320", "#a97a27", "#c4922f", "#e8c46a", "#f5e2b4"]
+      },
+      "melati": {
+        "role": "neutral",
+        "displayName": "Melati White",
+        "canonical": "#f5f0e6",
+        "tonalRamp": ["#3a352c", "#565044", "#726b5c", "#9a8e7c", "#b5aa97", "#c9bfae", "#e2dbcd", "#f5f0e6"]
+      },
+      "sirih": {
+        "role": "secondary",
+        "displayName": "Sirih Green",
+        "canonical": "#6f9d63",
+        "tonalRamp": ["#16210f", "#243318", "#324522", "#3f5a3c", "#557a4d", "#6f9d63", "#94ba8a", "#c2d8bc"]
+      },
+      "alarm": {
+        "role": "tertiary",
+        "displayName": "Warm Alarm",
+        "canonical": "#d4694e",
+        "tonalRamp": ["#2c110a", "#471c11", "#632718", "#8a3720", "#ad4c33", "#d4694e", "#e5927c", "#f2c2b4"]
+      },
+      "skin": {
+        "role": "neutral",
+        "displayName": "Drawn Skin",
+        "canonical": "#c08b5e",
+        "tonalRamp": ["#2e1f13", "#48311d", "#634428", "#8a5f38", "#a5744a", "#c08b5e", "#d8a274", "#ecc9a6"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The wordmark, once per surface. Bodoni's thick-to-hairline contrast mirrors the ornament: a solid shape closed by a gold hairline."
+      },
+      "headline": { "displayName": "Headline", "purpose": "Section headings." },
+      "title": { "displayName": "Title", "purpose": "Card and list-item names." },
+      "body": { "displayName": "Body", "purpose": "Prose, capped near 56ch." },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Field labels and metadata. Uppercase, tracked, tabular figures."
+      }
+    },
+    "shadows": [
+      {
+        "name": "plate",
+        "value": "0 1px 0 0 color-mix(in srgb, #c4922f 10%, transparent) inset, 0 12px 28px -12px rgba(0,0,0,0.75)",
+        "purpose": "The standard raised surface. Offset and blur are both real; the inset is the lit top edge of the plate."
+      },
+      {
+        "name": "quiet",
+        "value": "0 8px 20px -14px rgba(0,0,0,0.7)",
+        "purpose": "Secondary surfaces, inputs, and rows."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-leaf",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Exponential ease-out from an already-visible default. The only easing in the system."
+      },
+      {
+        "name": "leaf-catch",
+        "value": "1400ms ease-leaf 220ms",
+        "purpose": "The authored moment: a specular pass travelling once along a gold hairline as the surface settles. One orchestrated moment, not scattered hovers. Disabled under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [{ "name": "lg", "value": "1024px" }]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one leaf-filled action per surface. Solid prada with ink drawn on top.",
+      "html": "<button class=\"ds-btn-primary\">Take this slot</button>",
+      "css": ".ds-btn-primary { background: var(--paes-prada, #c4922f); color: var(--paes-ink, #120e0c); border: 1px solid var(--paes-prada-lit, #e8c46a); border-radius: 18px 18px 6px 6px; height: 52px; padding: 0 28px; font-family: Archivo, system-ui, sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background .22s ease, transform .22s cubic-bezier(0.16,1,0.3,1); } .ds-btn-primary:hover { background: var(--paes-prada-lit, #e8c46a); transform: translateY(-1px); } .ds-btn-primary:active { transform: translateY(1px) scale(.99); } .ds-btn-primary:focus-visible { outline: 1px solid var(--paes-prada-lit, #e8c46a); outline-offset: 3px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary action. The hairline strengthens on hover rather than a fill appearing.",
+      "html": "<button class=\"ds-btn-ghost\">Ask the assistant</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: var(--paes-melati-2, #c9bfae); border: 1px solid color-mix(in srgb, #c4922f 35%, transparent); border-radius: 12px 12px 4px 4px; height: 52px; padding: 0 28px; font-family: Archivo, system-ui, sans-serif; font-size: 15px; cursor: pointer; transition: border-color .22s ease, color .22s ease; } .ds-btn-ghost:hover { border-color: color-mix(in srgb, #c4922f 70%, transparent); color: var(--paes-melati, #f5f0e6); }"
+    },
+    {
+      "name": "Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Category filter. Selected takes solid leaf with ink text.",
+      "html": "<a class=\"ds-chip ds-chip--selected\">All</a><a class=\"ds-chip\">Bridal</a>",
+      "css": ".ds-chip { display: inline-block; background: var(--paes-ground, #1b1512); color: var(--paes-melati-2, #c9bfae); border: 1px solid color-mix(in srgb, #c4922f 30%, transparent); border-radius: 999px; padding: 10px 15px; font-family: Archivo, system-ui, sans-serif; font-size: 12px; text-decoration: none; white-space: nowrap; transition: border-color .2s ease; } .ds-chip:hover { border-color: color-mix(in srgb, #c4922f 60%, transparent); } .ds-chip--selected { background: var(--paes-prada, #c4922f); color: var(--paes-ink, #120e0c); border-color: var(--paes-prada-lit, #e8c46a); }"
+    },
+    {
+      "name": "Look Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "The repeated atom. Portrait edge to edge, facts below on a band closed by a prada rule, each fact on its own line.",
+      "html": "<a class=\"ds-card\"><div class=\"ds-card__media\"></div><div class=\"ds-card__band\"><div class=\"ds-card__title\">Akad Pagi</div><div class=\"ds-card__meta\">BRIDAL · 3 HR 30</div><div class=\"ds-card__price\">Rp 8.500.000</div></div></a>",
+      "css": ".ds-card { display: block; background: var(--paes-ground-2, #241c17); border: 1px solid color-mix(in srgb, #c4922f 30%, transparent); border-radius: 26px 26px 8px 8px; overflow: hidden; text-decoration: none; color: inherit; box-shadow: 0 1px 0 0 color-mix(in srgb, #c4922f 10%, transparent) inset, 0 12px 28px -12px rgba(0,0,0,.75); } .ds-card__media { height: 152px; background: var(--paes-ground, #1b1512); } .ds-card__band { border-top: 1px solid color-mix(in srgb, #c4922f 30%, transparent); padding: 10px 12px 12px; } .ds-card__title { font-family: 'Bodoni Moda', Georgia, serif; font-size: 17px; line-height: 1.05; color: var(--paes-melati, #f5f0e6); } .ds-card__meta { margin-top: 6px; font-family: Archivo, system-ui, sans-serif; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--paes-melati-3, #9a8e7c); } .ds-card__price { margin-top: 8px; font-family: 'Bodoni Moda', Georgia, serif; font-size: 15px; font-variant-numeric: tabular-nums; color: var(--paes-prada, #c4922f); }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Ground fill with a prada hairline; the border strengthens on focus.",
+      "html": "<input class=\"ds-input\" placeholder=\"aruna@studio.co\" />",
+      "css": ".ds-input { box-sizing: border-box; width: 100%; height: 46px; background: var(--paes-ground, #1b1512); color: var(--paes-melati, #f5f0e6); border: 1px solid color-mix(in srgb, #c4922f 30%, transparent); border-radius: 18px 18px 6px 6px; padding: 0 14px; font-family: Archivo, system-ui, sans-serif; font-size: 14px; outline: none; caret-color: var(--paes-prada, #c4922f); transition: border-color .2s ease; } .ds-input::placeholder { color: var(--paes-melati-3, #9a8e7c); } .ds-input:focus { border-color: var(--paes-prada, #c4922f); }"
+    },
+    {
+      "name": "Tab Bar Item",
+      "kind": "nav",
+      "refersTo": "nav",
+      "description": "The active tab is marked by a penunggul beneath the label. The row reserves the marker's height so switching tabs moves the leaf rather than shifting the bar.",
+      "html": "<nav class=\"ds-tabs\"><a class=\"ds-tab ds-tab--active\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" width=\"21\" height=\"21\"><path d=\"M3.5 10.4 12 3.6l8.5 6.8V20a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-9.6Z\"/><path d=\"M9.5 21v-6h5v6\"/></svg><span>Home</span><svg class=\"ds-tab__mark\" viewBox=\"0 0 32 32\" width=\"7\" height=\"7\"><path d=\"M16 3C13.5 8 9 12 9 17c0 4 3.2 7 7 7s7-3 7-7c0-5-4.5-9-7-14Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/></svg></a><a class=\"ds-tab\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" width=\"21\" height=\"21\"><rect x=\"3\" y=\"3.5\" width=\"18\" height=\"17\" rx=\"3.5\"/><circle cx=\"8.75\" cy=\"9.25\" r=\"1.6\"/><path d=\"M3.6 16.6l4.3-4a2 2 0 0 1 2.7 0l5 4.6\"/></svg><span>Looks</span><svg class=\"ds-tab__mark ds-tab__mark--off\" viewBox=\"0 0 32 32\" width=\"7\" height=\"7\"><path d=\"M16 3C13.5 8 9 12 9 17c0 4 3.2 7 7 7s7-3 7-7c0-5-4.5-9-7-14Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"/></svg></a></nav>",
+      "css": ".ds-tabs { display: grid; grid-auto-flow: column; background: var(--paes-ink, #120e0c); border-top: 1px solid color-mix(in srgb, #c4922f 35%, transparent); padding: 10px 6px; } .ds-tab { display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; font-family: Archivo, system-ui, sans-serif; font-size: 10.5px; color: var(--paes-melati-3, #9a8e7c); } .ds-tab--active { color: var(--paes-prada, #c4922f); } .ds-tab__mark--off { opacity: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Ink on Skin",
+    "overview": "Paes ageng is the ornament a Javanese bride wears across her brow on the morning of the akad: matte black shapes set out to prescribed proportion on her own skin, each one closed with a hairline of gold prada leaf. This interface is built from that ornament rather than decorated with it. The five leaves are the brand mark, the tab-bar position marker, the section rule, and the ground of every image slot still waiting on a photograph.\n\nThe consequence is a surface drenched in warm ink, where the brightest thing on any screen is a face. That is not an aesthetic preference: the product is colour on skin, so the ground exists to make photographed skin luminous and to be legible to a woman scrolling in bed at eleven at night, months out from her wedding. Gold never glows and never gradients — it is leaf, and leaf has an edge.\n\nThe world this replaced was a cream ground with glassmorphism and Plus Jakarta Sans. That is the confirmed anti-reference: it is the look every generated app arrives at, and escaping it was the brief.",
+    "keyCharacteristics": [
+      "Warm near-black ground, never neutral grey, never cream",
+      "Gold as hairline edge; solid fill reserved for exactly one action per surface",
+      "Display type at architectural scale against small exact labels, with nothing in between",
+      "Every ornament drawn as authored SVG, never a glyph or an approximating border-radius",
+      "Bilingual by construction: `both` is the default language mode, so every label is roughly double width"
+    ],
+    "rules": [
+      {
+        "name": "The Leaf Rule",
+        "body": "Prada is an edge. It may outline, rule, or letter — it may not glow, gradient, or blur. The one exception is the single primary action on a surface, where the leaf is laid solid with ink drawn on top (7.4:1).",
+        "section": "colors"
+      },
+      {
+        "name": "The One Action Rule",
+        "body": "Exactly one leaf-filled control per surface. A second one means the first was not the primary action.",
+        "section": "colors"
+      },
+      {
+        "name": "The Warm Ground Rule",
+        "body": "Every neutral carries red. If a grey samples cooler than its neighbours, it is wrong — blue-black slate is the drift this system exists to avoid.",
+        "section": "colors"
+      },
+      {
+        "name": "The Nothing-In-Between Rule",
+        "body": "Type is either display-scale or small and exact. A 17px semi-bold heading is the previous world; if a size feels like a compromise, it is one.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Rule",
+        "body": "font-variant-numeric: tabular-nums is set on body. This product is made of prices, dates and durations, and proportional figures make a price column wobble.",
+        "section": "typography"
+      },
+      {
+        "name": "The Arc",
+        "body": "Every radius is the penunggul resolved into a corner: pronounced at the top, nearly square where it rests. A plate sits on a line; it does not float, and it is never uniformly rounded.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do write element selectors inside @layer base and material classes inside @layer components. Tailwind emits utilities in cascade layers, and an unlayered rule silently outranks every one of them.",
+      "Do use text-onprada for any text sitting on a gold fill. `ink` now names the light foreground of a dark world and is exactly wrong there.",
+      "Do give every new label both languages. `both` is the default mode and renders short labels as EN · ID, so budget roughly double width.",
+      "Do draw new icons into components/ui/Icons.tsx on the 24px / 1.75 grid.",
+      "Do let block-level links inherit their colour; only prose links inside <p> or <label> take prada."
+    ],
+    "donts": [
+      "Don't put a label above a heading. The heading carries its own weight.",
+      "Don't render gold as a glow, a gradient, or a soft shadow.",
+      "Don't reach for a Unicode glyph as an icon. The system has drawn replacements for all of them.",
+      "Don't introduce a cream, parchment or ivory ground, or Plus Jakarta Sans. That is the world this system replaced.",
+      "Don't stack a category, duration and price on one row at grid width — they truncate. Each gets its own line."
+    ]
+  }
+}
