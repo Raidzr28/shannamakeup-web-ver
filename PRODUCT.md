@@ -52,15 +52,20 @@ Technical constraints future work must respect:
 
 ## Brand Commitments
 
-- Name: **Shana Makeup**. Identity on posts and stories is handle-based (`@username`).
-- **No logo or brand asset exists yet** — `public/` still carries only the Next.js default SVGs. Future work must not present an invented mark as hers.
+**These are supplied by the owner and take priority over any design direction, including one arrived at through a concept round. They are not a starting point to be improved on.**
+
+- **Palette is fixed.** Taken from the Canva logo by the owner and recorded verbatim in `BRAND.md`: gold `#DD9D63` (logo text, title accents, icons), maroon `#5F0D14` (background, rose elements), charcoal `#1A1A1A` (supporting text, dark grounds), ivory `#F5EDE1` (light grounds, breathing space). Any future direction renders inside these four.
+- **A logo exists and is authoritative.** A gold monogram enclosing a woman's profile, above letterspaced SHANNA / MAKE UP, on a deep red rose field. Files in `public/brand/` (`shanna-logo-lockup.jpg`, `shanna-logo-ornate.jpg`, `roses.jpg`). *An earlier version of this record stated no logo existed. That was wrong.*
+- **A transparent mark is still missing.** The supplied files are opaque JPEGs on a rose field, so they cannot be used inline at nav or favicon scale. A PNG or SVG of the monogram alone is the outstanding asset request.
+- Name: the business is **SHANNA MAKE UP** (two n) per the logo, the GitHub repo (`shannamakeup-web-ver`) and the Vercel project (`shannamakeup`). App copy currently reads "Shana" (one n) in 107 places, including as the artist's name in prose and the seed address `shana@shanamakeup.id`. The owner has confirmed both spellings are real but has not yet said which belongs where — do not mass-rename until that is settled.
+- Identity on posts and stories is handle-based (`@username`).
 - Voice, evidenced in the shipped `Look` copy: clipped, technical, unsentimental. *"Dawn ceremony face built to survive tears, prayer and photographers. Skin first, structure second, colour last."* Craft is described as engineering, not romance. The Indonesian copy holds the same register rather than translating literally.
 
 ## Evidence on Hand
 
 - **Real, operating business.** The seeded catalogue carries genuine packages and prices — e.g. `Akad Pagi`, Bridal / Pengantin, Rp 8.500.000, 3h30.
 - Photography and reviews come from real work and real clients, entered through the app (`Review`, `Post`, Vercel Blob uploads).
-- **Absent — do not fabricate:** no logo, no press, no case studies, no testimonial copy outside the `Review` table, no partner or venue relationships. Because this is a real person's real business, invented proof is a lie about someone, not placeholder text.
+- **Absent — do not fabricate:** no press, no case studies, no testimonial copy outside the `Review` table, no partner or venue relationships. (A logo *does* exist — see Brand Commitments.) Because this is a real person's real business, invented proof is a lie about someone, not placeholder text.
 
 ## Product Principles
 

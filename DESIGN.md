@@ -1,20 +1,20 @@
 ---
 name: Shana Makeup
-description: Javanese bridal ornament as interface — ink ground, gold prada edges, one leaf-filled action.
+description: The SHANNA brand four — gold, maroon, charcoal, ivory — rendered dark, with Javanese paes geometry as the interface.
 colors:
-  ink: "#120e0c"
-  ground: "#1b1512"
-  ground-2: "#241c17"
-  ground-3: "#2f2519"
-  prada: "#c4922f"
-  prada-lit: "#e8c46a"
-  prada-deep: "#8a6320"
-  melati: "#f5f0e6"
-  melati-2: "#c9bfae"
-  melati-3: "#9a8e7c"
+  ink: "#1A1A1A"
+  ground: "#241416"
+  ground-2: "#3a181c"
+  ground-3: "#5F0D14"
+  prada: "#DD9D63"
+  prada-lit: "#edbe92"
+  prada-deep: "#b07a4a"
+  melati: "#F5EDE1"
+  melati-2: "#d8cbbc"
+  melati-3: "#a89685"
   skin: "#c08b5e"
   sirih: "#6f9d63"
-  alarm: "#d4694e"
+  alarm: "#d9694f"
 typography:
   display:
     fontFamily: "Bodoni Moda, Georgia, serif"
@@ -86,12 +86,12 @@ components:
 
 Paes ageng is the ornament a Javanese bride wears across her brow on the morning of the akad: matte black shapes set out to prescribed proportion on her own skin, each one closed with a hairline of gold prada leaf. This interface is built from that ornament rather than decorated with it. The five leaves are the brand mark, the tab-bar position marker, the section rule, and the ground of every image slot still waiting on a photograph.
 
-The consequence is a surface drenched in warm ink, where the brightest thing on any screen is a face. That is not an aesthetic preference: the product is colour on skin, so the ground exists to make photographed skin luminous and to be legible to a woman scrolling in bed at eleven at night, months out from her wedding. Gold never glows and never gradients — it is leaf, and leaf has an edge.
+The consequence is a surface drenched in charcoal and maroon, where the brightest thing on any screen is a face. That is not an aesthetic preference: the product is colour on skin, so the ground exists to make photographed skin luminous and to be legible to a woman scrolling in bed at eleven at night, months out from her wedding. Gold never glows and never gradients — it is leaf, and leaf has an edge.
 
-The world this replaced was a cream ground with glassmorphism and Plus Jakarta Sans. That is the confirmed anti-reference: it is the look every generated app arrives at, and escaping it was the brief.
+What this replaced was glassmorphism, Plus Jakarta Sans and a generic card-grid layout — that execution is the confirmed anti-reference. The *palette* was never the problem: the previous build already used the brand four, and an intermediate version of this system wrongly discarded them for an invented pair. Ivory is a brand colour and a legitimate light ground; only the old execution is barred.
 
 **Key Characteristics:**
-- Warm near-black ground, never neutral grey, never cream
+- Charcoal-to-maroon grounds, never neutral grey; every neutral carries red
 - Gold as hairline edge; solid fill reserved for exactly one action per surface
 - Display type at architectural scale against small exact labels, with nothing in between
 - Every ornament drawn as authored SVG, never a glyph or an approximating border-radius
@@ -99,32 +99,43 @@ The world this replaced was a cream ground with glassmorphism and Plus Jakarta S
 
 ## Colors
 
-A drenched ink field carrying one metal and one flower, with a leaf green and a warm alarm held in reserve for state.
+**The four colours below are supplied by the owner, taken from the Canva logo, and are binding.** They are recorded verbatim in `BRAND.md` and in PRODUCT.md's Brand Commitments. A future direction renders *inside* them; it does not replace them. An earlier version of this system invented its own palette — that was a mistake, and the four brand colours are the correction.
+
+| Brand colour | Hex | Owner's stated use |
+|---|---|---|
+| Emas (Gold) | `#DD9D63` | Logo text, title accents, icons |
+| Merah Maroon | `#5F0D14` | Background, rose elements |
+| Hitam / Charcoal | `#1A1A1A` | Supporting text, dark grounds |
+| Krem / Ivory | `#F5EDE1` | Light grounds, breathing space |
+
+The app renders the dark reading of that spec: charcoal is the page ground, maroon the deepest raised field, gold the single accent, ivory the type. The intermediate `ground` steps are interpolations between charcoal and maroon, not new colours.
 
 ### Primary
-- **Prada** (`#c4922f`): gold leaf. Hairline borders, active states, prices, links inside prose, and the single filled primary action per surface. It is the only saturated colour on most screens.
-- **Prada Lit** (`#e8c46a`): the lit face of the leaf. Hover on filled actions, and focus rings.
-- **Prada Deep** (`#8a6320`): scrollbar thumb and pressed edges, where gold must recede without going grey.
+- **Prada / Emas** (`#DD9D63`, the brand gold): gold leaf. Hairline borders, active states, prices, links inside prose, and the single filled primary action per surface. It is the only saturated colour on most screens.
+- **Prada Lit** (`#edbe92`, gold lightened): the lit face of the leaf. Hover on filled actions, and focus rings.
+- **Prada Deep** (`#b07a4a`, gold darkened): scrollbar thumb and pressed edges, where gold must recede without going grey.
 
 ### Secondary
 - **Sirih** (`#6f9d63`): betel leaf. Confirmed and available states only — the assistant's live dot, a settled booking.
-- **Alarm** (`#d4694e`): kept warm so it belongs to the ground. Waiting counts, declined states, destructive confirmation.
+- **Alarm** (`#d9694f`): kept warm so it belongs to the ground. Waiting counts, declined states, destructive confirmation.
 
 ### Neutral
-- **Ink** (`#120e0c`): the page ground and the fill of every drawn ornament shape. Warm, not black.
-- **Ground / Ground-2 / Ground-3** (`#1b1512` / `#241c17` / `#2f2519`): the three raised surfaces. Depth is tonal, not shadowed.
-- **Melati** (`#f5f0e6`): jasmine white. Primary text and headings.
-- **Melati-2** (`#c9bfae`): body copy and secondary labels.
-- **Melati-3** (`#9a8e7c`): metadata, placeholders, inactive navigation.
+- **Ink / Charcoal** (`#1A1A1A`, the brand charcoal): the page ground and the fill of every drawn ornament shape.
+- **Ground / Ground-2 / Ground-3** (`#241416` / `#3a181c` / `#5F0D14`): the three raised surfaces, stepping from charcoal to the brand maroon. Depth is tonal, not shadowed.
+- **Melati / Krem** (`#F5EDE1`, the brand ivory): jasmine white. Primary text and headings.
+- **Melati-2** (`#d8cbbc`): body copy and secondary labels.
+- **Melati-3** (`#a89685`): metadata, placeholders, inactive navigation.
 - **Skin** (`#c08b5e`): the drawn figure's tone in `PersonPlaceholder`. Not a UI surface colour.
 
 ### Named Rules
 
-**The Leaf Rule.** Prada is an edge. It may outline, rule, or letter — it may not glow, gradient, or blur. The one exception is the single primary action on a surface, where the leaf is laid solid with `ink` drawn on top (7.4:1).
+**The Leaf Rule.** Prada is an edge. It may outline, rule, or letter — it may not glow, gradient, or blur. The one exception is the single primary action on a surface, where the leaf is laid solid with charcoal drawn on top (7.5:1).
 
 **The One Action Rule.** Exactly one leaf-filled control per surface. A second one means the first was not the primary action.
 
-**The Warm Ground Rule.** Every neutral carries red. If a grey samples cooler than its neighbours, it is wrong — blue-black slate is the drift this system exists to avoid.
+**The Warm Ground Rule.** Every neutral carries red, because every neutral is interpolated between the brand's charcoal and its maroon. If a grey samples cooler than its neighbours it is wrong; blue-black slate is the drift this system exists to avoid.
+
+**The Brand-Four Rule.** Gold, maroon, charcoal and ivory are the palette. Sirih and alarm exist only because booking states must stay distinguishable and accessible, and they never appear as decoration. Nothing else is added without the owner.
 
 ## Typography
 
@@ -205,5 +216,5 @@ Icons are drawn on a 24px grid at 1.75 stroke weight with round caps, inheriting
 - **Don't** put a label above a heading. The heading carries its own weight.
 - **Don't** render gold as a glow, a gradient, or a soft shadow.
 - **Don't** reach for a Unicode glyph as an icon. The system has drawn replacements for all of them.
-- **Don't** introduce a cream, parchment or ivory ground, or Plus Jakarta Sans. That is the world this system replaced.
+- **Don't** invent a colour. The brand four are fixed; Plus Jakarta Sans and the glassmorphism are what this system replaced, not the palette, which was on-brand all along.
 - **Don't** stack a category, duration and price on one row at grid width — they truncate. Each gets its own line.

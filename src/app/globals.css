@@ -6,7 +6,11 @@
  * prescribed proportion on the bride's own skin, each one edged in gold prada
  * leaf. Three rules carry the whole system:
  *
- *   1. The ground is ink. Warm near-black, never neutral gray, never cream.
+ *   1. The palette is the BRAND'S OWN and is binding. Taken from the Canva
+ *      logo by the owner and recorded in `color schme and logo/color scheme.md`:
+ *      gold #DD9D63, maroon #5F0D14, charcoal #1A1A1A, ivory #F5EDE1. These
+ *      four are not a starting point to be improved on. Earlier versions of
+ *      this file invented a palette; that was wrong and is not to be repeated.
  *   2. Prada is an EDGE. Gold appears as a hairline outlining a shape. It is
  *      never a glow, never a gradient, never a fill — except on the one
  *      primary action per surface, where the leaf is laid solid (.prada-leaf).
@@ -17,21 +21,23 @@
  */
 
 :root {
-  /* Ground — the cangkeman's ink, warm rather than neutral. */
-  --paes-ink: #120e0c;
-  --paes-ground: #1b1512;
-  --paes-ground-2: #241c17;
-  --paes-ground-3: #2f2519;
+  /* Ground — charcoal stepping to maroon. Charcoal is the spec's "latar gelap",
+     maroon its "background / elemen mawar"; the two steps between them are
+     interpolations, not new colours. */
+  --paes-ink: #1a1a1a;
+  --paes-ground: #241416;
+  --paes-ground-2: #3a181c;
+  --paes-ground-3: #5f0d14;
 
   /* Prada — gold leaf. Edge first, fill only for the primary action. */
-  --paes-prada: #c4922f;
-  --paes-prada-lit: #e8c46a;
-  --paes-prada-deep: #8a6320;
+  --paes-prada: #dd9d63;
+  --paes-prada-lit: #edbe92;
+  --paes-prada-deep: #b07a4a;
 
   /* Melati — jasmine white. Type, tinted from the ground's hue, never gray. */
-  --paes-melati: #f5f0e6;
-  --paes-melati-2: #c9bfae;
-  --paes-melati-3: #9a8e7c;
+  --paes-melati: #f5ede1;
+  --paes-melati-2: #d8cbbc;
+  --paes-melati-3: #a89685;
 
   /* Skin — the surface the ornament is drawn on. Large warm fields. */
   --paes-skin: #c08b5e;
@@ -41,7 +47,7 @@
   --paes-sirih-deep: #3f5a3c;
 
   /* Alarm, kept warm so it belongs to the ground. */
-  --paes-alarm: #d4694e;
+  --paes-alarm: #d9694f;
 
   /* The governing arc. A plate is an ogee sitting on a brow line: pronounced
      at the top, nearly square where it rests. */
