@@ -44,19 +44,25 @@ export function statusLabel(lang: Lang, status: string) {
   }
 }
 
-/** Tailwind classes for the pill next to a booking. */
+/** Tailwind classes for the pill next to a booking.
+ *
+ * The tones track the lifecycle rather than decorating it: a request is
+ * neutral, gold warms as the date firms up, sirih means settled, alarm means
+ * it did not happen. Each is a tinted ground behind its own text colour with a
+ * hairline — no pale fills, which is what these were before and what made
+ * "Awaiting Shana" read as light-on-light against the ink ground. */
 export function statusTone(status: string) {
   switch (asBookingStatus(status)) {
     case "confirmed":
-      return "bg-maroon text-white";
+      return "bg-sirih/15 text-sirih border border-sirih/40";
     case "declined":
-      return "bg-[#f3e0e0] text-[var(--paes-alarm)]";
+      return "bg-alarm/15 text-alarm border border-alarm/40";
     case "payment_review":
-      return "bg-[var(--paes-ground-2)] text-[#6b4a8a]";
+      return "bg-prada/20 text-prada-lit border border-prada/50";
     case "accepted":
-      return "bg-[var(--paes-ground-3)] text-[var(--paes-prada-deep)]";
+      return "bg-prada/12 text-prada border border-prada/40";
     default:
-      return "bg-[#efe4d5] text-muted-2";
+      return "bg-ground-3 text-melati-2 border border-prada/25";
   }
 }
 

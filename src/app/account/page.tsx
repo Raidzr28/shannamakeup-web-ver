@@ -106,7 +106,7 @@ export default async function AccountPage() {
               <div key={x.en} className="flex gap-2.5 items-center text-[13px] text-[var(--paes-melati-2)]">
                 <span
                   className={`w-[22px] h-[22px] rounded-full flex-none flex items-center justify-center text-[10.5px] font-extrabold ${
-                    x.ok ? "bg-tint text-maroon" : "bg-[#f3e6dc] text-[#a06a6a]"
+                    x.ok ? "bg-tint text-maroon" : "bg-ground-3 text-[var(--paes-alarm)]"
                   }`}
                 >
                   {x.ok ? <CheckIcon className="w-4 h-4" /> : <LockIcon className="w-4 h-4" />}

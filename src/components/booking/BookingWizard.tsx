@@ -162,7 +162,7 @@ export function BookingWizard({
               key={s}
               className={clsx(
                 "h-1 flex-1 rounded-full",
-                i <= idx ? "bg-maroon" : "bg-[#e3d5be]"
+                i <= idx ? "bg-maroon" : "bg-ground-3"
               )}
             />
           ))}

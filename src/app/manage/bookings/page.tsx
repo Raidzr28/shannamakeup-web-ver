@@ -311,12 +311,12 @@ export default async function ManageBookingsPage({
                   </span>
                 )}
                 {history > 1 && (
-                  <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[var(--paes-ground-2)] text-[#6b4a8a]">
+                  <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[var(--paes-ground-2)] text-[var(--paes-sirih)]">
                     {l(lang, `Repeat · ${history}`, `Berulang · ${history}`)}
                   </span>
                 )}
                 {b.paymentProof && (
-                  <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[#e3ece2] text-[var(--paes-sirih)]">
+                  <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-sirih/15 text-[var(--paes-sirih)]">
                     {l(lang, "Receipt attached", "Ada bukti bayar")}
                   </span>
                 )}

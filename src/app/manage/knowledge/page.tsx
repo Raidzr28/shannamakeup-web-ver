@@ -45,7 +45,7 @@ export default async function KnowledgePage({
       className={`m-0 text-[13px] leading-snug rounded-2xl px-3.5 py-3 border ${
         params.error
           ? "text-[var(--paes-alarm)] bg-[var(--paes-ground-2)] border-[var(--paes-alarm)]/25"
-          : "text-[var(--paes-sirih)] bg-[#e3ece2] border-[var(--paes-sirih)]/25"
+          : "text-[var(--paes-sirih)] bg-sirih/15 border-[var(--paes-sirih)]/25"
       }`}
     >
       {params.error ?? params.saved}

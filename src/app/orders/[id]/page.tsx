@@ -136,7 +136,7 @@ export default async function OrderPage({
       <div className="flex flex-col items-center text-center pb-2">
         <span
           className={`w-[76px] h-[76px] rounded-[26px] flex items-center justify-center text-[32px] ${
-            declined ? "bg-[#f3e0e0] text-[var(--paes-alarm)]" : "glass-fill text-white"
+            declined ? "bg-alarm/15 text-[var(--paes-alarm)]" : "glass-fill text-white"
           }`}
         >
           <headline.Icon className="w-7 h-7" />
@@ -236,7 +236,7 @@ export default async function OrderPage({
                 >
                   {s.done ? <CheckIcon className="w-3.5 h-3.5" /> : null}
                 </span>
-                {!s.last && <span className="flex-1 w-0.5 bg-[#e6d8c3] my-0.5" />}
+                {!s.last && <span className="flex-1 w-0.5 bg-ground-3 my-0.5" />}
               </span>
               <span className="flex-1 pb-4">
                 <span
@@ -273,7 +273,7 @@ export default async function OrderPage({
             )}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold flex items-center justify-center gap-2 bg-[#1f8f4e]"
+            className="w-full h-[52px] rounded-2xl text-white text-[15px] font-bold flex items-center justify-center gap-2 bg-[var(--paes-sirih)]"
           >
             <PhoneIcon aria-hidden className="w-4 h-4" />
             {l(lang, "Chat on WhatsApp", "Chat lewat WhatsApp")}

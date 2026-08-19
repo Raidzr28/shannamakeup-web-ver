@@ -48,7 +48,7 @@ export function ReviewForm({
                 "w-11 h-11 rounded-2xl cursor-pointer text-lg border-[1.5px]",
                 n <= rating
                   ? "border-gold bg-gold text-ink"
-                  : "border-line bg-card text-[#d8c6ae]"
+                  : "border-line bg-card text-melati-2"
               )}
             >
               <StarIcon className="w-[18px] h-[18px]" />
@@ -99,7 +99,7 @@ export function ReviewForm({
           </Label>
         </div>
 
-        <div className="mt-3.5 bg-[#f1e7d8] rounded-2xl px-3.5 py-3 text-xs leading-relaxed text-muted">
+        <div className="mt-3.5 bg-ground-3 rounded-2xl px-3.5 py-3 text-xs leading-relaxed text-muted">
           {l(
             lang,
             "Shana may show your photographs in the portfolio. You can withdraw this at any time.",

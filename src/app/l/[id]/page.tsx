@@ -23,7 +23,7 @@ export default async function LookPage({
   return (
     <>
       <MobileOnly>
-      <div className="min-h-full bg-[#f7f0e5] flex flex-col">
+      <div className="min-h-full bg-ground-3 flex flex-col">
         <div className="relative h-[344px]">
           <Media src={look.heroImage} alt={title} placeholder={title} shape="rect" className="h-full w-full" />
           <Link
@@ -34,7 +34,7 @@ export default async function LookPage({
           </Link>
         </div>
 
-        <div className="flex-1 bg-[#f7f0e5] rounded-t-[26px] -mt-6.5 relative px-5 pt-5.5">
+        <div className="flex-1 bg-ground-3 rounded-t-[26px] -mt-6.5 relative px-5 pt-5.5">
           <div className="flex items-start gap-3">
             <div className="flex-1">
               <h1 className="text-[25px] font-display leading-tight">{title}</h1>

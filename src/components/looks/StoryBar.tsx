@@ -125,11 +125,11 @@ export function StoryBar({
                 className={clsx(
                   "relative w-16 h-16 rounded-full flex items-center justify-center box-border p-[2.5px]",
                   isSeen
-                    ? "bg-gradient-to-br from-[#d9c3a8] to-[#d9c3a8]/45"
+                    ? "bg-gradient-to-br from-prada to-prada-lit/45"
                     : "bg-gradient-to-br from-gold to-maroon"
                 )}
               >
-                <span className="w-full h-full rounded-full overflow-hidden bg-[#ead9c7] border-2 border-[#f7f0e5] box-border">
+                <span className="w-full h-full rounded-full overflow-hidden bg-ground-3 border-2 border-prada/50 box-border">
                   <Media
                     src={story.imageUrl}
                     alt={story.name}
@@ -206,7 +206,7 @@ export function StoryBar({
                 <button
                   type="button"
                   onClick={() => remove(active.id)}
-                  className="w-[34px] h-[34px] rounded-xl text-white text-sm cursor-pointer bg-[#c2415c]/70 border border-prada/28 backdrop-blur-md"
+                  className="w-[34px] h-[34px] rounded-xl text-white text-sm cursor-pointer bg-[var(--paes-alarm)]/70 border border-prada/28 backdrop-blur-md"
                   aria-label={l(lang, "Delete story", "Hapus story")}
                 >
                   <TrashIcon className="w-[18px] h-[18px]" />
@@ -223,7 +223,7 @@ export function StoryBar({
             </button>
           </div>
 
-          <div className="flex-1 relative mx-3.5 rounded-[22px] overflow-hidden bg-[#241e1a]">
+          <div className="flex-1 relative mx-3.5 rounded-[22px] overflow-hidden bg-[var(--paes-ground-2)]">
             <Media
               src={active.imageUrl}
               alt={active.name}

@@ -132,7 +132,7 @@ export default async function ManageChatsPage({
                 </span>
                 <span
                   className={`flex-none text-[10.5px] font-bold px-2.5 py-1 rounded-full ${
-                    t.active ? "bg-maroon text-white" : "bg-[#efe4d5] text-muted-2"
+                    t.active ? "bg-maroon text-white" : "bg-ground-3 text-muted-2"
                   }`}
                 >
                   {t.active

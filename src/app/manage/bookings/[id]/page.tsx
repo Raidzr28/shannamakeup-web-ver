@@ -123,11 +123,11 @@ export default async function ManageBookingPage({
 
         <div className="flex flex-wrap gap-1.5">
           {isFirstBooking ? (
-            <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[#e3ece2] text-[var(--paes-sirih)]">
+            <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-sirih/15 text-[var(--paes-sirih)]">
               {l(lang, "First booking", "Pesanan pertama")}
             </span>
           ) : (
-            <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[var(--paes-ground-2)] text-[#6b4a8a]">
+            <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[var(--paes-ground-2)] text-[var(--paes-sirih)]">
               {l(
                 lang,
                 `${clientHistory.length} bookings · ${confirmedBefore} confirmed`,
@@ -135,7 +135,7 @@ export default async function ManageBookingPage({
               )}
             </span>
           )}
-          <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-[#efe4d5] text-muted-2">
+          <span className="text-[10.5px] font-bold px-2 py-1 rounded-full bg-ground-3 text-muted-2">
             {l(lang, "Client since", "Klien sejak")}{" "}
             {booking.user.createdAt.toLocaleDateString(locale(lang), {
               month: "short",
@@ -283,7 +283,7 @@ export default async function ManageBookingPage({
             href={booking.paymentProof}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative block h-[340px] mt-3 rounded-2xl overflow-hidden bg-[#f0e6d8]"
+            className="relative block h-[340px] mt-3 rounded-2xl overflow-hidden bg-ground-3"
           >
             {/* unoptimized: the receipt URL is a mutable database column, and a
                 host next/image does not recognise throws rather than degrading
